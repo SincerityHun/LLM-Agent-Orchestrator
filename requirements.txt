@@ -1,0 +1,19 @@
+# Core dependencies
+langgraph
+langchain
+langchain-core
+
+# vLLM for model serving
+# vllm
+
+# HTTP client
+requests
+aiohttp
+
+# Utilities
+pydantic
+python-dotenv
+
+# Testing
+pytest
+pytest-asyncio
