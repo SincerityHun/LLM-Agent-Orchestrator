@@ -55,7 +55,6 @@ class LLMOrchestrator:
             )
             
             print(format_graph_summary(dag))
-            print()
             
             # Step 2: Build LangGraph from DAG
             print("Step 2: Building execution graph")
@@ -74,15 +73,33 @@ class LLMOrchestrator:
             
             # Step 4: Merge results
             print("\nStep 4: Merging agent outputs")
+            print(f"{'='*80}")
+            print("AGENT EXECUTION RESULTS")
+            print(f"{'='*80}")
+            
             agent_outputs = []
             for node_id, result_data in final_state.get("results", {}).items():
+                role = result_data.get("role", "unknown")
+                result = result_data.get("result", "")
+                task_desc = result_data.get("task", "")
+                
+                print(f"\n{role.upper()} AGENT ({node_id}):")
+                print(f"   Task: {task_desc}")
+                print(f"   Result: {result}")
+                print(f"   Length: {len(result)} characters")
+                
                 agent_outputs.append({
-                    "role": result_data.get("role", "unknown"),
-                    "result": result_data.get("result", "")
+                    "role": role,
+                    "result": result
                 })
             
             merged_results = merge_outputs(agent_outputs)
-            print(f"\nMerged Results Preview:\n{merged_results[:200]}...\n")
+            
+            print(f"\n{'-'*80}")
+            print(f"MERGED RESULTS ({len(merged_results)} characters):")
+            print(f"{'-'*80}")
+            print(merged_results)
+            print(f"{'='*80}\n")
             
             # Step 5: Results Handler evaluation
             print("Step 5: Results Handler - Evaluation")

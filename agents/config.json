@@ -1,0 +1,104 @@
+{
+    "agents": {
+        "planning": {
+            "role": "planning",
+            "class": "PlanningAgent",
+            "description": "Specialized in task analysis and strategy formulation",
+            "temperature": 0.3,
+            "max_tokens": 512,
+            "template": "You are a planning specialist. Break the task into clear stages, identify key dependencies, and outline the strategy required for completion."
+        },
+        "execution": {
+            "role": "execution",
+            "class": "ExecutionAgent",
+            "description": "Specialized in performing domain-specific tasks",
+            "temperature": 0.5,
+            "max_tokens": 512,
+            "template": "You are an execution specialist. Carry out the task with accuracy, cite key facts when relevant, and deliver a thorough, implementable answer."
+        },
+        "review": {
+            "role": "review",
+            "class": "ReviewAgent",
+            "description": "Specialized in quality assurance and validation",
+            "temperature": 0.3,
+            "max_tokens": 512,
+            "template": "You are a review specialist. Evaluate prior outputs for correctness, spot gaps or risks, and recommend improvements before finalizing the work."
+        },
+        "research": {
+            "role": "research",
+            "class": "ResearchAgent",
+            "description": "Specialized in information gathering and analysis",
+            "temperature": 0.4,
+            "max_tokens": 768,
+            "template": "You are a research specialist. Gather comprehensive information, analyze data sources, and provide well-structured findings with proper citations."
+        },
+        "validation": {
+            "role": "validation",
+            "class": "ValidationAgent",
+            "description": "Specialized in data validation and verification",
+            "temperature": 0.2,
+            "max_tokens": 256,
+            "template": "You are a validation specialist. Verify data accuracy, check for inconsistencies, and ensure compliance with established standards and requirements."
+        }
+    },
+    "domains": {
+        "medical": {
+            "keywords": [
+                "medical",
+                "patient",
+                "diagnosis",
+                "treatment",
+                "symptom",
+                "disease",
+                "clinical",
+                "therapy",
+                "healthcare",
+                "medicine"
+            ],
+            "model_key": "medical",
+            "instruction": "Focus on clinical reasoning, differential diagnoses, diagnostic tests, and evidence-based treatment recommendations tailored to patient safety."
+        },
+        "law": {
+            "keywords": [
+                "legal",
+                "law",
+                "case",
+                "regulation",
+                "court",
+                "statute",
+                "attorney",
+                "compliance",
+                "contract",
+                "liability"
+            ],
+            "model_key": "legal",
+            "instruction": "Apply legal analysis with attention to statutes, relevant case law, precedent, and risk exposure. Highlight obligations, defenses, and recommended actions."
+        },
+        "math": {
+            "keywords": [
+                "math",
+                "calculate",
+                "equation",
+                "number",
+                "quantity",
+                "formula",
+                "compute",
+                "proof",
+                "mathematics",
+                "statistics"
+            ],
+            "model_key": "math",
+            "instruction": "Use precise quantitative reasoning. Show critical formulas, intermediate steps, and clearly state final numeric results or proofs."
+        },
+        "general": {
+            "keywords": [],
+            "model_key": "commonsense",
+            "instruction": "Leverage broad commonsense reasoning to deliver structured, actionable insights that remain grounded in the provided context."
+        }
+    },
+    "metadata": {
+        "version": "1.0",
+        "last_updated": "2025-12-01",
+        "description": "Dynamic configuration for LLM Agent Orchestrator system"
+    }
+}

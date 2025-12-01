@@ -1,137 +1,96 @@
-"""
-Agent SubRouter for model selection and execution
-"""
-from typing import Dict
-from utils.agent_prompts import SUBROUTER_SELECTION_PROMPT
+"""Agent SubRouter for model selection and prompt orchestration"""
+
+from typing import Dict, List, Optional, Tuple
+
+from utils.agent_prompts import get_agent_prompt
 from utils.llm_loader import VLLMLoader
+from agents.agent_factory import AgentFactory
 
 
 class AgentSubRouter:
-    """
-    SubRouter selects appropriate domain model and executes subtask
-    """
-    
-    def __init__(self):
-        self.llm_loader = VLLMLoader()
+    """SubRouter selects domain models and prepares prompts"""
+
+    def __init__(self, llm_loader: Optional[VLLMLoader] = None) -> None:
+        self.llm_loader = llm_loader or VLLMLoader()
         
-        # Model selection keywords
-        self.domain_keywords = {
-            "medical": ["medical", "patient", "diagnosis", "treatment", "symptom", "disease", "clinical"],
-            "legal": ["legal", "law", "case", "regulation", "court", "statute", "attorney"],
-            "math": ["math", "calculate", "equation", "number", "quantity", "formula", "compute"],
-        }
-    
-    def select_model(self, task: str) -> str:
-        """
-        Select appropriate domain model based on task content
-        
-        Args:
-            task: Task description
-            
-        Returns:
-            Model type: 'medical', 'legal', 'math', or 'commonsense'
-        """
-        task_lower = task.lower()
-        
-        # Check for domain-specific keywords
-        for domain, keywords in self.domain_keywords.items():
-            if any(keyword in task_lower for keyword in keywords):
-                return domain
-        
-        # Default to commonsense for general tasks
-        return "commonsense"
-    
+        # Initialize with dynamic configuration
+        factory = AgentFactory()
+        self.domain_keywords = factory.get_domain_keywords()
+        self.domain_to_model = factory.get_domain_model_mapping()
+
+    def detect_domain(self, content: str) -> str:
+        """Infer domain from task content using keyword heuristics"""
+        # Use factory's domain detection
+        domain_config = AgentFactory.detect_domain(content)
+        return domain_config.name
+
+    def select_model_adapter(self, domain: str) -> Tuple[str, str]:
+        """Map domain to (endpoint_key, model_name) pair"""
+
+        model_key = self.domain_to_model.get(domain, self.domain_to_model["general"])
+        config = self.llm_loader.model_configs.get(model_key)
+        if not config:
+            raise ValueError(f"Model configuration missing for domain '{domain}'")
+
+        return config["endpoint"], config["model"]
+
     def execute_subtask(
         self,
         role: str,
         task: str,
-        context: Dict = None
+        context: Optional[Dict] = None,
     ) -> str:
-        """
-        Execute subtask using selected domain model
-        
-        Args:
-            role: Agent role (planning/execution/review)
-            task: Task description
-            context: Optional context from previous steps
-            
-        Returns:
-            Execution result
-        """
-        # Select appropriate model
-        model_type = self.select_model(task)
-        
-        # Build execution prompt
-        prompt = self._build_execution_prompt(role, task, context)
-        
-        # Call selected model via vLLM
-        result = self.llm_loader.call_model(
-            model_type=model_type,
+        """Retained for backward compatibility with legacy agents"""
+
+        context = context or {}
+        domain = self.detect_domain(task)
+        endpoint_key, model_name = self.select_model_adapter(domain)
+        prompt = get_agent_prompt(role, domain, task, self._format_context(context))
+
+        temperature = 0.5 if role == "execution" else 0.3
+
+        return self.llm_loader.generate(
+            endpoint_key=endpoint_key,
+            model_name=model_name,
             prompt=prompt,
             max_tokens=512,
-            temperature=0.5
+            temperature=temperature,
+            fallback_label=f"{role}:{domain}",
         )
-        
-        return result
-    
-    def _build_execution_prompt(
-        self,
-        role: str,
-        task: str,
-        context: Dict = None
-    ) -> str:
-        """
-        Build prompt for task execution
-        """
-        prompt_parts = []
-        
-        # Add role-specific instruction
-        if role == "planning":
-            prompt_parts.append("You are a planning specialist. Create a structured plan.")
-        elif role == "execution":
-            prompt_parts.append("You are an execution specialist. Perform the task accurately.")
-        elif role == "review":
-            prompt_parts.append("You are a review specialist. Verify and assess quality.")
-        
-        # Add context if available
-        if context:
-            prompt_parts.append(f"\nContext from previous steps:")
-            for key, value in context.items():
-                prompt_parts.append(f"- {key}: {value}")
-        
-        # Add task
-        prompt_parts.append(f"\nTask: {task}")
-        prompt_parts.append("\nProvide your response:")
-        
-        return "\n".join(prompt_parts)
+
+    def _format_context(self, context: Dict) -> str:
+        if not context:
+            return ""
+        return "\n".join(f"{key}: {value}" for key, value in context.items())
 
 
 if __name__ == "__main__":
-    # Unit test
     print("Testing AgentSubRouter...")
-    
+
     subrouter = AgentSubRouter()
-    
-    # Test model selection
+
     medical_task = "Diagnose patient with chest pain symptoms"
-    assert subrouter.select_model(medical_task) == "medical"
-    
+    assert subrouter.detect_domain(medical_task) == "medical"
+
     legal_task = "Analyze the legal implications of this contract"
-    assert subrouter.select_model(legal_task) == "legal"
-    
+    assert subrouter.detect_domain(legal_task) == "law"
+
     math_task = "Calculate the derivative of x^2 + 3x"
-    assert subrouter.select_model(math_task) == "math"
-    
+    assert subrouter.detect_domain(math_task) == "math"
+
     general_task = "Explain why the sky is blue"
-    assert subrouter.select_model(general_task) == "commonsense"
-    
-    # Test subtask execution
+    assert subrouter.detect_domain(general_task) == "general"
+
+    endpoint_key, model_name = subrouter.select_model_adapter("medical")
+    assert endpoint_key == "llama"
+    assert model_name
+
     result = subrouter.execute_subtask(
         role="planning",
         task=medical_task,
-        context={"user": "test_user"}
+        context={"user": "test_user"},
     )
     assert isinstance(result, str)
     assert len(result) > 0
-    
+
     print("AgentSubRouter test passed")

@@ -1,20 +1,23 @@
 """
 Planning Agent - Specialized in task analysis and strategy formulation
 """
-from typing import Dict
-from routers.agent_subrouter import AgentSubRouter
+from typing import Dict, Optional
+from agents.base_agent import BaseAgent
+from agents.agent_factory import AgentFactory
 
 
-class PlanningAgent:
+class PlanningAgent(BaseAgent):
     """
     Agent specialized in planning and task decomposition
     """
     
     def __init__(self):
-        self.subrouter = AgentSubRouter()
-        self.role = "planning"
+        factory = AgentFactory()
+        dynamic_agent = factory.create_agent("planning")
+        super().__init__(role="planning", llm_loader=dynamic_agent.llm_loader)
+        self.config = dynamic_agent.config
     
-    def execute(self, task: str, context: Dict = None) -> Dict:
+    def execute(self, task: str, context: Optional[Dict] = None) -> Dict:
         """
         Execute planning task
         
@@ -25,18 +28,7 @@ class PlanningAgent:
         Returns:
             Dictionary with role and result
         """
-        # Execute planning task via subrouter
-        result = self.subrouter.execute_subtask(
-            role=self.role,
-            task=task,
-            context=context
-        )
-        
-        return {
-            "role": self.role,
-            "result": result,
-            "task": task
-        }
+        return super().execute(task, context=context)
 
 
 if __name__ == "__main__":

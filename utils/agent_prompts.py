@@ -1,80 +1,72 @@
-"""
-Prompts for Agent-specific operations
-"""
+"""Utilities for constructing agent prompts dynamically"""
 
-AGENT_PLANNING_PROMPT = """You are a Planning Agent specialized in task analysis and strategy formulation.
+from typing import Dict
 
-Your role:
-- Analyze the given task
-- Identify key requirements and constraints
-- Propose a structured approach
-- Outline necessary steps
-
-Task: {task}
-
-Provide a clear, structured planning response."""
+# Import the dynamic agent factory
+from agents.agent_factory import AgentFactory
 
 
-AGENT_EXECUTION_PROMPT = """You are an Execution Agent specialized in performing domain-specific tasks.
-
-Your role:
-- Execute the given task using domain knowledge
-- Provide accurate, evidence-based responses
-- Focus on concrete implementation
-
-Task: {task}
-
-Execute this task and provide detailed results."""
+def _get_domain_instruction(domain: str) -> str:
+    """Get domain instruction from dynamic config"""
+    factory = AgentFactory()
+    domain_config = factory._domain_configs.get(domain)
+    if domain_config:
+        return domain_config.instruction
+    return factory._domain_configs["general"].instruction
 
 
-AGENT_REVIEW_PROMPT = """You are a Review Agent specialized in quality assurance and validation.
-
-Your role:
-- Review the execution results
-- Verify accuracy and completeness
-- Identify potential issues or improvements
-- Provide final assessment
-
-Task: {task}
-
-Execution Results: {execution_results}
-
-Provide a thorough review and assessment."""
+def _get_role_template(role: str) -> str:
+    """Get role template from dynamic config"""
+    factory = AgentFactory()
+    agent_config = factory._agent_configs.get(role)
+    if agent_config:
+        return agent_config.template
+    return factory._agent_configs["execution"].template
 
 
-SUBROUTER_SELECTION_PROMPT = """Select the most appropriate domain model for this task:
+def get_agent_prompt(
+    role: str,
+    domain: str,
+    task_content: str,
+    context: str = "",
+) -> str:
+    """Compose an agent prompt by combining role guidance, domain focus, and task content"""
 
-Task: {task}
+    # Use dynamic configuration only
+    role_template = _get_role_template(role)
+    domain_instruction = _get_domain_instruction(domain)
 
-Available models:
-- medical: For healthcare, diagnosis, treatment questions
-- legal: For law, regulation, case analysis
-- math: For mathematics, calculations, quantitative reasoning
-- commonsense: For general reasoning and common knowledge
+    parts = [role_template, "", f"Domain focus: {domain_instruction}"]
 
-Output only the model name: medical, legal, math, or commonsense"""
+    parts.append("")
+    parts.append("Task:")
+    parts.append(task_content.strip())
+
+    if context.strip():
+        parts.append("")
+        parts.append("Context:")
+        parts.append(context.strip())
+
+    parts.append("")
+    parts.append("Provide a structured, concise, and domain-aware response.")
+
+    return "\n".join(parts)
 
 
 if __name__ == "__main__":
-    # Unit test
     print("Testing agent prompts...")
-    
-    test_task = "Analyze chest pain symptoms"
-    
-    planning_prompt = AGENT_PLANNING_PROMPT.format(task=test_task)
-    assert test_task in planning_prompt
-    
-    execution_prompt = AGENT_EXECUTION_PROMPT.format(task=test_task)
-    assert test_task in execution_prompt
-    
-    review_prompt = AGENT_REVIEW_PROMPT.format(
-        task=test_task,
-        execution_results="CT scan recommended"
-    )
-    assert test_task in review_prompt
-    assert "CT scan" in review_prompt
-    
-    selection_prompt = SUBROUTER_SELECTION_PROMPT.format(task=test_task)
-    assert "medical" in selection_prompt
-    
+
+    sample_task = "Analyze chest pain symptoms"
+    sample_context = "vitals: stable"
+
+    planning_prompt = get_agent_prompt("planning", "medical", sample_task, sample_context)
+    assert sample_task in planning_prompt
+    assert "planning specialist" in planning_prompt
+
+    execution_prompt = get_agent_prompt("execution", "law", sample_task)
+    assert "legal analysis" in execution_prompt.lower()
+
+    review_prompt = get_agent_prompt("review", "general", sample_task)
+    assert "review specialist" in review_prompt.lower()
+
     print("Agent prompts test passed")

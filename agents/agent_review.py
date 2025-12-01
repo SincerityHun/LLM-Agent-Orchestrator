@@ -1,20 +1,23 @@
 """
 Review Agent - Specialized in quality assurance and validation
 """
-from typing import Dict
-from routers.agent_subrouter import AgentSubRouter
+from typing import Dict, Optional
+from agents.base_agent import BaseAgent
+from agents.agent_factory import AgentFactory
 
 
-class ReviewAgent:
+class ReviewAgent(BaseAgent):
     """
     Agent specialized in reviewing and validating results
     """
     
     def __init__(self):
-        self.subrouter = AgentSubRouter()
-        self.role = "review"
+        factory = AgentFactory()
+        dynamic_agent = factory.create_agent("review")
+        super().__init__(role="review", llm_loader=dynamic_agent.llm_loader)
+        self.config = dynamic_agent.config
     
-    def execute(self, task: str, context: Dict = None) -> Dict:
+    def execute(self, task: str, context: Optional[Dict] = None) -> Dict:
         """
         Execute review task
         
@@ -25,18 +28,7 @@ class ReviewAgent:
         Returns:
             Dictionary with role and result
         """
-        # Execute review task via subrouter
-        result = self.subrouter.execute_subtask(
-            role=self.role,
-            task=task,
-            context=context
-        )
-        
-        return {
-            "role": self.role,
-            "result": result,
-            "task": task
-        }
+        return super().execute(task, context=context)
 
 
 if __name__ == "__main__":
