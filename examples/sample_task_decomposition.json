@@ -1,8 +1,0 @@
-{
-  "model": "meta-llama/Llama-3.2-1B-Instruct",
-  "prompt": "You are a Global Router LLM that decomposes complex tasks into role-specific subtasks.\n\nYour responsibilities:\n1. Analyze the input task\n2. Generate subtasks for three agent roles: Planning, Execution, Review\n3. Create a dependency graph (DAG) showing task relationships\n4. Output JSON format only\n\nOriginal Task: Explain whether a patient with sudden chest pain requires emergent CT angiography.\n\nPlease decompose this task into subtasks with dependency graph.\nOutput JSON only, no explanation.",
-  "max_tokens": 512,
-  "temperature": 0.3
-}
-
-

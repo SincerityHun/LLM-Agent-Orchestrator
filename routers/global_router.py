@@ -3,7 +3,7 @@ Global Router LLM for task decomposition and DAG generation
 """
 from __future__ import annotations
 
-from typing import Dict, List, Optional
+from typing import Dict, List, Literal, Optional
 
 from pydantic import BaseModel, Field, ValidationError, model_validator
 
@@ -19,20 +19,18 @@ class SubTask(BaseModel):
     """Single unit of work produced by the global router"""
 
     id: str
-    role: str
+    domain: Literal["commonsense", "medical", "law", "math"] = Field(
+        ...,
+        description="Task domain - must be exactly one of: commonsense, medical, law, math"
+    )
     content: str
     dependencies: List[str] = Field(default_factory=list)
 
     @model_validator(mode="after")
-    def validate_role(cls, values: "SubTask") -> "SubTask":
-        allowed_roles = {"planning", "execution", "review"}
-        if values.role not in allowed_roles:
-            raise ValueError(
-                f"Invalid role '{values.role}'. Allowed roles: {sorted(allowed_roles)}"
-            )
-        if values.id in values.dependencies:
-            raise ValueError(f"Task '{values.id}' cannot depend on itself")
-        return values
+    def validate_dependencies(self) -> "SubTask":
+        if self.id in self.dependencies:
+            raise ValueError(f"Task '{self.id}' cannot depend on itself")
+        return self
 
 
 class TaskDAG(BaseModel):
@@ -166,10 +164,16 @@ class GlobalRouter:
 
         # Clear instruction for TaskDAG schema format
         schema_instruction = (
-            "Generate a task decomposition in JSON format with 'tasks' array. "
-            "Each task should have: id (string), role (planning/execution/review), "
-            "content (task description), and dependencies (array of task IDs). "
-            "Example: {\"tasks\": [{\"id\": \"task1\", \"role\": \"planning\", \"content\": \"...\", \"dependencies\": []}]}"
+            "\nIMPORTANT OUTPUT REQUIREMENTS:\n"
+            "1. Return ONLY valid JSON - no markdown, no explanations\n"
+            "2. Use 'tasks' as the top-level array key\n"
+            "3. Each task MUST have:\n"
+            "   - id: unique string (e.g., 'task1', 'task2')\n"
+            "   - domain: one of [commonsense, medical, law, math]\n"
+            "   - content: DETAILED description (minimum 10 words, NOT '...')\n"
+            "   - dependencies: array of task IDs (can be empty [])\n"
+            "4. For multi-domain tasks, create SEPARATE tasks for each domain\n"
+            "5. Ensure all dependency IDs exist in the task list"
         )
 
         error_block = ""
@@ -219,13 +223,13 @@ class GlobalRouter:
         return cleaned.strip()
 
     def _taskdag_to_graph(self, dag: TaskDAG) -> Dict:
-        """Convert validated TaskDAG into legacy graph format"""
+        """Convert validated TaskDAG into graph format with domain-based agents"""
 
         nodes = []
         edges = []
 
         for task in dag.tasks:
-            nodes.append({"id": task.id, "role": task.role, "task": task.content})
+            nodes.append({"id": task.id, "domain": task.domain, "task": task.content})
             for dependency in task.dependencies:
                 edges.append({"from": dependency, "to": task.id})
 
@@ -239,7 +243,7 @@ class GlobalRouter:
         edges = graph.get("edges", [])
         print(f"Nodes ({len(nodes)}):")
         for node in nodes:
-            print(f"   • {node['id']} ({node['role']}): {node['task']}")
+            print(f"   • {node['id']} ({node['domain']}): {node['task']}")
 
         print(f"Edges ({len(edges)}):")
         for edge in edges:
@@ -247,30 +251,17 @@ class GlobalRouter:
         print(f"{'=' * 80}\n")
 
     def _create_default_graph(self, task: str) -> Dict:
-        """Fallback to sequential workflow when parsing fails"""
+        """Fallback to sequential workflow when parsing fails - uses commonsense domain by default"""
 
         return {
             "nodes": [
                 {
-                    "id": "planning",
-                    "role": "planning",
-                    "task": f"Create a plan for: {task}",
-                },
-                {
-                    "id": "execution",
-                    "role": "execution",
-                    "task": f"Execute: {task}",
-                },
-                {
-                    "id": "review",
-                    "role": "review",
-                    "task": f"Review the execution of: {task}",
+                    "id": "task1",
+                    "domain": "commonsense",
+                    "task": task,
                 },
             ],
-            "edges": [
-                {"from": "planning", "to": "execution"},
-                {"from": "execution", "to": "review"},
-            ],
+            "edges": [],
         }
 
 

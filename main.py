@@ -79,17 +79,17 @@ class LLMOrchestrator:
             
             agent_outputs = []
             for node_id, result_data in final_state.get("results", {}).items():
-                role = result_data.get("role", "unknown")
+                domain = result_data.get("domain", "unknown")
                 result = result_data.get("result", "")
                 task_desc = result_data.get("task", "")
                 
-                print(f"\n{role.upper()} AGENT ({node_id}):")
+                print(f"\n{domain.upper()} AGENT ({node_id}):")
                 print(f"   Task: {task_desc}")
                 print(f"   Result: {result}")
                 print(f"   Length: {len(result)} characters")
                 
                 agent_outputs.append({
-                    "role": role,
+                    "domain": domain,
                     "result": result
                 })
             

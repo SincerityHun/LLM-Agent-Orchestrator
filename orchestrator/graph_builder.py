@@ -1,19 +1,22 @@
 """
 Graph Builder - Converts DAG into LangGraph executable workflow
 """
-from typing import Dict, List, Any
+from typing import Dict, List, Any, Annotated
 from langgraph.graph import StateGraph
 from typing_extensions import TypedDict
-from agents.agent_planning import PlanningAgent
-from agents.agent_execution import ExecutionAgent
-from agents.agent_review import ReviewAgent
+from agents.agent_factory import AgentFactory
+
+
+def merge_results(left: Dict[str, Any], right: Dict[str, Any]) -> Dict[str, Any]:
+    """Merge two results dictionaries (for parallel execution)"""
+    return {**left, **right}
 
 
 class WorkflowState(TypedDict):
     """State maintained throughout workflow execution"""
     original_task: str
     current_node: str
-    results: Dict[str, Any]
+    results: Annotated[Dict[str, Any], merge_results]  # Allow parallel updates
     context: Dict[str, Any]
 
 
@@ -23,11 +26,11 @@ class GraphBuilder:
     """
     
     def __init__(self):
-        self.agents = {
-            "planning": PlanningAgent(),
-            "execution": ExecutionAgent(),
-            "review": ReviewAgent()
-        }
+        # Use AgentFactory to create domain-specific agents dynamically
+        factory = AgentFactory()
+        self.agents = {}
+        for domain in factory.get_available_domains():
+            self.agents[domain] = factory.create_agent(domain)
     
     def build_graph(self, dag: Dict) -> StateGraph:
         """
@@ -46,11 +49,11 @@ class GraphBuilder:
         nodes = dag.get("nodes", [])
         for node in nodes:
             node_id = node["id"]
-            role = node["role"]
+            domain = node["domain"]
             task = node["task"]
             
             # Create node function
-            node_func = self._create_node_function(node_id, role, task)
+            node_func = self._create_node_function(node_id, domain, task)
             workflow.add_node(node_id, node_func)
         
         # Add edges (dependencies)
@@ -83,15 +86,15 @@ class GraphBuilder:
         final_state = graph.invoke(initial_state)
         return final_state
     
-    def _create_node_function(self, node_id: str, role: str, task: str):
+    def _create_node_function(self, node_id: str, domain: str, task: str):
         """
         Create execution function for a graph node
         """
-        def node_function(state: WorkflowState) -> WorkflowState:
-            # Get appropriate agent
-            agent = self.agents.get(role)
+        def node_function(state: WorkflowState) -> Dict[str, Any]:
+            # Get appropriate agent by domain
+            agent = self.agents.get(domain)
             if not agent:
-                raise ValueError(f"Unknown agent role: {role}")
+                raise ValueError(f"Unknown agent domain: {domain}")
             
             # Build context from previous results
             context = {**state.get("context", {})}
@@ -101,13 +104,13 @@ class GraphBuilder:
             # Execute agent task
             result = agent.execute(task, context=context)
             
-            # Update state
+            # Update state - only return results (safe for parallel execution)
             new_results = {**state.get("results", {})}
             new_results[node_id] = result
             
+            # Return only results dict - each node updates a different key
+            # This allows parallel execution without conflicts
             return {
-                **state,
-                "current_node": node_id,
                 "results": new_results
             }
         

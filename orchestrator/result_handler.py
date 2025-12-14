@@ -1,18 +1,40 @@
 """
-Results Handler - Evaluates merged results and determines next steps
+Results Handler - Evaluates merged results and determines next steps using JSON schema
 """
-from typing import Dict, Tuple
+import json
+from typing import Tuple, Dict, Any
 from utils.llm_loader import VLLMLoader
 
 
 class ResultHandler:
     """
-    Evaluates results and decides whether to continue or finalize
+    Evaluates results and decides whether to continue or finalize based on the original task.
     """
     
     def __init__(self, max_retry: int = 3):
         self.llm_loader = VLLMLoader()
         self.max_retry = max_retry
+        
+        # Define JSON Schema for vLLM guided generation
+        self.evaluation_schema = {
+            "type": "object",
+            "properties": {
+                "thoughts": {
+                    "type": "string",
+                    "description": "Step-by-step analysis of the original task requirements and the provided merged results."
+                },
+                "status": {
+                    "type": "string",
+                    "enum": ["YES", "NO"],
+                    "description": "YES if results are sufficient, NO if information is missing."
+                },
+                "content": {
+                    "type": "string",
+                    "description": "If status is YES, the final synthesized answer. If NO, feedback on what specific information is missing."
+                }
+            },
+            "required": ["thoughts", "status", "content"]
+        }
     
     def evaluate_results(
         self,
@@ -21,7 +43,7 @@ class ResultHandler:
         retry_count: int
     ) -> Tuple[str, bool, str]:
         """
-        Evaluate merged results and determine next action
+        Evaluate merged results using vLLM's guided_json.
         
         Args:
             original_task: Original user task
@@ -31,31 +53,28 @@ class ResultHandler:
         Returns:
             Tuple of (final_answer, should_stop, feedback)
         """
-        # Check retry limit
+        # 1. Check retry limit
         if retry_count >= self.max_retry:
             return (merged_results, True, "Max retry limit reached")
         
-        # Build evaluation prompt
+        # 2. Build evaluation prompt (Simplified for JSON)
         evaluation_prompt = self._build_evaluation_prompt(
             original_task,
             merged_results
         )
         
-        # Call LLM for evaluation
-        evaluation = self.llm_loader.call_model(
-            model_type="commonsense",
+        # 3. Call LLM with guided_json
+        # vLLM will force the output to match self.evaluation_schema
+        json_response_str = self.llm_loader.call_model(
+            model_type="global-router",
             prompt=evaluation_prompt,
-            max_tokens=256,
-            temperature=0.3
+            max_tokens=2048,
+            temperature=0.1, # Keep low for structural consistency
+            guided_json=self.evaluation_schema
         )
         
-        # Parse evaluation
-        should_stop, feedback = self._parse_evaluation(evaluation)
-        
-        if should_stop:
-            return (merged_results, True, "Task completed successfully")
-        else:
-            return (merged_results, False, feedback)
+        # 4. Parse JSON
+        return self._parse_json_response(json_response_str, merged_results)
     
     def _build_evaluation_prompt(
         self,
@@ -63,75 +82,75 @@ class ResultHandler:
         merged_results: str
     ) -> str:
         """
-        Build prompt for result evaluation
+        Build prompt focused on logic, relying on schema for structure.
         """
-        prompt = f"""Evaluate if the following results adequately address the original task.
+        prompt = f"""You are a Result Evaluator. Your goal is to evaluate if the merged results are sufficient to answer the Original Task.
 
 Original Task:
 {original_task}
 
-Results:
+Merged Results from Agents:
 {merged_results}
 
-Evaluation:
-- Does the result fully address the task? (YES/NO)
-- If NO, what specific improvements are needed?
+Instructions:
+1. Analyze the 'Original Task' and 'Merged Results' in the 'thoughts' field.
+2. Determine if the results are sufficient. Set 'status' to "YES" or "NO".
+3. Provide the output in the 'content' field:
+   - If "YES": Synthesize a comprehensive final answer.
+   - If "NO": Explain exactly what information is missing.
 
-Output format:
-STATUS: [YES/NO]
-FEEDBACK: [Your feedback here]
+Response (JSON):
 """
         return prompt
     
-    def _parse_evaluation(self, evaluation: str) -> Tuple[bool, str]:
+    def _parse_json_response(self, json_str: str, original_merged_results: str) -> Tuple[str, bool, str]:
         """
-        Parse evaluation response
-        
-        Returns:
-            Tuple of (should_stop, feedback)
+        Parse the JSON string returned by vLLM.
         """
-        evaluation_lower = evaluation.lower()
-        
-        # Check for completion indicators
-        if "status: yes" in evaluation_lower or "status:yes" in evaluation_lower:
-            return (True, "")
-        
-        # Extract feedback
-        if "feedback:" in evaluation_lower:
-            feedback_start = evaluation_lower.index("feedback:") + len("feedback:")
-            feedback = evaluation[feedback_start:].strip()
-            return (False, feedback)
-        
-        # Default: assume needs refinement
-        return (False, evaluation)
-
+        try:
+            data = json.loads(json_str)
+            
+            thoughts = data.get("thoughts", "")
+            status = data.get("status", "NO").upper()
+            content = data.get("content", "")
+            
+            # Logging thoughts for debugging (Optional)
+            print(f"\n[Evaluator Thoughts]: {thoughts}\n")
+            
+            if status == "YES":
+                # Success: Content is Final Answer
+                return (content, True, "Task completed successfully")
+            else:
+                # Failure: Content is Feedback
+                return (original_merged_results, False, content)
+                
+        except json.JSONDecodeError as e:
+            print(f"JSON Parse Error: {e}")
+            print(f"Raw Response: {json_str}")
+            # Fallback: Treat as a retry with raw response as feedback if possible
+            return (original_merged_results, False, "Error parsing evaluator response. Retrying.")
 
 if __name__ == "__main__":
-    # Unit test
-    print("Testing ResultHandler...")
+    # Mock Test
+    print("Testing ResultHandler with guided_json Logic...")
     
     handler = ResultHandler(max_retry=3)
     
-    # Test successful evaluation
-    test_task = "Explain chest pain diagnosis"
-    test_results = "[PLANNING] Create diagnostic plan\n[EXECUTION] CT scan recommended\n[REVIEW] All steps verified"
+    # Simulate a valid JSON response from vLLM
+    mock_json_response_yes = """
+    {
+        "thoughts": "The user asked for the weather. The results show it is sunny and 25 degrees. This is sufficient.",
+        "status": "YES",
+        "content": "The weather is currently sunny with a temperature of 25 degrees."
+    }
+    """
     
-    final_answer, should_stop, feedback = handler.evaluate_results(
-        original_task=test_task,
-        merged_results=test_results,
-        retry_count=0
+    final_answer, should_stop, feedback = handler._parse_json_response(
+        mock_json_response_yes, "Raw Merged Results"
     )
     
-    assert isinstance(final_answer, str)
-    assert isinstance(should_stop, bool)
-    assert isinstance(feedback, str)
+    print(f"Status: {should_stop}")
+    print(f"Final Answer: {final_answer}")
     
-    # Test max retry limit
-    _, should_stop_limit, _ = handler.evaluate_results(
-        original_task=test_task,
-        merged_results=test_results,
-        retry_count=3
-    )
-    assert should_stop_limit == True
-    
-    print("ResultHandler test passed")
+    assert should_stop is True
+    assert "sunny" in final_answer

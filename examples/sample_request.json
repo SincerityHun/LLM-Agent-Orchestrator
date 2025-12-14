@@ -1,4 +1,4 @@
 {
-    "task": "Explain whether a patient with sudden chest pain requires emergent CT angiography.",
+    "task": "Analyze the legal implications of a medical malpractice case involving chest pain diagnosis, calculate damages, and provide commonsense recommendations.",
     "user_id": "test_user_01"
 }

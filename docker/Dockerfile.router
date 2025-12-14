@@ -1,0 +1,48 @@
+# Server Dockerfile for Qwen3-VL Inference
+ARG CUDA_VERSION=12.8.1
+ARG PYTHON_VERSION=3.12
+
+FROM nvidia/cuda:${CUDA_VERSION}-runtime-ubuntu22.04 AS base
+
+# Prevent interactive prompts during package installation
+ENV DEBIAN_FRONTEND=noninteractive
+ENV TZ=Asia/Seoul
+
+# Set working directory
+WORKDIR /app
+
+# Install Python 3.12
+RUN apt-get update -y && apt-get install -y \
+    software-properties-common curl wget git sudo build-essential vim ffmpeg \
+    && add-apt-repository -y ppa:deadsnakes/ppa \
+    && apt-get update -y \
+    && apt-get install -y python3.12 python3.12-dev python3.12-venv \
+    && update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.12 1 \
+    && curl -sS https://bootstrap.pypa.io/get-pip.py | python3.12 \
+    && python3 --version && pip3 --version
+
+# Create symbolic link for python
+RUN ln -s /usr/bin/python3.12 /usr/bin/python
+
+# Copy requirements
+RUN python3 -m pip install -U pip uv
+ENV UV_HTTP_TIMEOUT=500
+
+COPY docker/requirements.router.txt .
+
+# Upgrade pip
+RUN uv pip install --system --no-build-isolation --no-cache-dir -r requirements.router.txt
+
+
+# Verify uvicorn installation
+RUN python3 -m uvicorn --version
+
+# Application code will be mounted via volume
+# WORKDIR will be /app, so mount your code to /app
+
+# Expose port
+EXPOSE 8002
+
+# Run service
+CMD ["python3", "-m", "uvicorn", "routers.router_service:app", "--host", "0.0.0.0", "--port", "8002"]
+

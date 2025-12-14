@@ -1,47 +1,55 @@
 {
     "agents": {
-        "planning": {
-            "role": "planning",
-            "class": "PlanningAgent",
-            "description": "Specialized in task analysis and strategy formulation",
-            "temperature": 0.3,
-            "max_tokens": 512,
-            "template": "You are a planning specialist. Break the task into clear stages, identify key dependencies, and outline the strategy required for completion."
-        },
-        "execution": {
-            "role": "execution",
-            "class": "ExecutionAgent",
-            "description": "Specialized in performing domain-specific tasks",
-            "temperature": 0.5,
-            "max_tokens": 512,
-            "template": "You are an execution specialist. Carry out the task with accuracy, cite key facts when relevant, and deliver a thorough, implementable answer."
-        },
-        "review": {
-            "role": "review",
-            "class": "ReviewAgent",
-            "description": "Specialized in quality assurance and validation",
-            "temperature": 0.3,
-            "max_tokens": 512,
-            "template": "You are a review specialist. Evaluate prior outputs for correctness, spot gaps or risks, and recommend improvements before finalizing the work."
-        },
-        "research": {
-            "role": "research",
-            "class": "ResearchAgent",
-            "description": "Specialized in information gathering and analysis",
+        "commonsense": {
+            "domain": "commonsense",
+            "class": "CommonsenseAgent",
+            "description": "Domain-specialized agent for commonsense reasoning and general knowledge tasks",
             "temperature": 0.4,
-            "max_tokens": 768,
-            "template": "You are a research specialist. Gather comprehensive information, analyze data sources, and provide well-structured findings with proper citations."
+            "max_tokens": 512,
+            "template": "You are a commonsense reasoning specialist. Apply broad knowledge and logical reasoning to analyze the task systematically and provide well-structured, actionable insights."
         },
-        "validation": {
-            "role": "validation",
-            "class": "ValidationAgent",
-            "description": "Specialized in data validation and verification",
+        "medical": {
+            "domain": "medical",
+            "class": "MedicalAgent",
+            "description": "Domain-specialized agent for medical diagnosis and healthcare tasks",
+            "temperature": 0.3,
+            "max_tokens": 768,
+            "template": "You are a medical domain specialist. Focus on clinical reasoning, differential diagnoses, diagnostic tests, and evidence-based treatment recommendations tailored to patient safety."
+        },
+        "law": {
+            "domain": "law",
+            "class": "LawAgent",
+            "description": "Domain-specialized agent for legal analysis and case evaluation",
+            "temperature": 0.3,
+            "max_tokens": 768,
+            "template": "You are a legal domain specialist. Apply legal analysis with attention to statutes, relevant case law, precedent, and risk exposure. Highlight obligations, defenses, and recommended actions."
+        },
+        "math": {
+            "domain": "math",
+            "class": "MathAgent",
+            "description": "Domain-specialized agent for mathematical computation and problem-solving",
             "temperature": 0.2,
-            "max_tokens": 256,
-            "template": "You are a validation specialist. Verify data accuracy, check for inconsistencies, and ensure compliance with established standards and requirements."
+            "max_tokens": 512,
+            "template": "You are a mathematics domain specialist. Use precise quantitative reasoning. Show critical formulas, intermediate steps, and clearly state final numeric results or proofs."
         }
     },
     "domains": {
+        "commonsense": {
+            "keywords": [
+                "common sense",
+                "reasoning",
+                "logic",
+                "general",
+                "why",
+                "how",
+                "explain",
+                "understand",
+                "knowledge",
+                "think"
+            ],
+            "agent_key": "commonsense",
+            "instruction": "Leverage broad commonsense reasoning to deliver structured, actionable insights that remain grounded in the provided context."
+        },
         "medical": {
             "keywords": [
                 "medical",
@@ -55,7 +63,7 @@
                 "healthcare",
                 "medicine"
             ],
-            "model_key": "medical",
+            "agent_key": "medical",
             "instruction": "Focus on clinical reasoning, differential diagnoses, diagnostic tests, and evidence-based treatment recommendations tailored to patient safety."
         },
         "law": {
@@ -71,7 +79,7 @@
                 "contract",
                 "liability"
             ],
-            "model_key": "legal",
+            "agent_key": "law",
             "instruction": "Apply legal analysis with attention to statutes, relevant case law, precedent, and risk exposure. Highlight obligations, defenses, and recommended actions."
         },
         "math": {
@@ -87,17 +95,12 @@
                 "mathematics",
                 "statistics"
             ],
-            "model_key": "math",
+            "agent_key": "math",
             "instruction": "Use precise quantitative reasoning. Show critical formulas, intermediate steps, and clearly state final numeric results or proofs."
-        },
-        "general": {
-            "keywords": [],
-            "model_key": "commonsense",
-            "instruction": "Leverage broad commonsense reasoning to deliver structured, actionable insights that remain grounded in the provided context."
         }
     },
     "metadata": {
-        "version": "1.0",
+        "version": "2.0",
         "last_updated": "2025-12-01",
         "description": "Dynamic configuration for LLM Agent Orchestrator system"
     }

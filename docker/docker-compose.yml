@@ -2,22 +2,23 @@ version: '3.8'
 
 services:
   # Unified vLLM endpoint for Llama-3.2-1B with multiple LoRA adapters
-  vllm-llama:
+  vllm-llama-1b:
     image: sincerityhun/vllm:cu128-nightly
-    container_name: vllm-llama
+    container_name: vllm-llama-1b
     environment:
       - CUDA_VISIBLE_DEVICES=0
       - HF_HOME=/root/.cache/huggingface
       - HF_TOKEN=${HF_TOKEN}
     volumes:
-      - ../LLM_pool/llama-1b-csqa:/csqa-adapter
-      - ../LLM_pool/llama-1b-casehold:/casehold-adapter
-      - ../LLM_pool/llama-1b-medqa2:/medqa-adapter
+      - /mnt/ssd1/shjung/embos/llama-1b-csqa:/csqa-adapter
+      - /mnt/ssd1/shjung/embos/llama-1b-casehold:/casehold-adapter
+      - /mnt/ssd1/shjung/embos/llama-1b-medqa:/medqa-adapter
+      - /mnt/ssd1/shjung/embos/llama-1b-mathqa:/mathqa-adapter
       - /mnt/ssd1/shjung/huggingface:/root/.cache/huggingface
     command:
       - vllm
       - serve
-      - meta-llama/Llama-3.2-1B-Instruct
+      - meta-llama/Llama-3.2-1B
       - --port
       - "8000"
       - --gpu-memory-utilization
@@ -27,6 +28,7 @@ services:
       - csqa-lora=/csqa-adapter # 32
       - casehold-lora=/casehold-adapter # 64
       - medqa-lora=/medqa-adapter # 128
+      - mathqa-lora=/mathqa-adapter # 64
       - --max-lora-rank
       - "128"
     ports:
@@ -36,35 +38,68 @@ services:
         reservations:
           devices:
             - driver: nvidia
-              device_ids: ['2']
+              device_ids: ['1']
               capabilities: [gpu]
-
-  # vLLM endpoint for MathQA (Qwen-3B)
-  vllm-qwen:
+  vllm-llama-8b:
     image: sincerityhun/vllm:cu128-nightly
-    container_name: vllm-qwen
+    container_name: vllm-llama-8b
     environment:
       - CUDA_VISIBLE_DEVICES=0
       - HF_HOME=/root/.cache/huggingface
       - HF_TOKEN=${HF_TOKEN}
     volumes:
-      - ../LLM_pool/qwen-3b-mathqa-2:/adapter
+      - /mnt/ssd1/shjung/embos/llama-8b-csqa:/csqa-adapter
+      - /mnt/ssd1/shjung/embos/llama-8b-casehold:/casehold-adapter
+      - /mnt/ssd1/shjung/embos/llama-8b-medqa:/medqa-adapter
+      - /mnt/ssd1/shjung/embos/llama-8b-mathqa:/mathqa-adapter
       - /mnt/ssd1/shjung/huggingface:/root/.cache/huggingface
     command:
       - vllm
       - serve
-      - Qwen/Qwen2.5-3B-Instruct
+      - meta-llama/Llama-3.1-8B
       - --port
-      - "8001"
+      - "8000"
       - --gpu-memory-utilization
-      - "0.8"
+      - "0.9"
+      - --max-model-len
+      - "8192"
       - --enable-lora
       - --lora-modules
-      - mathqa-lora=/adapter
+      - csqa-lora=/csqa-adapter # 32
+      - casehold-lora=/casehold-adapter # 64
+      - medqa-lora=/medqa-adapter # 128
+      - mathqa-lora=/mathqa-adapter # 64
       - --max-lora-rank
-      - "64"
+      - "128"
     ports:
-      - "8001:8001"
+      - "8001:8000"
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              device_ids: ['2']
+              capabilities: [gpu]
+
+  # Router inference service
+  router-service:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.router
+    container_name: router-service
+    environment:
+      - CUDA_VISIBLE_DEVICES=0
+      - HF_TOKEN=${HF_TOKEN}
+      - ROUTER_BASE_PATH=/models
+      - BASE_MODEL=meta-llama/Llama-3.2-1B
+      - ROUTER_SERVICE_PORT=8002
+    volumes:
+      - /mnt/ssd1/shjung/embos:/models
+      - /mnt/ssd1/shjung/huggingface:/root/.cache/huggingface
+      - ../routers:/app/routers
+      - ../utils:/app/utils
+    ports:
+      - "8002:8002"
     deploy:
       resources:
         reservations:
@@ -72,6 +107,40 @@ services:
             - driver: nvidia
               device_ids: ['3']
               capabilities: [gpu]
+
+  # vLLM endpoint for MathQA (Qwen-3B)
+  # vllm-qwen:
+  #   image: sincerityhun/vllm:cu128-nightly
+  #   container_name: vllm-qwen
+  #   environment:
+  #     - CUDA_VISIBLE_DEVICES=0
+  #     - HF_HOME=/root/.cache/huggingface
+  #     - HF_TOKEN=${HF_TOKEN}
+  #   volumes:
+  #     - ../LLM_pool/qwen-3b-mathqa-2:/adapter
+  #     - /mnt/ssd1/shjung/huggingface:/root/.cache/huggingface
+  #   command:
+  #     - vllm
+  #     - serve
+  #     - Qwen/Qwen2.5-3B-Instruct
+  #     - --port
+  #     - "8001"
+  #     - --gpu-memory-utilization
+  #     - "0.8"
+  #     - --enable-lora
+  #     - --lora-modules
+  #     - mathqa-lora=/adapter
+  #     - --max-lora-rank
+  #     - "64"
+  #   ports:
+  #     - "8001:8001"
+  #   deploy:
+  #     resources:
+  #       reservations:
+  #         devices:
+  #           - driver: nvidia
+  #             device_ids: ['3']
+  #             capabilities: [gpu]
 
   # Main orchestrator application
   # orchestrator:

@@ -14,7 +14,7 @@ class AgentConfig:
     """Configuration data class for agent parameters"""
     
     def __init__(self, config_data: Dict[str, Any]):
-        self.role = config_data["role"]
+        self.domain = config_data["domain"]
         self.class_name = config_data["class"]
         self.description = config_data["description"]
         self.temperature = config_data.get("temperature", 0.3)
@@ -28,7 +28,7 @@ class DomainConfig:
     def __init__(self, domain_name: str, config_data: Dict[str, Any]):
         self.name = domain_name
         self.keywords = config_data["keywords"]
-        self.model_key = config_data["model_key"]
+        self.agent_key = config_data["agent_key"]
         self.instruction = config_data["instruction"]
 
 
@@ -41,61 +41,13 @@ class DynamicAgent:
         # Import BaseAgent here to avoid circular import
         from agents.base_agent import BaseAgent
         
-        # Create base agent internally
-        self._base_agent = BaseAgent(role=agent_config.role, llm_loader=llm_loader)
+        # Create base agent internally with domain
+        self._base_agent = BaseAgent(domain=agent_config.domain, llm_loader=llm_loader)
         self.config = agent_config
         
     def __getattr__(self, name):
         """Delegate attribute access to base agent"""
         return getattr(self._base_agent, name)
-        
-    def process(self, task_content: str, context: Optional[Dict] = None) -> Dict:
-        """Override process to use dynamic configuration"""
-        context = context or {}
-        context_text = self._format_context(context)
-
-        # Use factory's domain detection
-        domain_info = AgentFactory.detect_domain(task_content)
-        endpoint_key, model_name = self.subrouter.select_model_adapter(domain_info.name)
-        
-        # Use dynamic template and instruction
-        prompt = self._build_dynamic_prompt(
-            domain_info, task_content, context_text
-        )
-
-        response = self.llm_loader.generate(
-            endpoint_key=endpoint_key,
-            model_name=model_name,
-            prompt=prompt,
-            max_tokens=self.config.max_tokens,
-            temperature=self.config.temperature,
-            fallback_label=f"{self.role}:{domain_info.name}",
-        )
-
-        return {
-            "role": self.role,
-            "domain": domain_info.name,
-            "result": response,
-            "task": task_content,
-        }
-    
-    def _build_dynamic_prompt(self, domain_info: DomainConfig, task_content: str, context: str) -> str:
-        """Build prompt using dynamic templates"""
-        parts = [self.config.template, "", f"Domain focus: {domain_info.instruction}"]
-        
-        parts.append("")
-        parts.append("Task:")
-        parts.append(task_content.strip())
-
-        if context.strip():
-            parts.append("")
-            parts.append("Context:")
-            parts.append(context.strip())
-
-        parts.append("")
-        parts.append("Provide a structured, concise, and domain-aware response.")
-
-        return "\n".join(parts)
 
 
 class AgentFactory:
@@ -126,9 +78,9 @@ class AgentFactory:
         with open(config_path, 'r', encoding='utf-8') as f:
             config_data = json.load(f)
             
-        # Load agent configurations
-        for role, agent_data in config_data["agents"].items():
-            self._agent_configs[role] = AgentConfig(agent_data)
+        # Load agent configurations (now domain-based)
+        for domain, agent_data in config_data["agents"].items():
+            self._agent_configs[domain] = AgentConfig(agent_data)
             
         # Load domain configurations  
         for domain_name, domain_data in config_data["domains"].items():
@@ -139,52 +91,27 @@ class AgentFactory:
     
 
     
-    def create_agent(self, role: str, llm_loader: Optional[VLLMLoader] = None) -> 'BaseAgent':
-        """Create an agent instance for the given role"""
-        if role not in self._agent_configs:
-            raise ValueError(f"Unknown agent role: {role}. Available roles: {list(self._agent_configs.keys())}")
+    def create_agent(self, domain: str, llm_loader: Optional[VLLMLoader] = None) -> 'BaseAgent':
+        """Create an agent instance for the given domain"""
+        if domain not in self._agent_configs:
+            raise ValueError(f"Unknown agent domain: {domain}. Available domains: {list(self._agent_configs.keys())}")
             
-        agent_config = self._agent_configs[role]
+        agent_config = self._agent_configs[domain]
         return DynamicAgent(agent_config, llm_loader)
     
-    def get_available_roles(self) -> list:
-        """Get list of available agent roles"""
+    def get_available_domains(self) -> list:
+        """Get list of available agent domains"""
         return list(self._agent_configs.keys())
     
-    def get_available_domains(self) -> list:
-        """Get list of available domains"""
-        return list(self._domain_configs.keys())
-    
-    @classmethod
-    def detect_domain(cls, content: str) -> DomainConfig:
-        """Detect domain from content using dynamic keyword matching"""
-        factory = cls()
-        
-        if not content:
-            return factory._domain_configs["general"]
-
-        lowered = content.lower()
-        
-        # Check each domain's keywords
-        for domain_name, domain_config in factory._domain_configs.items():
-            if domain_name == "general":
-                continue  # Skip general, use as fallback
-                
-            if any(keyword in lowered for keyword in domain_config.keywords):
-                return domain_config
-        
-        # Fallback to general domain
-        return factory._domain_configs["general"]
-    
-    def get_domain_model_mapping(self) -> Dict[str, str]:
-        """Get domain to model key mapping for backward compatibility"""
+    def get_domain_agent_mapping(self) -> Dict[str, str]:
+        """Get domain to agent key mapping"""
         return {
-            domain_name: domain_config.model_key 
+            domain_name: domain_config.agent_key 
             for domain_name, domain_config in self._domain_configs.items()
         }
     
     def get_domain_keywords(self) -> Dict[str, list]:
-        """Get domain keywords mapping for backward compatibility"""
+        """Get domain keywords mapping"""
         return {
             domain_name: domain_config.keywords
             for domain_name, domain_config in self._domain_configs.items()
@@ -200,28 +127,21 @@ if __name__ == "__main__":
     
     factory = AgentFactory()
     
-    # Test available roles
-    roles = factory.get_available_roles()
-    print(f"Available roles: {roles}")
+    # Test available domains
+    domains = factory.get_available_domains()
+    print(f"Available domains: {domains}")
     
     # Test agent creation
-    planning_agent = factory.create_agent("planning")
-    execution_agent = factory.create_agent("execution")
-    review_agent = factory.create_agent("review")
+    medical_agent = factory.create_agent("medical")
+    law_agent = factory.create_agent("law")
+    math_agent = factory.create_agent("math")
+    commonsense_agent = factory.create_agent("commonsense")
     
-    print(f"Created agents: {planning_agent.role}, {execution_agent.role}, {review_agent.role}")
-    
-    # Test domain detection
-    medical_domain = factory.detect_domain("Patient has chest pain symptoms")
-    legal_domain = factory.detect_domain("Analyze contract liability issues")
-    math_domain = factory.detect_domain("Calculate the derivative of equation")
-    general_domain = factory.detect_domain("Explain how this works")
-    
-    print(f"Domain detection: medical={medical_domain.name}, legal={legal_domain.name}, math={math_domain.name}, general={general_domain.name}")
+    print(f"Created agents: {medical_agent.domain}, {law_agent.domain}, {math_agent.domain}, {commonsense_agent.domain}")
     
     # Test agent execution
     test_task = "Diagnose patient with chest pain"
-    result = planning_agent.execute(test_task)
-    print(f"Planning result: {result['domain']} - {len(result['result'])} chars")
+    result = medical_agent.execute(test_task)
+    print(f"Medical agent result: {result['domain']} - {len(result['result'])} chars")
     
     print("AgentFactory test completed!")

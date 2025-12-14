@@ -11,37 +11,64 @@ class VLLMLoader:
     """Wrapper for vLLM endpoint calls"""
 
     def __init__(self) -> None:
-        llama_endpoint = os.getenv("VLLM_LLAMA_ENDPOINT", "http://localhost:8000/v1")
-        qwen_endpoint = os.getenv("VLLM_QWEN_ENDPOINT", "http://localhost:8001/v1")
+        # vLLM server endpoints (docker-compose setup)
+        llama_1b_endpoint = os.getenv("VLLM_LLAMA_1B_ENDPOINT", "http://localhost:8000/v1")
+        llama_8b_endpoint = os.getenv("VLLM_LLAMA_8B_ENDPOINT", "http://localhost:8001/v1")
 
         self.endpoints: Dict[str, str] = {
-            "llama": llama_endpoint.rstrip("/"),
-            "qwen": qwen_endpoint.rstrip("/"),
+            "llama-1b": llama_1b_endpoint.rstrip("/"),
+            "llama-8b": llama_8b_endpoint.rstrip("/"),
         }
 
+        # Model configurations using vLLM LoRA adapter names
+        # These adapter names MUST exactly match the docker-compose.yml lora-modules configuration
         self.model_configs: Dict[str, Dict[str, str]] = {
+            # Global router uses base Llama-3.1-8B (no LoRA)
             "global-router": {
-                "endpoint": "llama",
-                "model": os.getenv(
-                    "GLOBAL_ROUTER_MODEL_NAME",
-                    "meta-llama/Llama-3.2-1B-Instruct",
-                ),
+                "endpoint": "llama-8b",
+                "model": os.getenv("GLOBAL_ROUTER_MODEL_NAME", "meta-llama/Llama-3.1-8B"),
             },
-            "commonsense": {
-                "endpoint": "llama",
-                "model": os.getenv("CSQA_MODEL_NAME", "csqa-lora"),
+            # Result handler uses base Llama-3.1-8B (no LoRA)
+            "result-handler": {
+                "endpoint": "llama-8b",
+                "model": os.getenv("RESULT_HANDLER_MODEL", "meta-llama/Llama-3.1-8B"),
             },
-            "legal": {
-                "endpoint": "llama",
-                "model": os.getenv("CASEHOLD_MODEL_NAME", "casehold-lora"),
+            # Domain-specific routers are NOT in vLLM - they run in separate router-service
+            # Commonsense domain models (LoRA adapter names from docker-compose.yml)
+            "commonsense-1b": {
+                "endpoint": "llama-1b",
+                "model": "csqa-lora",  # Matches docker: csqa-lora=/csqa-adapter
             },
-            "medical": {
-                "endpoint": "llama",
-                "model": os.getenv("MEDQA_MODEL_NAME", "medqa-lora"),
+            "commonsense-8b": {
+                "endpoint": "llama-8b",
+                "model": "csqa-lora",  # Matches docker: csqa-lora=/csqa-adapter
             },
-            "math": {
-                "endpoint": "qwen",
-                "model": os.getenv("MATHQA_MODEL_NAME", "mathqa-lora"),
+            # Medical domain models
+            "medical-1b": {
+                "endpoint": "llama-1b",
+                "model": "medqa-lora",  # Matches docker: medqa-lora=/medqa-adapter
+            },
+            "medical-8b": {
+                "endpoint": "llama-8b",
+                "model": "medqa-lora",  # Matches docker: medqa-lora=/medqa-adapter
+            },
+            # Law domain models
+            "law-1b": {
+                "endpoint": "llama-1b",
+                "model": "casehold-lora",  # Matches docker: casehold-lora=/casehold-adapter
+            },
+            "law-8b": {
+                "endpoint": "llama-8b",
+                "model": "casehold-lora",  # Matches docker: casehold-lora=/casehold-adapter
+            },
+            # Math domain models
+            "math-1b": {
+                "endpoint": "llama-1b",
+                "model": "mathqa-lora",  # Matches docker: mathqa-lora=/mathqa-adapter
+            },
+            "math-8b": {
+                "endpoint": "llama-8b",
+                "model": "mathqa-lora",  # Matches docker: mathqa-lora=/mathqa-adapter
             },
         }
 
@@ -91,39 +118,30 @@ class VLLMLoader:
 
         endpoint = self.endpoints[endpoint_key]
         
-        # Use chat completions endpoint if guided parameters are provided
-        if guided_json is not None or guided_regex is not None:
-            url = f"{endpoint}/chat/completions"
-            payload = {
-                "model": model_name,
-                "messages": [
-                    {
-                        "role": "user", 
-                        "content": prompt
-                    }
-                ],
-                "max_tokens": max_tokens,
-                "temperature": temperature,
-            }
-            
-            # Add guided parameters to extra_body
-            extra_body = {}
-            if guided_json is not None:
-                extra_body["guided_json"] = guided_json
-            if guided_regex is not None:
-                extra_body["guided_regex"] = guided_regex
-            
-            if extra_body:
-                payload["extra_body"] = extra_body
+        # Use vLLM completions endpoint (endpoint already includes /v1)
+        url = f"{endpoint}/completions"
+        payload = {
+            "model": model_name,
+            "prompt": prompt,
+            "max_tokens": max_tokens,
+            "temperature": temperature,
+        }
+        
+        # Different settings for LoRA adapters vs base models
+        if "lora" in model_name.lower() or any(d in model_name.lower() for d in ["medqa", "casehold", "mathqa", "csqa"]):
+            # LoRA domain agents: stricter control
+            payload["repetition_penalty"] = 1.1
+            payload["stop"] = ["\n\n\n", "Task:", "Response:"]
         else:
-            # Use legacy completions endpoint
-            url = f"{endpoint}/completions"
-            payload = {
-                "model": model_name,
-                "prompt": prompt,
-                "max_tokens": max_tokens,
-                "temperature": temperature,
-            }
+            # Base models (router/evaluation): minimal constraints
+            payload["repetition_penalty"] = 1.0
+            payload["stop"] = ["\n\n\n"]  # Minimal stop sequences
+        
+        # Add guided parameters directly to payload (not in extra_body)
+        if guided_json is not None:
+            payload["guided_json"] = guided_json
+        if guided_regex is not None:
+            payload["guided_regex"] = guided_regex
 
         try:
             response = requests.post(url, json=payload, timeout=60)
@@ -132,22 +150,30 @@ class VLLMLoader:
             result = response.json()
             choices = result.get("choices", [])
             if not choices:
+                print(f"⚠️ [vLLM] Empty choices from {url}")
+                print(f"   Response: {result}")
                 raise ValueError("Empty choices from vLLM response")
 
-            # Handle both completion types
+            # Completions endpoint returns text directly
             choice = choices[0]
+            text = choice.get("text", "")
+            finish_reason = choice.get("finish_reason", "")
+            completion_tokens = result.get("usage", {}).get("completion_tokens", 0)
             
-            # Chat completion response format
-            if "message" in choice:
-                message = choice.get("message", {})
-                text = message.get("content", "")
-            # Legacy completion response format
-            else:
-                text = choice.get("text", "")
+            # Warn if response is empty
+            if not text or not text.strip():
+                print(f"⚠️ [vLLM] Empty text from {url}")
+                print(f"   Model: {model_name}")
+                print(f"   Prompt ending: ...{prompt[-150:]}")
+                print(f"   Finish reason: {finish_reason}")
+                print(f"   Completion tokens: {completion_tokens}")
+                print(f"   → Likely cause: Prompt ends with completed template or immediate stop token")
 
             return (text or "").strip()
 
-        except (requests.exceptions.RequestException, ValueError, KeyError, IndexError):
+        except (requests.exceptions.RequestException, ValueError, KeyError, IndexError) as e:
+            print(f"❌ [vLLM] Error calling {url}: {type(e).__name__}: {e}")
+            print(f"   Model: {model_name}")
             label = fallback_label or model_name or endpoint_key
             return f"[MOCK RESPONSE for {label}] {prompt[:50]}..."
 
