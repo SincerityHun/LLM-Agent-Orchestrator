@@ -80,7 +80,8 @@ class VLLMLoader:
         temperature: float = 0.7,
         guided_json: dict | None = None,
         guided_regex: str | None = None,
-    ) -> str:
+        return_usage: bool = False,
+    ) -> str | dict:
         """Call vLLM model endpoint using configured model type"""
 
         if model_type not in self.model_configs:
@@ -98,6 +99,7 @@ class VLLMLoader:
             guided_json=guided_json,
             guided_regex=guided_regex,
             fallback_label=model_type,
+            return_usage=return_usage,
         )
 
     def generate(
@@ -110,8 +112,14 @@ class VLLMLoader:
         guided_json: dict | None = None,
         guided_regex: str | None = None,
         fallback_label: str | None = None,
-    ) -> str:
-        """Call vLLM endpoint directly with explicit endpoint and model name"""
+        return_usage: bool = False,
+    ) -> str | dict:
+        """
+        Call vLLM endpoint directly with explicit endpoint and model name
+        
+        Args:
+            return_usage: If True, returns dict with 'text' and 'usage' keys
+        """
 
         if endpoint_key not in self.endpoints:
             raise ValueError(f"Unknown endpoint key: {endpoint_key}")
@@ -169,13 +177,36 @@ class VLLMLoader:
                 print(f"   Completion tokens: {completion_tokens}")
                 print(f"   → Likely cause: Prompt ends with completed template or immediate stop token")
 
+            # Return with usage stats if requested
+            if return_usage:
+                usage = result.get("usage", {})
+                return {
+                    "text": (text or "").strip(),
+                    "usage": {
+                        "prompt_tokens": usage.get("prompt_tokens", len(prompt.split())),  # Rough estimate
+                        "completion_tokens": usage.get("completion_tokens", len(text.split()) if text else 0),
+                        "total_tokens": usage.get("total_tokens", 0)
+                    }
+                }
+            
             return (text or "").strip()
 
         except (requests.exceptions.RequestException, ValueError, KeyError, IndexError) as e:
             print(f"❌ [vLLM] Error calling {url}: {type(e).__name__}: {e}")
             print(f"   Model: {model_name}")
             label = fallback_label or model_name or endpoint_key
-            return f"[MOCK RESPONSE for {label}] {prompt[:50]}..."
+            fallback_text = f"[MOCK RESPONSE for {label}] {prompt[:50]}..."
+            
+            if return_usage:
+                return {
+                    "text": fallback_text,
+                    "usage": {
+                        "prompt_tokens": len(prompt.split()),
+                        "completion_tokens": len(fallback_text.split()),
+                        "total_tokens": 0
+                    }
+                }
+            return fallback_text
 
     def is_endpoint_available(self, model_type: str) -> bool:
         """Check if vLLM endpoint is available"""

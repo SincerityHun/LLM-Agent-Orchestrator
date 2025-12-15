@@ -4,9 +4,21 @@ import os
 from typing import Dict, List, Optional, Tuple
 import requests
 
+from pydantic import BaseModel, Field
+
 from utils.agent_prompts import get_agent_prompt
 from utils.llm_loader import VLLMLoader
 from agents.agent_factory import AgentFactory
+
+
+class AgentResponse(BaseModel):
+    """Schema for agent response with guided JSON generation"""
+    
+    response: str = Field(
+        ...,
+        description="The agent's complete response to the task. Must be detailed and comprehensive.",
+        min_length=10
+    )
 
 
 class AgentSubRouter:
@@ -37,7 +49,7 @@ class AgentSubRouter:
                 print(f"⚠ Router service not available ({e}), falling back to vLLM")
                 self.use_router_service = False
 
-    def select_model_for_domain(self, domain: str, task: str, context: Optional[Dict] = None) -> Tuple[str, str]:
+    def select_model_for_domain(self, domain: str, task: str, context: Optional[Dict] = None) -> Tuple[str, str, str]:
         """
         Use domain-specific router service to select between 1b and 8b models
         
@@ -47,7 +59,7 @@ class AgentSubRouter:
             context: Optional context information
             
         Returns:
-            Tuple of (endpoint_key, model_name)
+            Tuple of (endpoint_key, model_name, model_size)
         """
         # Use router service for model selection
         if self.use_router_service:
@@ -65,14 +77,16 @@ class AgentSubRouter:
         # Select the appropriate model based on router decision
         if model_size == "large" or model_size == "8b":
             model_key = f"{domain}-8b"
+            actual_model_size = "8b"
         else:
             model_key = f"{domain}-1b"
+            actual_model_size = "1b"
         
         config = self.llm_loader.model_configs.get(model_key)
         if not config:
             raise ValueError(f"Model configuration missing for {model_key}")
 
-        return config["endpoint"], config["model"]
+        return config["endpoint"], config["model"], actual_model_size
     
     def _call_router_service(self, domain: str, task: str, context: Optional[Dict] = None) -> str:
         """Call the router service API"""
@@ -88,10 +102,20 @@ class AgentSubRouter:
             prediction = result["prediction"]  # "1b" or "8b"
             probability = result["probability"]
             
-            # Log the decision
-            print(f"[Router Service] {domain}: {prediction} (p={probability:.3f})")
+            # Apply threshold: only use 8b if probability >= 0.68
+            THRESHOLD = 0.5
+            if prediction == "8b" and probability >= THRESHOLD:
+                final_decision = "8b"
+            else:
+                final_decision = "1b"
             
-            return prediction
+            # Log the decision
+            if final_decision != prediction:
+                print(f"[Router Service] {domain}: {prediction} (p={probability:.3f}) -> Override to {final_decision} (threshold={THRESHOLD})")
+            else:
+                print(f"[Router Service] {domain}: {final_decision} (p={probability:.3f})")
+            
+            return final_decision
             
         except requests.exceptions.RequestException as e:
             raise Exception(f"Router service request failed: {e}")
@@ -103,7 +127,7 @@ class AgentSubRouter:
         domain: str,
         task: str,
         context: Optional[Dict] = None,
-    ) -> str:
+    ) -> Dict:
         """
         Execute a domain-specific subtask with router-based model selection
         
@@ -113,12 +137,12 @@ class AgentSubRouter:
             context: Optional context information
             
         Returns:
-            Model response string
+            Dict with 'text', 'usage', and 'model_size' keys
         """
         context = context or {}
         
         # Use domain router to select model size
-        endpoint_key, model_name = self.select_model_for_domain(domain, task, context)
+        endpoint_key, model_name, model_size = self.select_model_for_domain(domain, task, context)
         
         # Get agent configuration for temperature
         agent_config = self.agent_configs.get(domain)
@@ -128,14 +152,27 @@ class AgentSubRouter:
         # Build prompt using domain-specific template
         prompt = self._build_domain_prompt(domain, task, context)
 
-        return self.llm_loader.generate(
+        result = self.llm_loader.generate(
             endpoint_key=endpoint_key,
             model_name=model_name,
             prompt=prompt,
             max_tokens=max_tokens,
             temperature=temperature,
             fallback_label=f"{domain}",
+            return_usage=True,
         )
+        
+        # Add model size to result
+        if isinstance(result, dict):
+            result["model_size"] = model_size
+            return result
+        else:
+            # Fallback for string responses (shouldn't happen with return_usage=True)
+            return {
+                "text": result,
+                "usage": {"prompt_tokens": 0, "completion_tokens": 0, "total_tokens": 0},
+                "model_size": model_size
+            }
     
     def _build_domain_prompt(self, domain: str, task: str, context: Dict) -> str:
         """Build prompt using domain-specific template from config"""

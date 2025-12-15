@@ -24,7 +24,7 @@ class BaseAgent:
         context = context or {}
 
         # Use subrouter to select model and execute
-        response = self.subrouter.execute_subtask(
+        result_dict = self.subrouter.execute_subtask(
             domain=self.domain,
             task=task_content,
             context=context,
@@ -32,8 +32,10 @@ class BaseAgent:
 
         return {
             "domain": self.domain,
-            "result": response,
+            "result": result_dict.get("text", result_dict) if isinstance(result_dict, dict) else result_dict,
             "task": task_content,
+            "usage": result_dict.get("usage") if isinstance(result_dict, dict) else None,
+            "model_size": result_dict.get("model_size") if isinstance(result_dict, dict) else None,
         }
 
     def _format_context(self, context: Dict) -> str:

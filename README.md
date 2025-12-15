@@ -140,7 +140,7 @@ This approach delivers:
 │  ┌──────────────────────────────────────────────────────────┐   │
 │  │  Domain-Specific Router Models (LoRA-merged)             │   │
 │  │  Classification: Logits-based (first token position)     │   │
-│  │  • Medical Router → "1b" or "8b" (softmax over [[1]],[[2]])│
+│  │  • Medical Router → "1b" or "8b" (softmax over [[1]],[[2]]  )│
 │  │  • Law Router → "1b" or "8b"                             │   │
 │  │  • Math Router → "1b" or "8b"                            │   │
 │  │  • Commonsense Router → "1b" or "8b"                     │   │

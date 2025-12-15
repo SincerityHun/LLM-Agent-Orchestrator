@@ -3,11 +3,24 @@ Main orchestration entry point for LLM-Agent-Orchestrator system
 """
 import json
 import sys
+import time
 from typing import Dict
+from pydantic import BaseModel, Field
 from routers.global_router import GlobalRouter
 from orchestrator.graph_builder import GraphBuilder
 from orchestrator.result_handler import ResultHandler
 from utils.merge_utils import merge_outputs, format_graph_summary
+from utils.metrics import MetricsCollector
+
+
+class BaselineResponse(BaseModel):
+    """Schema for baseline response with guided JSON generation"""
+    
+    answer: str = Field(
+        ...,
+        description="The complete answer to the task. Must be detailed and comprehensive.",
+        min_length=50
+    )
 
 
 class LLMOrchestrator:
@@ -21,10 +34,15 @@ class LLMOrchestrator:
         self.graph_builder = GraphBuilder()
         self.result_handler = ResultHandler(max_retry=max_retry)
         self.max_retry = max_retry
+        self.metrics = MetricsCollector()
+        
+        # Import here to avoid circular dependency
+        from utils.llm_loader import VLLMLoader
+        self.llm_loader = VLLMLoader()
     
-    def process_task(self, task: str, user_id: str = "default") -> Dict:
+    def run_baseline(self, task: str, user_id: str = "default") -> Dict:
         """
-        Process task through multi-agent orchestration
+        Run baseline evaluation using single 8B model without orchestration
         
         Args:
             task: User task description
@@ -33,6 +51,101 @@ class LLMOrchestrator:
         Returns:
             Dictionary with final results and execution metadata
         """
+        time.sleep(5)
+        # Start timing
+        start_time = time.time()
+        
+        # Reset metrics for this task
+        self.metrics.reset()
+        
+        print(f"\n{'='*60}")
+        print(f"BASELINE MODE - Single 8B Model")
+        print(f"Processing task for user: {user_id}")
+        print(f"Task: {task}")
+        print(f"{'='*60}\n")
+        
+        # Create prompt with minimal instruction to avoid end token
+        baseline_prompt = f"{task}\n\n Your Answer:"
+        
+        print("Calling 8B model directly...")
+        
+        # Call 8B model without guided JSON for better quality
+        result = self.llm_loader.call_model(
+            model_type="global-router",
+            prompt=baseline_prompt,
+            max_tokens=1024,
+            temperature=0.5,
+            return_usage=True
+        )
+        
+        # Extract text and usage
+        if isinstance(result, dict):
+            final_answer = result.get("text", "")
+            usage = result.get("usage", {})
+        else:
+            final_answer = str(result)
+            usage = {}
+        
+        # Track baseline metrics (single 8B model call)
+        input_tokens = usage.get("prompt_tokens", len(baseline_prompt.split()) * 1.3)  # Rough estimate
+        output_tokens = usage.get("completion_tokens", len(final_answer.split()) * 1.3)
+        
+        # Add to metrics as a special "baseline" agent
+        self.metrics.add_agent_call(
+            agent_domain="baseline",
+            model_size="8b",
+            input_tokens=int(input_tokens),
+            output_tokens=int(output_tokens)
+        )
+        
+        # Calculate end-to-end latency
+        end_time = time.time()
+        latency_seconds = end_time - start_time
+        
+        # Get metrics summary
+        metrics_summary = self.metrics.get_summary()
+        
+        print(f"\n{'='*60}")
+        print("Baseline completed")
+        print(f"Latency: {latency_seconds:.2f} seconds")
+        print(f"Total FLOPs: {metrics_summary['total_flops_tflops']:.4f} TFLOPs")
+        print(f"Tokens: {int(input_tokens)} input + {int(output_tokens)} output")
+        print(f"Answer length: {len(final_answer)} characters")
+        print(f"{'='*60}\n")
+        
+        return {
+            "success": True,
+            "final_answer": final_answer,
+            "iterations": 1,  # Baseline always uses 1 iteration
+            "reason": "baseline_completed",
+            "latency_seconds": latency_seconds,
+            "metrics": metrics_summary,
+            "user_id": user_id,
+            "original_task": task,
+            "mode": "baseline"
+        }
+    
+    def process_task(self, task: str, user_id: str = "default", mode: str = "orchestrator") -> Dict:
+        """
+        Process task through multi-agent orchestration or baseline
+        
+        Args:
+            task: User task description
+            user_id: User identifier
+            mode: "orchestrator" for multi-agent or "baseline" for single 8B model
+            
+        Returns:
+            Dictionary with final results and execution metadata
+        """
+        # Route to baseline if requested
+        if mode == "baseline":
+            return self.run_baseline(task, user_id)
+        # Start timing
+        start_time = time.time()
+        
+        # Reset metrics for this task
+        self.metrics.reset()
+        
         print(f"\n{'='*60}")
         print(f"Processing task for user: {user_id}")
         print(f"Task: {task}")
@@ -54,6 +167,15 @@ class LLMOrchestrator:
                 previous_results=previous_results
             )
             
+            # Track router usage (estimate based on typical calls)
+            # Global router makes 1-3 calls, estimate ~500 input + 300 output tokens per call
+            # This is a rough estimate - ideally should be tracked in GlobalRouter
+            router_est_tokens = 800 * (retry_count + 1)  # Estimate increases with retries
+            self.metrics.add_router_call(
+                input_tokens=router_est_tokens // 2,
+                output_tokens=router_est_tokens // 2
+            )
+            
             print(format_graph_summary(dag))
             
             # Step 2: Build LangGraph from DAG
@@ -71,22 +193,46 @@ class LLMOrchestrator:
             
             final_state = self.graph_builder.execute_graph(graph, initial_state)
             
-            # Step 4: Merge results
+            # Step 4: Merge results and collect metrics
             print("\nStep 4: Merging agent outputs")
             print(f"{'='*80}")
             print("AGENT EXECUTION RESULTS")
             print(f"{'='*80}")
             
             agent_outputs = []
+            total_agents = len(final_state.get("results", {}))
+            print(f"Total agents executed: {total_agents}")
+            
             for node_id, result_data in final_state.get("results", {}).items():
                 domain = result_data.get("domain", "unknown")
                 result = result_data.get("result", "")
                 task_desc = result_data.get("task", "")
+                usage = result_data.get("usage")
+                model_size = result_data.get("model_size", "unknown")
                 
                 print(f"\n{domain.upper()} AGENT ({node_id}):")
                 print(f"   Task: {task_desc}")
                 print(f"   Result: {result}")
                 print(f"   Length: {len(result)} characters")
+                print(f"   Model: {model_size}")
+                
+                # Track metrics
+                if usage:
+                    # Track subrouter call (each agent uses subrouter to select model)
+                    self.metrics.add_sub_router_call(
+                        input_tokens=200,  # Subrouter: ~200 input tokens
+                        output_tokens=1    # Subrouter: ~50 output tokens
+                    )
+                    # Track agent execution
+                    self.metrics.add_agent_call(
+                        agent_domain=domain,
+                        model_size=model_size,
+                        input_tokens=usage.get("prompt_tokens", 0),
+                        output_tokens=usage.get("completion_tokens", 0)
+                    )
+                    print(f"   Tokens: {usage.get('prompt_tokens', 0)} input + {usage.get('completion_tokens', 0)} output")
+                else:
+                    print(f"   WARNING: No usage data for {domain} agent")
                 
                 agent_outputs.append({
                     "domain": domain,
@@ -109,19 +255,44 @@ class LLMOrchestrator:
                 retry_count=retry_count
             )
             
+            # Track handler usage
+            handler_usage = getattr(self.result_handler, 'last_usage', {})
+            if handler_usage:
+                self.metrics.add_handler_call(
+                    input_tokens=handler_usage.get("prompt_tokens", 0),
+                    output_tokens=handler_usage.get("completion_tokens", 0)
+                )
+                print(f"Handler tokens: {handler_usage.get('prompt_tokens', 0)} input + {handler_usage.get('completion_tokens', 0)} output")
+            
             print(f"Evaluation: {'COMPLETE' if should_stop else 'NEEDS REFINEMENT'}")
             print(f"Feedback: {evaluation_feedback}")
             
             # Check if we should stop
             if should_stop:
+                # Calculate end-to-end latency
+                end_time = time.time()
+                latency_seconds = end_time - start_time
+                
+                # Get metrics summary
+                metrics_summary = self.metrics.get_summary()
+                
                 print(f"\n{'='*60}")
                 print("Task completed successfully")
+                print(f"Latency: {latency_seconds:.2f} seconds")
+                print(f"Iterations: {retry_count + 1}")
+                print(f"Router calls: {metrics_summary['router_calls']}")
+                print(f"Agent calls: {metrics_summary['agent_calls']}")
+                print(f"Handler calls: {metrics_summary['handler_calls']}")
+                print(f"Total FLOPs: {metrics_summary['total_flops_tflops']:.4f} TFLOPs")
                 print(f"{'='*60}\n")
                 
                 return {
                     "success": True,
                     "final_answer": final_answer,
                     "iterations": retry_count + 1,
+                    "reason": "completed",
+                    "latency_seconds": latency_seconds,
+                    "metrics": metrics_summary,
                     "user_id": user_id,
                     "original_task": task
                 }
@@ -132,17 +303,28 @@ class LLMOrchestrator:
             previous_results = merged_results
         
         # Max retry reached
+        # Calculate end-to-end latency
+        end_time = time.time()
+        latency_seconds = end_time - start_time
+        
+        # Get metrics summary
+        metrics_summary = self.metrics.get_summary()
+        
         print(f"\n{'='*60}")
         print(f"Max retry limit ({self.max_retry}) reached")
+        print(f"Latency: {latency_seconds:.2f} seconds")
+        print(f"Total FLOPs: {metrics_summary['total_flops_tflops']:.4f} TFLOPs")
         print(f"{'='*60}\n")
         
         return {
             "success": False,
             "final_answer": previous_results,
             "iterations": retry_count,
+            "reason": "max_retry_reached",
+            "latency_seconds": latency_seconds,
+            "metrics": metrics_summary,
             "user_id": user_id,
-            "original_task": task,
-            "reason": "Max retry limit reached"
+            "original_task": task
         }
 
 
@@ -150,9 +332,25 @@ def main():
     """
     Main entry point
     """
-    # Load task from command line or use default
-    if len(sys.argv) > 1:
-        task_input = sys.argv[1]
+    import argparse
+    
+    parser = argparse.ArgumentParser(description='LLM-Agent-Orchestrator')
+    parser.add_argument('task', nargs='?', default=None,
+                        help='Task description or JSON file path')
+    parser.add_argument('--mode', '-m', 
+                        choices=['orchestrator', 'baseline'],
+                        default='orchestrator',
+                        help='Execution mode: orchestrator (multi-agent) or baseline (single 8B model)')
+    parser.add_argument('--max-retry', '-r',
+                        type=int,
+                        default=3,
+                        help='Maximum retry count for orchestrator mode')
+    
+    args = parser.parse_args()
+    
+    # Load task from argument or use default
+    if args.task:
+        task_input = args.task
         
         # Check if it's a JSON file
         if task_input.endswith('.json'):
@@ -169,10 +367,10 @@ def main():
         user_id = "test_user"
     
     # Create orchestrator
-    orchestrator = LLMOrchestrator(max_retry=3)
+    orchestrator = LLMOrchestrator(max_retry=args.max_retry)
     
-    # Process task
-    result = orchestrator.process_task(task, user_id)
+    # Process task with specified mode
+    result = orchestrator.process_task(task, user_id, mode=args.mode)
     
     # Output final result
     print("\n" + "="*60)

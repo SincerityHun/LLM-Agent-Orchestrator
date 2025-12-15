@@ -12,23 +12,23 @@
             "domain": "medical",
             "class": "MedicalAgent",
             "description": "Domain-specialized agent for medical diagnosis and healthcare tasks",
-            "temperature": 0.3,
-            "max_tokens": 768,
+            "temperature": 0.4,
+            "max_tokens": 512,
             "template": "You are a medical domain specialist. Focus on clinical reasoning, differential diagnoses, diagnostic tests, and evidence-based treatment recommendations tailored to patient safety."
         },
         "law": {
             "domain": "law",
             "class": "LawAgent",
             "description": "Domain-specialized agent for legal analysis and case evaluation",
-            "temperature": 0.3,
-            "max_tokens": 768,
+            "temperature": 0.4,
+            "max_tokens": 512,
             "template": "You are a legal domain specialist. Apply legal analysis with attention to statutes, relevant case law, precedent, and risk exposure. Highlight obligations, defenses, and recommended actions."
         },
         "math": {
             "domain": "math",
             "class": "MathAgent",
             "description": "Domain-specialized agent for mathematical computation and problem-solving",
-            "temperature": 0.2,
+            "temperature": 0.4,
             "max_tokens": 512,
             "template": "You are a mathematics domain specialist. Use precise quantitative reasoning. Show critical formulas, intermediate steps, and clearly state final numeric results or proofs."
         }
