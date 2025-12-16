@@ -152,7 +152,9 @@ class VLLMLoader:
             payload["guided_regex"] = guided_regex
 
         try:
-            response = requests.post(url, json=payload, timeout=60)
+            # Increased timeout for continuous evaluation scenarios
+            # vLLM may need more time when KV cache is under pressure
+            response = requests.post(url, json=payload, timeout=120)
             response.raise_for_status()
 
             result = response.json()
@@ -168,7 +170,7 @@ class VLLMLoader:
             finish_reason = choice.get("finish_reason", "")
             completion_tokens = result.get("usage", {}).get("completion_tokens", 0)
             
-            # Warn if response is empty
+            # Raise error if response is empty - don't silently continue
             if not text or not text.strip():
                 print(f"⚠️ [vLLM] Empty text from {url}")
                 print(f"   Model: {model_name}")
@@ -176,20 +178,21 @@ class VLLMLoader:
                 print(f"   Finish reason: {finish_reason}")
                 print(f"   Completion tokens: {completion_tokens}")
                 print(f"   → Likely cause: Prompt ends with completed template or immediate stop token")
+                raise ValueError(f"vLLM returned empty text for model {model_name}")
 
             # Return with usage stats if requested
             if return_usage:
                 usage = result.get("usage", {})
                 return {
-                    "text": (text or "").strip(),
+                    "text": text.strip(),
                     "usage": {
                         "prompt_tokens": usage.get("prompt_tokens", len(prompt.split())),  # Rough estimate
-                        "completion_tokens": usage.get("completion_tokens", len(text.split()) if text else 0),
+                        "completion_tokens": usage.get("completion_tokens", len(text.split())),
                         "total_tokens": usage.get("total_tokens", 0)
                     }
                 }
             
-            return (text or "").strip()
+            return text.strip()
 
         except (requests.exceptions.RequestException, ValueError, KeyError, IndexError) as e:
             print(f"❌ [vLLM] Error calling {url}: {type(e).__name__}: {e}")

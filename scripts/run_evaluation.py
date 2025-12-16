@@ -6,6 +6,7 @@ import csv
 import json
 import sys
 import os
+import time
 from datetime import datetime
 from typing import List, Dict
 
@@ -159,6 +160,10 @@ def run_evaluation(input_csv: str, output_csv: str, max_retry: int = 3, max_task
     print(f"Input: {input_csv}")
     print(f"Output: {output_csv}")
     print(f"Max Retry: {max_retry}")
+    print(f"{'='*80}")
+    print(f"\n⚠️  NOTE: Continuous evaluation may stress vLLM KV cache (35K tokens limit)")
+    print(f"         Task-to-task delay: 2.0s (to allow cache cleanup)")
+    print(f"         vLLM error recovery delay: 5.0s\n")
     print(f"{'='*80}\n")
     
     # Load tasks
@@ -217,20 +222,36 @@ def run_evaluation(input_csv: str, output_csv: str, max_retry: int = 3, max_task
             print(f"  FLOPs: {result.get('metrics', {}).get('total_flops_tflops', 0):.4f} TFLOPs")
             print(f"  Answer Length: {len(result.get('final_answer', ''))} chars")
             
+            # Add delay between tasks to allow vLLM to clean up KV cache
+            # This is especially important for continuous evaluation
+            if i < len(tasks) - 1:  # Don't delay after last task
+                delay_seconds = 2.0
+                print(f"  Waiting {delay_seconds}s for vLLM KV cache cleanup...")
+                time.sleep(delay_seconds)
+            
         except Exception as e:
+            error_msg = str(e)
             print(f"\n❌ Task {i+1} failed with error: {e}")
             import traceback
             traceback.print_exc()
+            
+            # Check if it's a vLLM timeout/capacity issue
+            is_vllm_issue = any(keyword in error_msg.lower() for keyword in 
+                               ['timeout', 'empty', 'connection', 'kv cache', 'memory'])
+            
+            if is_vllm_issue:
+                print(f"  ⚠️ Detected vLLM capacity issue. Waiting 5s before continuing...")
+                time.sleep(5.0)  # Give vLLM more time to recover
             
             # Record failure and append to CSV immediately
             result = {
                 'task_id': task_info['task_id'],
                 'run_idx': task_info['run_idx'],
                 'success': False,
-                'final_answer': f"ERROR: {str(e)}",
+                'final_answer': f"ERROR: {error_msg}",
                 'latency_seconds': 0,
                 'iterations': 0,
-                'reason': 'exception',
+                'reason': 'vllm_capacity' if is_vllm_issue else 'exception',
                 'metrics': {},
                 'original_task': task
             }

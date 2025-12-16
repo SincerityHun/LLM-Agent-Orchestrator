@@ -67,14 +67,20 @@ class ResultHandler:
         # 3. Call LLM with guided_json and track usage
         # vLLM will force the output to match self.evaluation_schema
         # Increased max_tokens to handle long responses
-        result = self.llm_loader.call_model(
-            model_type="global-router",
-            prompt=evaluation_prompt,
-            max_tokens=4096,  # Increased from 2048 to handle longer responses
-            temperature=0.1, # Keep low for structural consistency
-            guided_json=self.evaluation_schema,
-            return_usage=True  # Track token usage
-        )
+        try:
+            result = self.llm_loader.call_model(
+                model_type="global-router",
+                prompt=evaluation_prompt,
+                max_tokens=4096,  # Increased from 2048 to handle longer responses
+                temperature=0.1, # Keep low for structural consistency
+                guided_json=self.evaluation_schema,
+                return_usage=True  # Track token usage
+            )
+        except (ValueError, Exception) as e:
+            # vLLM call failed (e.g., empty response, connection error)
+            print(f"❌ ResultHandler vLLM call failed: {e}")
+            feedback = f"ResultHandler LLM call failed: {str(e)}. Unable to evaluate results. Please retry with different task decomposition."
+            return (merged_results, False, feedback)
         
         # Extract text and usage
         if isinstance(result, dict):
@@ -83,6 +89,12 @@ class ResultHandler:
         else:
             json_response_str = result
             self.last_usage = {}
+        
+        # Check if response is empty
+        if not json_response_str or not json_response_str.strip():
+            print(f"❌ ResultHandler received empty response from vLLM")
+            feedback = "ResultHandler received empty response. Unable to evaluate results. Please retry."
+            return (merged_results, False, feedback)
         
         # 4. Parse JSON
         return self._parse_json_response(json_response_str, merged_results)
@@ -159,10 +171,11 @@ Response (JSON):
             print(f"Raw Response (first 500 chars): {json_str[:500]}...")
             print(f"Raw Response (last 200 chars): ...{json_str[-200:]}")
             
-            # Fallback: Use merged results as final answer and treat as success
-            # This ensures we always have a final_answer in the CSV
-            print(f"⚠️ Using merged_results as final_answer due to parsing error")
-            return (original_merged_results, True, "Completed with parsing error - using merged results")
+            # Don't treat parsing error as success - trigger retry instead
+            # Return merged results but with should_stop=False to allow refinement
+            print(f"⚠️ JSON parsing failed - triggering retry with feedback")
+            feedback = "ResultHandler failed to generate valid JSON response. The evaluation could not be completed. Please regenerate task decomposition with clearer instructions."
+            return (original_merged_results, False, feedback)
 
 if __name__ == "__main__":
     # Mock Test

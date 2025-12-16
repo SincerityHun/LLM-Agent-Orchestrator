@@ -103,7 +103,7 @@ class AgentSubRouter:
             probability = result["probability"]
             
             # Apply threshold: only use 8b if probability >= 0.68
-            THRESHOLD = 0.5
+            THRESHOLD = 0.6
             if prediction == "8b" and probability >= THRESHOLD:
                 final_decision = "8b"
             else:

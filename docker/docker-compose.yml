@@ -60,9 +60,11 @@ services:
       - --port
       - "8000"
       - --gpu-memory-utilization
-      - "0.9"
+      - "0.85"  # Reduced from 0.9 to allocate more memory for KV cache
       - --max-model-len
       - "8192"
+      - --max-num-seqs
+      - "64"  # Limit concurrent sequences to prevent queue overflow
       - --enable-lora
       - --lora-modules
       - csqa-lora=/csqa-adapter # 32

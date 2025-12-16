@@ -19,14 +19,20 @@ LLM-Agent-Orchestrator Evaluation
 ================================================================================
 Mode: BASELINE
 Input: examples/eval_inputs_easy.csv
-Output: examples/eval_results_baseline_20251215_211253.csv
+Output: examples/eval_results_baseline_20251217_005635.csv
 Max Retry: 3
+================================================================================
+
+⚠️  NOTE: Continuous evaluation may stress vLLM KV cache (35K tokens limit)
+         Task-to-task delay: 2.0s (to allow cache cleanup)
+         vLLM error recovery delay: 5.0s
+
 ================================================================================
 
 Loading tasks from CSV...
 Loaded 100 tasks
 
-✓ Initialized CSV file: examples/eval_results_baseline_20251215_211253.csv
+✓ Initialized CSV file: examples/eval_results_baseline_20251217_005635.csv
 
 ✓ Router service available at http://localhost:8002
 ✓ Router service available at http://localhost:8002
@@ -47,7 +53,7 @@ Calling 8B model directly with guided JSON...
 
 ============================================================
 Baseline completed
-Latency: 4.31 seconds
+Latency: 6.30 seconds
 Total FLOPs: 5.6160 TFLOPs
 Tokens: 183 input + 168 output
 Answer length: 872 characters
@@ -56,10 +62,11 @@ Answer length: 872 characters
 
 ✓ Task 1 completed and saved to CSV:
   Success: True
-  Latency: 4.31s
+  Latency: 6.30s
   Iterations: 1
   FLOPs: 5.6160 TFLOPs
   Answer Length: 872 chars
+  Waiting 2.0s for vLLM KV cache cleanup...
 
 ################################################################################
 TASK 2/100 (ID: 1)
@@ -88,6 +95,7 @@ Answer length: 344 characters
   Iterations: 1
   FLOPs: 3.7280 TFLOPs
   Answer Length: 344 chars
+  Waiting 2.0s for vLLM KV cache cleanup...
 
 ################################################################################
 TASK 3/100 (ID: 2)
@@ -103,7 +111,7 @@ Calling 8B model directly with guided JSON...
 
 ============================================================
 Baseline completed
-Latency: 3.26 seconds
+Latency: 3.25 seconds
 Total FLOPs: 5.0880 TFLOPs
 Tokens: 143 input + 175 output
 Answer length: 856 characters
@@ -112,10 +120,11 @@ Answer length: 856 characters
 
 ✓ Task 3 completed and saved to CSV:
   Success: True
-  Latency: 3.26s
+  Latency: 3.25s
   Iterations: 1
   FLOPs: 5.0880 TFLOPs
   Answer Length: 856 chars
+  Waiting 2.0s for vLLM KV cache cleanup...
 
 ################################################################################
 TASK 4/100 (ID: 3)
@@ -131,7 +140,7 @@ Calling 8B model directly with guided JSON...
 
 ============================================================
 Baseline completed
-Latency: 2.43 seconds
+Latency: 2.42 seconds
 Total FLOPs: 4.7360 TFLOPs
 Tokens: 166 input + 130 output
 Answer length: 603 characters
@@ -140,10 +149,11 @@ Answer length: 603 characters
 
 ✓ Task 4 completed and saved to CSV:
   Success: True
-  Latency: 2.43s
+  Latency: 2.42s
   Iterations: 1
   FLOPs: 4.7360 TFLOPs
   Answer Length: 603 chars
+  Waiting 2.0s for vLLM KV cache cleanup...
 
 ################################################################################
 TASK 5/100 (ID: 4)
@@ -156,24 +166,23 @@ Task: A community pharmacy is asked to dispense a 30-day supply of a blood press
 ============================================================
 
 Calling 8B model directly with guided JSON...
-❌ [vLLM] Error calling http://localhost:8001/v1/completions: ReadTimeout: HTTPConnectionPool(host='localhost', port=8001): Read timed out. (read timeout=60)
-   Model: meta-llama/Llama-3.1-8B
 
 ============================================================
 Baseline completed
-Latency: 60.06 seconds
-Total FLOPs: 2.3360 TFLOPs
-Tokens: 134 input + 12 output
-Answer length: 87 characters
+Latency: 76.72 seconds
+Total FLOPs: 68.3360 TFLOPs
+Tokens: 175 input + 4096 output
+Answer length: 19450 characters
 ============================================================
 
 
 ✓ Task 5 completed and saved to CSV:
   Success: True
-  Latency: 60.06s
+  Latency: 76.72s
   Iterations: 1
-  FLOPs: 2.3360 TFLOPs
-  Answer Length: 87 chars
+  FLOPs: 68.3360 TFLOPs
+  Answer Length: 19450 chars
+  Waiting 2.0s for vLLM KV cache cleanup...
 
 ################################################################################
 TASK 6/100 (ID: 5)
@@ -189,19 +198,20 @@ Calling 8B model directly with guided JSON...
 
 ============================================================
 Baseline completed
-Latency: 4.72 seconds
-Total FLOPs: 6.7040 TFLOPs
-Tokens: 165 input + 254 output
-Answer length: 1329 characters
+Latency: 1.90 seconds
+Total FLOPs: 4.2560 TFLOPs
+Tokens: 165 input + 101 output
+Answer length: 547 characters
 ============================================================
 
 
 ✓ Task 6 completed and saved to CSV:
   Success: True
-  Latency: 4.72s
+  Latency: 1.90s
   Iterations: 1
-  FLOPs: 6.7040 TFLOPs
-  Answer Length: 1329 chars
+  FLOPs: 4.2560 TFLOPs
+  Answer Length: 547 chars
+  Waiting 2.0s for vLLM KV cache cleanup...
 
 ################################################################################
 TASK 7/100 (ID: 6)
@@ -217,19 +227,20 @@ Calling 8B model directly with guided JSON...
 
 ============================================================
 Baseline completed
-Latency: 2.66 seconds
-Total FLOPs: 4.7200 TFLOPs
-Tokens: 152 input + 143 output
-Answer length: 680 characters
+Latency: 76.75 seconds
+Total FLOPs: 67.9680 TFLOPs
+Tokens: 152 input + 4096 output
+Answer length: 20323 characters
 ============================================================
 
 
 ✓ Task 7 completed and saved to CSV:
   Success: True
-  Latency: 2.66s
+  Latency: 76.75s
   Iterations: 1
-  FLOPs: 4.7200 TFLOPs
-  Answer Length: 680 chars
+  FLOPs: 67.9680 TFLOPs
+  Answer Length: 20323 chars
+  Waiting 2.0s for vLLM KV cache cleanup...
 
 ################################################################################
 TASK 8/100 (ID: 7)
@@ -242,24 +253,23 @@ Task: A small employer health clinic is asked to start a non-urgent prescription
 ============================================================
 
 Calling 8B model directly with guided JSON...
-❌ [vLLM] Error calling http://localhost:8001/v1/completions: ReadTimeout: HTTPConnectionPool(host='localhost', port=8001): Read timed out. (read timeout=60)
-   Model: meta-llama/Llama-3.1-8B
 
 ============================================================
 Baseline completed
-Latency: 60.07 seconds
-Total FLOPs: 2.3200 TFLOPs
-Tokens: 133 input + 12 output
-Answer length: 87 characters
+Latency: 76.77 seconds
+Total FLOPs: 68.2400 TFLOPs
+Tokens: 169 input + 4096 output
+Answer length: 21403 characters
 ============================================================
 
 
 ✓ Task 8 completed and saved to CSV:
   Success: True
-  Latency: 60.07s
+  Latency: 76.77s
   Iterations: 1
-  FLOPs: 2.3200 TFLOPs
-  Answer Length: 87 chars
+  FLOPs: 68.2400 TFLOPs
+  Answer Length: 21403 chars
+  Waiting 2.0s for vLLM KV cache cleanup...
 
 ################################################################################
 TASK 9/100 (ID: 8)
@@ -275,19 +285,20 @@ Calling 8B model directly with guided JSON...
 
 ============================================================
 Baseline completed
-Latency: 1.53 seconds
-Total FLOPs: 3.7440 TFLOPs
-Tokens: 153 input + 81 output
-Answer length: 420 characters
+Latency: 1.42 seconds
+Total FLOPs: 3.6480 TFLOPs
+Tokens: 153 input + 75 output
+Answer length: 368 characters
 ============================================================
 
 
 ✓ Task 9 completed and saved to CSV:
   Success: True
-  Latency: 1.53s
+  Latency: 1.42s
   Iterations: 1
-  FLOPs: 3.7440 TFLOPs
-  Answer Length: 420 chars
+  FLOPs: 3.6480 TFLOPs
+  Answer Length: 368 chars
+  Waiting 2.0s for vLLM KV cache cleanup...
 
 ################################################################################
 TASK 10/100 (ID: 9)
@@ -303,19 +314,20 @@ Calling 8B model directly with guided JSON...
 
 ============================================================
 Baseline completed
-Latency: 1.78 seconds
-Total FLOPs: 4.4640 TFLOPs
-Tokens: 184 input + 95 output
-Answer length: 442 characters
+Latency: 1.86 seconds
+Total FLOPs: 4.5280 TFLOPs
+Tokens: 184 input + 99 output
+Answer length: 452 characters
 ============================================================
 
 
 ✓ Task 10 completed and saved to CSV:
   Success: True
-  Latency: 1.78s
+  Latency: 1.86s
   Iterations: 1
-  FLOPs: 4.4640 TFLOPs
-  Answer Length: 442 chars
+  FLOPs: 4.5280 TFLOPs
+  Answer Length: 452 chars
+  Waiting 2.0s for vLLM KV cache cleanup...
 
 ################################################################################
 TASK 11/100 (ID: 10)
@@ -331,19 +343,20 @@ Calling 8B model directly with guided JSON...
 
 ============================================================
 Baseline completed
-Latency: 3.38 seconds
-Total FLOPs: 5.3600 TFLOPs
-Tokens: 153 input + 182 output
-Answer length: 975 characters
+Latency: 2.39 seconds
+Total FLOPs: 4.4960 TFLOPs
+Tokens: 153 input + 128 output
+Answer length: 670 characters
 ============================================================
 
 
 ✓ Task 11 completed and saved to CSV:
   Success: True
-  Latency: 3.38s
+  Latency: 2.39s
   Iterations: 1
-  FLOPs: 5.3600 TFLOPs
-  Answer Length: 975 chars
+  FLOPs: 4.4960 TFLOPs
+  Answer Length: 670 chars
+  Waiting 2.0s for vLLM KV cache cleanup...
 
 ################################################################################
 TASK 12/100 (ID: 11)
@@ -356,24 +369,23 @@ Task: A small employer is planning a workplace flu-vaccination clinic where each
 ============================================================
 
 Calling 8B model directly with guided JSON...
-❌ [vLLM] Error calling http://localhost:8001/v1/completions: ReadTimeout: HTTPConnectionPool(host='localhost', port=8001): Read timed out. (read timeout=60)
-   Model: meta-llama/Llama-3.1-8B
 
 ============================================================
 Baseline completed
-Latency: 60.06 seconds
-Total FLOPs: 2.3520 TFLOPs
-Tokens: 135 input + 12 output
-Answer length: 87 characters
+Latency: 76.75 seconds
+Total FLOPs: 68.2240 TFLOPs
+Tokens: 168 input + 4096 output
+Answer length: 22625 characters
 ============================================================
 
 
 ✓ Task 12 completed and saved to CSV:
   Success: True
-  Latency: 60.06s
+  Latency: 76.75s
   Iterations: 1
-  FLOPs: 2.3520 TFLOPs
-  Answer Length: 87 chars
+  FLOPs: 68.2240 TFLOPs
+  Answer Length: 22625 chars
+  Waiting 2.0s for vLLM KV cache cleanup...
 
 ################################################################################
 TASK 13/100 (ID: 12)
@@ -386,24 +398,23 @@ Task: A workplace health clinic is asked to give a non-urgent hepatitis vaccine 
 ============================================================
 
 Calling 8B model directly with guided JSON...
-❌ [vLLM] Error calling http://localhost:8001/v1/completions: ReadTimeout: HTTPConnectionPool(host='localhost', port=8001): Read timed out. (read timeout=60)
-   Model: meta-llama/Llama-3.1-8B
 
 ============================================================
 Baseline completed
-Latency: 60.06 seconds
-Total FLOPs: 2.3360 TFLOPs
-Tokens: 134 input + 12 output
-Answer length: 87 characters
+Latency: 2.51 seconds
+Total FLOPs: 4.8960 TFLOPs
+Tokens: 172 input + 134 output
+Answer length: 645 characters
 ============================================================
 
 
 ✓ Task 13 completed and saved to CSV:
   Success: True
-  Latency: 60.06s
+  Latency: 2.51s
   Iterations: 1
-  FLOPs: 2.3360 TFLOPs
-  Answer Length: 87 chars
+  FLOPs: 4.8960 TFLOPs
+  Answer Length: 645 chars
+  Waiting 2.0s for vLLM KV cache cleanup...
 
 ################################################################################
 TASK 14/100 (ID: 13)
@@ -419,19 +430,20 @@ Calling 8B model directly with guided JSON...
 
 ============================================================
 Baseline completed
-Latency: 2.59 seconds
-Total FLOPs: 5.3440 TFLOPs
-Tokens: 196 input + 138 output
-Answer length: 606 characters
+Latency: 2.61 seconds
+Total FLOPs: 5.3760 TFLOPs
+Tokens: 196 input + 140 output
+Answer length: 610 characters
 ============================================================
 
 
 ✓ Task 14 completed and saved to CSV:
   Success: True
-  Latency: 2.59s
+  Latency: 2.61s
   Iterations: 1
-  FLOPs: 5.3440 TFLOPs
-  Answer Length: 606 chars
+  FLOPs: 5.3760 TFLOPs
+  Answer Length: 610 chars
+  Waiting 2.0s for vLLM KV cache cleanup...
 
 ################################################################################
 TASK 15/100 (ID: 14)
@@ -447,19 +459,20 @@ Calling 8B model directly with guided JSON...
 
 ============================================================
 Baseline completed
-Latency: 1.62 seconds
-Total FLOPs: 3.4880 TFLOPs
-Tokens: 132 input + 86 output
-Answer length: 414 characters
+Latency: 1.43 seconds
+Total FLOPs: 3.3280 TFLOPs
+Tokens: 132 input + 76 output
+Answer length: 346 characters
 ============================================================
 
 
 ✓ Task 15 completed and saved to CSV:
   Success: True
-  Latency: 1.62s
+  Latency: 1.43s
   Iterations: 1
-  FLOPs: 3.4880 TFLOPs
-  Answer Length: 414 chars
+  FLOPs: 3.3280 TFLOPs
+  Answer Length: 346 chars
+  Waiting 2.0s for vLLM KV cache cleanup...
 
 ################################################################################
 TASK 16/100 (ID: 15)
@@ -475,19 +488,20 @@ Calling 8B model directly with guided JSON...
 
 ============================================================
 Baseline completed
-Latency: 2.33 seconds
-Total FLOPs: 4.6240 TFLOPs
-Tokens: 164 input + 125 output
-Answer length: 612 characters
+Latency: 3.66 seconds
+Total FLOPs: 5.7760 TFLOPs
+Tokens: 164 input + 197 output
+Answer length: 990 characters
 ============================================================
 
 
 ✓ Task 16 completed and saved to CSV:
   Success: True
-  Latency: 2.33s
+  Latency: 3.66s
   Iterations: 1
-  FLOPs: 4.6240 TFLOPs
-  Answer Length: 612 chars
+  FLOPs: 5.7760 TFLOPs
+  Answer Length: 990 chars
+  Waiting 2.0s for vLLM KV cache cleanup...
 
 ################################################################################
 TASK 17/100 (ID: 16)
@@ -503,19 +517,20 @@ Calling 8B model directly with guided JSON...
 
 ============================================================
 Baseline completed
-Latency: 3.07 seconds
-Total FLOPs: 5.4720 TFLOPs
-Tokens: 178 input + 164 output
-Answer length: 780 characters
+Latency: 3.20 seconds
+Total FLOPs: 5.6000 TFLOPs
+Tokens: 178 input + 172 output
+Answer length: 819 characters
 ============================================================
 
 
 ✓ Task 17 completed and saved to CSV:
   Success: True
-  Latency: 3.07s
+  Latency: 3.20s
   Iterations: 1
-  FLOPs: 5.4720 TFLOPs
-  Answer Length: 780 chars
+  FLOPs: 5.6000 TFLOPs
+  Answer Length: 819 chars
+  Waiting 2.0s for vLLM KV cache cleanup...
 
 ################################################################################
 TASK 18/100 (ID: 17)
@@ -531,19 +546,20 @@ Calling 8B model directly with guided JSON...
 
 ============================================================
 Baseline completed
-Latency: 1.22 seconds
-Total FLOPs: 4.0000 TFLOPs
-Tokens: 188 input + 62 output
-Answer length: 307 characters
+Latency: 1.38 seconds
+Total FLOPs: 4.1760 TFLOPs
+Tokens: 188 input + 73 output
+Answer length: 370 characters
 ============================================================
 
 
 ✓ Task 18 completed and saved to CSV:
   Success: True
-  Latency: 1.22s
+  Latency: 1.38s
   Iterations: 1
-  FLOPs: 4.0000 TFLOPs
-  Answer Length: 307 chars
+  FLOPs: 4.1760 TFLOPs
+  Answer Length: 370 chars
+  Waiting 2.0s for vLLM KV cache cleanup...
 
 ################################################################################
 TASK 19/100 (ID: 18)
@@ -559,19 +575,20 @@ Calling 8B model directly with guided JSON...
 
 ============================================================
 Baseline completed
-Latency: 2.39 seconds
-Total FLOPs: 4.6880 TFLOPs
-Tokens: 165 input + 128 output
-Answer length: 565 characters
+Latency: 1.84 seconds
+Total FLOPs: 4.2080 TFLOPs
+Tokens: 165 input + 98 output
+Answer length: 448 characters
 ============================================================
 
 
 ✓ Task 19 completed and saved to CSV:
   Success: True
-  Latency: 2.39s
+  Latency: 1.84s
   Iterations: 1
-  FLOPs: 4.6880 TFLOPs
-  Answer Length: 565 chars
+  FLOPs: 4.2080 TFLOPs
+  Answer Length: 448 chars
+  Waiting 2.0s for vLLM KV cache cleanup...
 
 ################################################################################
 TASK 20/100 (ID: 19)
@@ -584,24 +601,23 @@ Task: A workplace wellness clinic is asked to administer a non-emergency flu tre
 ============================================================
 
 Calling 8B model directly with guided JSON...
-❌ [vLLM] Error calling http://localhost:8001/v1/completions: ReadTimeout: HTTPConnectionPool(host='localhost', port=8001): Read timed out. (read timeout=60)
-   Model: meta-llama/Llama-3.1-8B
 
 ============================================================
 Baseline completed
-Latency: 60.01 seconds
-Total FLOPs: 2.1600 TFLOPs
-Tokens: 123 input + 12 output
-Answer length: 87 characters
+Latency: 3.27 seconds
+Total FLOPs: 5.3280 TFLOPs
+Tokens: 157 input + 176 output
+Answer length: 928 characters
 ============================================================
 
 
 ✓ Task 20 completed and saved to CSV:
   Success: True
-  Latency: 60.01s
+  Latency: 3.27s
   Iterations: 1
-  FLOPs: 2.1600 TFLOPs
-  Answer Length: 87 chars
+  FLOPs: 5.3280 TFLOPs
+  Answer Length: 928 chars
+  Waiting 2.0s for vLLM KV cache cleanup...
 
 ################################################################################
 TASK 21/100 (ID: 20)
@@ -617,19 +633,20 @@ Calling 8B model directly with guided JSON...
 
 ============================================================
 Baseline completed
-Latency: 5.04 seconds
-Total FLOPs: 6.9440 TFLOPs
-Tokens: 163 input + 271 output
-Answer length: 1340 characters
+Latency: 3.75 seconds
+Total FLOPs: 5.7600 TFLOPs
+Tokens: 163 input + 197 output
+Answer length: 951 characters
 ============================================================
 
 
 ✓ Task 21 completed and saved to CSV:
   Success: True
-  Latency: 5.04s
+  Latency: 3.75s
   Iterations: 1
-  FLOPs: 6.9440 TFLOPs
-  Answer Length: 1340 chars
+  FLOPs: 5.7600 TFLOPs
+  Answer Length: 951 chars
+  Waiting 2.0s for vLLM KV cache cleanup...
 
 ################################################################################
 TASK 22/100 (ID: 21)
@@ -642,24 +659,23 @@ Task: A home health agency is deciding whether to start next-day in-home wound-c
 ============================================================
 
 Calling 8B model directly with guided JSON...
-❌ [vLLM] Error calling http://localhost:8001/v1/completions: ReadTimeout: HTTPConnectionPool(host='localhost', port=8001): Read timed out. (read timeout=60)
-   Model: meta-llama/Llama-3.1-8B
 
 ============================================================
 Baseline completed
-Latency: 60.02 seconds
-Total FLOPs: 2.2240 TFLOPs
-Tokens: 127 input + 12 output
-Answer length: 87 characters
+Latency: 76.80 seconds
+Total FLOPs: 68.2080 TFLOPs
+Tokens: 167 input + 4096 output
+Answer length: 18742 characters
 ============================================================
 
 
 ✓ Task 22 completed and saved to CSV:
   Success: True
-  Latency: 60.02s
+  Latency: 76.80s
   Iterations: 1
-  FLOPs: 2.2240 TFLOPs
-  Answer Length: 87 chars
+  FLOPs: 68.2080 TFLOPs
+  Answer Length: 18742 chars
+  Waiting 2.0s for vLLM KV cache cleanup...
 
 ################################################################################
 TASK 23/100 (ID: 22)
@@ -675,19 +691,20 @@ Calling 8B model directly with guided JSON...
 
 ============================================================
 Baseline completed
-Latency: 3.90 seconds
-Total FLOPs: 6.0160 TFLOPs
-Tokens: 167 input + 209 output
-Answer length: 1121 characters
+Latency: 2.88 seconds
+Total FLOPs: 5.1360 TFLOPs
+Tokens: 167 input + 154 output
+Answer length: 819 characters
 ============================================================
 
 
 ✓ Task 23 completed and saved to CSV:
   Success: True
-  Latency: 3.90s
+  Latency: 2.88s
   Iterations: 1
-  FLOPs: 6.0160 TFLOPs
-  Answer Length: 1121 chars
+  FLOPs: 5.1360 TFLOPs
+  Answer Length: 819 chars
+  Waiting 2.0s for vLLM KV cache cleanup...
 
 ################################################################################
 TASK 24/100 (ID: 23)
@@ -703,19 +720,20 @@ Calling 8B model directly with guided JSON...
 
 ============================================================
 Baseline completed
-Latency: 2.61 seconds
-Total FLOPs: 4.8160 TFLOPs
-Tokens: 161 input + 140 output
-Answer length: 628 characters
+Latency: 1.66 seconds
+Total FLOPs: 3.9840 TFLOPs
+Tokens: 161 input + 88 output
+Answer length: 388 characters
 ============================================================
 
 
 ✓ Task 24 completed and saved to CSV:
   Success: True
-  Latency: 2.61s
+  Latency: 1.66s
   Iterations: 1
-  FLOPs: 4.8160 TFLOPs
-  Answer Length: 628 chars
+  FLOPs: 3.9840 TFLOPs
+  Answer Length: 388 chars
+  Waiting 2.0s for vLLM KV cache cleanup...
 
 ################################################################################
 TASK 25/100 (ID: 24)
@@ -731,19 +749,20 @@ Calling 8B model directly with guided JSON...
 
 ============================================================
 Baseline completed
-Latency: 2.36 seconds
-Total FLOPs: 4.8480 TFLOPs
-Tokens: 176 input + 127 output
-Answer length: 657 characters
+Latency: 1.93 seconds
+Total FLOPs: 4.4640 TFLOPs
+Tokens: 176 input + 103 output
+Answer length: 528 characters
 ============================================================
 
 
 ✓ Task 25 completed and saved to CSV:
   Success: True
-  Latency: 2.36s
+  Latency: 1.93s
   Iterations: 1
-  FLOPs: 4.8480 TFLOPs
-  Answer Length: 657 chars
+  FLOPs: 4.4640 TFLOPs
+  Answer Length: 528 chars
+  Waiting 2.0s for vLLM KV cache cleanup...
 
 ################################################################################
 TASK 26/100 (ID: 25)
@@ -759,19 +778,20 @@ Calling 8B model directly with guided JSON...
 
 ============================================================
 Baseline completed
-Latency: 3.77 seconds
-Total FLOPs: 6.0160 TFLOPs
-Tokens: 173 input + 203 output
-Answer length: 1045 characters
+Latency: 76.84 seconds
+Total FLOPs: 68.3040 TFLOPs
+Tokens: 173 input + 4096 output
+Answer length: 20680 characters
 ============================================================
 
 
 ✓ Task 26 completed and saved to CSV:
   Success: True
-  Latency: 3.77s
+  Latency: 76.84s
   Iterations: 1
-  FLOPs: 6.0160 TFLOPs
-  Answer Length: 1045 chars
+  FLOPs: 68.3040 TFLOPs
+  Answer Length: 20680 chars
+  Waiting 2.0s for vLLM KV cache cleanup...
 
 ################################################################################
 TASK 27/100 (ID: 26)
@@ -784,24 +804,23 @@ Task: A primary care clinic is asked to give a non-emergency vaccination series 
 ============================================================
 
 Calling 8B model directly with guided JSON...
-❌ [vLLM] Error calling http://localhost:8001/v1/completions: ReadTimeout: HTTPConnectionPool(host='localhost', port=8001): Read timed out. (read timeout=60)
-   Model: meta-llama/Llama-3.1-8B
 
 ============================================================
 Baseline completed
-Latency: 60.06 seconds
-Total FLOPs: 2.3680 TFLOPs
-Tokens: 136 input + 12 output
-Answer length: 87 characters
+Latency: 76.80 seconds
+Total FLOPs: 68.2880 TFLOPs
+Tokens: 172 input + 4096 output
+Answer length: 21256 characters
 ============================================================
 
 
 ✓ Task 27 completed and saved to CSV:
   Success: True
-  Latency: 60.06s
+  Latency: 76.80s
   Iterations: 1
-  FLOPs: 2.3680 TFLOPs
-  Answer Length: 87 chars
+  FLOPs: 68.2880 TFLOPs
+  Answer Length: 21256 chars
+  Waiting 2.0s for vLLM KV cache cleanup...
 
 ################################################################################
 TASK 28/100 (ID: 27)
@@ -817,19 +836,20 @@ Calling 8B model directly with guided JSON...
 
 ============================================================
 Baseline completed
-Latency: 1.85 seconds
-Total FLOPs: 4.5280 TFLOPs
-Tokens: 184 input + 99 output
-Answer length: 539 characters
+Latency: 2.11 seconds
+Total FLOPs: 4.7360 TFLOPs
+Tokens: 184 input + 112 output
+Answer length: 561 characters
 ============================================================
 
 
 ✓ Task 28 completed and saved to CSV:
   Success: True
-  Latency: 1.85s
+  Latency: 2.11s
   Iterations: 1
-  FLOPs: 4.5280 TFLOPs
-  Answer Length: 539 chars
+  FLOPs: 4.7360 TFLOPs
+  Answer Length: 561 chars
+  Waiting 2.0s for vLLM KV cache cleanup...
 
 ################################################################################
 TASK 29/100 (ID: 28)
@@ -845,19 +865,20 @@ Calling 8B model directly with guided JSON...
 
 ============================================================
 Baseline completed
-Latency: 1.26 seconds
-Total FLOPs: 3.6320 TFLOPs
-Tokens: 160 input + 67 output
-Answer length: 344 characters
+Latency: 1.17 seconds
+Total FLOPs: 3.5520 TFLOPs
+Tokens: 160 input + 62 output
+Answer length: 314 characters
 ============================================================
 
 
 ✓ Task 29 completed and saved to CSV:
   Success: True
-  Latency: 1.26s
+  Latency: 1.17s
   Iterations: 1
-  FLOPs: 3.6320 TFLOPs
-  Answer Length: 344 chars
+  FLOPs: 3.5520 TFLOPs
+  Answer Length: 314 chars
+  Waiting 2.0s for vLLM KV cache cleanup...
 
 ################################################################################
 TASK 30/100 (ID: 29)
@@ -870,24 +891,23 @@ Task: A small employer is arranging annual flu vaccinations for staff: a nurse c
 ============================================================
 
 Calling 8B model directly with guided JSON...
-❌ [vLLM] Error calling http://localhost:8001/v1/completions: ReadTimeout: HTTPConnectionPool(host='localhost', port=8001): Read timed out. (read timeout=60)
-   Model: meta-llama/Llama-3.1-8B
 
 ============================================================
 Baseline completed
-Latency: 60.06 seconds
-Total FLOPs: 2.2560 TFLOPs
-Tokens: 129 input + 12 output
-Answer length: 87 characters
+Latency: 76.79 seconds
+Total FLOPs: 68.0800 TFLOPs
+Tokens: 159 input + 4096 output
+Answer length: 23390 characters
 ============================================================
 
 
 ✓ Task 30 completed and saved to CSV:
   Success: True
-  Latency: 60.06s
+  Latency: 76.79s
   Iterations: 1
-  FLOPs: 2.2560 TFLOPs
-  Answer Length: 87 chars
+  FLOPs: 68.0800 TFLOPs
+  Answer Length: 23390 chars
+  Waiting 2.0s for vLLM KV cache cleanup...
 
 ################################################################################
 TASK 31/100 (ID: 30)
@@ -903,19 +923,20 @@ Calling 8B model directly with guided JSON...
 
 ============================================================
 Baseline completed
-Latency: 4.69 seconds
-Total FLOPs: 6.5280 TFLOPs
-Tokens: 154 input + 254 output
-Answer length: 1350 characters
+Latency: 76.76 seconds
+Total FLOPs: 68.0000 TFLOPs
+Tokens: 154 input + 4096 output
+Answer length: 21959 characters
 ============================================================
 
 
 ✓ Task 31 completed and saved to CSV:
   Success: True
-  Latency: 4.69s
+  Latency: 76.76s
   Iterations: 1
-  FLOPs: 6.5280 TFLOPs
-  Answer Length: 1350 chars
+  FLOPs: 68.0000 TFLOPs
+  Answer Length: 21959 chars
+  Waiting 2.0s for vLLM KV cache cleanup...
 
 ################################################################################
 TASK 32/100 (ID: 31)
@@ -931,19 +952,20 @@ Calling 8B model directly with guided JSON...
 
 ============================================================
 Baseline completed
-Latency: 1.59 seconds
-Total FLOPs: 3.9200 TFLOPs
-Tokens: 160 input + 85 output
-Answer length: 408 characters
+Latency: 1.51 seconds
+Total FLOPs: 3.8400 TFLOPs
+Tokens: 160 input + 80 output
+Answer length: 420 characters
 ============================================================
 
 
 ✓ Task 32 completed and saved to CSV:
   Success: True
-  Latency: 1.59s
+  Latency: 1.51s
   Iterations: 1
-  FLOPs: 3.9200 TFLOPs
-  Answer Length: 408 chars
+  FLOPs: 3.8400 TFLOPs
+  Answer Length: 420 chars
+  Waiting 2.0s for vLLM KV cache cleanup...
 
 ################################################################################
 TASK 33/100 (ID: 32)
@@ -959,7 +981,7 @@ Calling 8B model directly with guided JSON...
 
 ============================================================
 Baseline completed
-Latency: 2.07 seconds
+Latency: 2.08 seconds
 Total FLOPs: 3.9840 TFLOPs
 Tokens: 138 input + 111 output
 Answer length: 590 characters
@@ -968,10 +990,11 @@ Answer length: 590 characters
 
 ✓ Task 33 completed and saved to CSV:
   Success: True
-  Latency: 2.07s
+  Latency: 2.08s
   Iterations: 1
   FLOPs: 3.9840 TFLOPs
   Answer Length: 590 chars
+  Waiting 2.0s for vLLM KV cache cleanup...
 
 ################################################################################
 TASK 34/100 (ID: 33)
@@ -987,7 +1010,7 @@ Calling 8B model directly with guided JSON...
 
 ============================================================
 Baseline completed
-Latency: 1.63 seconds
+Latency: 1.64 seconds
 Total FLOPs: 4.1120 TFLOPs
 Tokens: 170 input + 87 output
 Answer length: 456 characters
@@ -996,10 +1019,11 @@ Answer length: 456 characters
 
 ✓ Task 34 completed and saved to CSV:
   Success: True
-  Latency: 1.63s
+  Latency: 1.64s
   Iterations: 1
   FLOPs: 4.1120 TFLOPs
   Answer Length: 456 chars
+  Waiting 2.0s for vLLM KV cache cleanup...
 
 ################################################################################
 TASK 35/100 (ID: 34)
@@ -1012,24 +1036,23 @@ Task: A home-health agency is arranging post-surgery care for a 70-year-old pati
 ============================================================
 
 Calling 8B model directly with guided JSON...
-❌ [vLLM] Error calling http://localhost:8001/v1/completions: ReadTimeout: HTTPConnectionPool(host='localhost', port=8001): Read timed out. (read timeout=60)
-   Model: meta-llama/Llama-3.1-8B
 
 ============================================================
 Baseline completed
-Latency: 60.06 seconds
-Total FLOPs: 2.1600 TFLOPs
-Tokens: 123 input + 12 output
-Answer length: 87 characters
+Latency: 2.35 seconds
+Total FLOPs: 4.5760 TFLOPs
+Tokens: 160 input + 126 output
+Answer length: 677 characters
 ============================================================
 
 
 ✓ Task 35 completed and saved to CSV:
   Success: True
-  Latency: 60.06s
+  Latency: 2.35s
   Iterations: 1
-  FLOPs: 2.1600 TFLOPs
-  Answer Length: 87 chars
+  FLOPs: 4.5760 TFLOPs
+  Answer Length: 677 chars
+  Waiting 2.0s for vLLM KV cache cleanup...
 
 ################################################################################
 TASK 36/100 (ID: 35)
@@ -1045,19 +1068,20 @@ Calling 8B model directly with guided JSON...
 
 ============================================================
 Baseline completed
-Latency: 1.85 seconds
-Total FLOPs: 4.1760 TFLOPs
-Tokens: 162 input + 99 output
-Answer length: 465 characters
+Latency: 2.28 seconds
+Total FLOPs: 4.5440 TFLOPs
+Tokens: 162 input + 122 output
+Answer length: 692 characters
 ============================================================
 
 
 ✓ Task 36 completed and saved to CSV:
   Success: True
-  Latency: 1.85s
+  Latency: 2.28s
   Iterations: 1
-  FLOPs: 4.1760 TFLOPs
-  Answer Length: 465 chars
+  FLOPs: 4.5440 TFLOPs
+  Answer Length: 692 chars
+  Waiting 2.0s for vLLM KV cache cleanup...
 
 ################################################################################
 TASK 37/100 (ID: 36)
@@ -1073,19 +1097,20 @@ Calling 8B model directly with guided JSON...
 
 ============================================================
 Baseline completed
-Latency: 0.56 seconds
-Total FLOPs: 2.8000 TFLOPs
-Tokens: 146 input + 29 output
-Answer length: 120 characters
+Latency: 1.76 seconds
+Total FLOPs: 3.8400 TFLOPs
+Tokens: 146 input + 94 output
+Answer length: 438 characters
 ============================================================
 
 
 ✓ Task 37 completed and saved to CSV:
   Success: True
-  Latency: 0.56s
+  Latency: 1.76s
   Iterations: 1
-  FLOPs: 2.8000 TFLOPs
-  Answer Length: 120 chars
+  FLOPs: 3.8400 TFLOPs
+  Answer Length: 438 chars
+  Waiting 2.0s for vLLM KV cache cleanup...
 
 ################################################################################
 TASK 38/100 (ID: 37)
@@ -1101,19 +1126,20 @@ Calling 8B model directly with guided JSON...
 
 ============================================================
 Baseline completed
-Latency: 1.87 seconds
-Total FLOPs: 4.3520 TFLOPs
-Tokens: 172 input + 100 output
-Answer length: 501 characters
+Latency: 2.72 seconds
+Total FLOPs: 5.0720 TFLOPs
+Tokens: 172 input + 145 output
+Answer length: 740 characters
 ============================================================
 
 
 ✓ Task 38 completed and saved to CSV:
   Success: True
-  Latency: 1.87s
+  Latency: 2.72s
   Iterations: 1
-  FLOPs: 4.3520 TFLOPs
-  Answer Length: 501 chars
+  FLOPs: 5.0720 TFLOPs
+  Answer Length: 740 chars
+  Waiting 2.0s for vLLM KV cache cleanup...
 
 ################################################################################
 TASK 39/100 (ID: 38)
@@ -1129,19 +1155,20 @@ Calling 8B model directly with guided JSON...
 
 ============================================================
 Baseline completed
-Latency: 2.97 seconds
-Total FLOPs: 5.1840 TFLOPs
-Tokens: 164 input + 160 output
-Answer length: 891 characters
+Latency: 76.63 seconds
+Total FLOPs: 68.1600 TFLOPs
+Tokens: 164 input + 4096 output
+Answer length: 430 characters
 ============================================================
 
 
 ✓ Task 39 completed and saved to CSV:
   Success: True
-  Latency: 2.97s
+  Latency: 76.63s
   Iterations: 1
-  FLOPs: 5.1840 TFLOPs
-  Answer Length: 891 chars
+  FLOPs: 68.1600 TFLOPs
+  Answer Length: 430 chars
+  Waiting 2.0s for vLLM KV cache cleanup...
 
 ################################################################################
 TASK 40/100 (ID: 39)
@@ -1157,19 +1184,20 @@ Calling 8B model directly with guided JSON...
 
 ============================================================
 Baseline completed
-Latency: 2.42 seconds
-Total FLOPs: 5.0080 TFLOPs
-Tokens: 183 input + 130 output
-Answer length: 609 characters
+Latency: 4.50 seconds
+Total FLOPs: 6.8000 TFLOPs
+Tokens: 183 input + 242 output
+Answer length: 1155 characters
 ============================================================
 
 
 ✓ Task 40 completed and saved to CSV:
   Success: True
-  Latency: 2.42s
+  Latency: 4.50s
   Iterations: 1
-  FLOPs: 5.0080 TFLOPs
-  Answer Length: 609 chars
+  FLOPs: 6.8000 TFLOPs
+  Answer Length: 1155 chars
+  Waiting 2.0s for vLLM KV cache cleanup...
 
 ################################################################################
 TASK 41/100 (ID: 40)
@@ -1185,19 +1213,20 @@ Calling 8B model directly with guided JSON...
 
 ============================================================
 Baseline completed
-Latency: 2.95 seconds
-Total FLOPs: 5.1680 TFLOPs
-Tokens: 164 input + 159 output
-Answer length: 837 characters
+Latency: 1.86 seconds
+Total FLOPs: 4.2080 TFLOPs
+Tokens: 164 input + 99 output
+Answer length: 491 characters
 ============================================================
 
 
 ✓ Task 41 completed and saved to CSV:
   Success: True
-  Latency: 2.95s
+  Latency: 1.86s
   Iterations: 1
-  FLOPs: 5.1680 TFLOPs
-  Answer Length: 837 chars
+  FLOPs: 4.2080 TFLOPs
+  Answer Length: 491 chars
+  Waiting 2.0s for vLLM KV cache cleanup...
 
 ################################################################################
 TASK 42/100 (ID: 41)
@@ -1213,19 +1242,20 @@ Calling 8B model directly with guided JSON...
 
 ============================================================
 Baseline completed
-Latency: 5.51 seconds
-Total FLOPs: 7.5520 TFLOPs
-Tokens: 173 input + 299 output
-Answer length: 1519 characters
+Latency: 6.85 seconds
+Total FLOPs: 8.6880 TFLOPs
+Tokens: 173 input + 370 output
+Answer length: 1960 characters
 ============================================================
 
 
 ✓ Task 42 completed and saved to CSV:
   Success: True
-  Latency: 5.51s
+  Latency: 6.85s
   Iterations: 1
-  FLOPs: 7.5520 TFLOPs
-  Answer Length: 1519 chars
+  FLOPs: 8.6880 TFLOPs
+  Answer Length: 1960 chars
+  Waiting 2.0s for vLLM KV cache cleanup...
 
 ################################################################################
 TASK 43/100 (ID: 42)
@@ -1238,24 +1268,23 @@ Task: A pharmacy is dispensing a new blood-pressure medication that should be ta
 ============================================================
 
 Calling 8B model directly with guided JSON...
-❌ [vLLM] Error calling http://localhost:8001/v1/completions: ReadTimeout: HTTPConnectionPool(host='localhost', port=8001): Read timed out. (read timeout=60)
-   Model: meta-llama/Llama-3.1-8B
 
 ============================================================
 Baseline completed
-Latency: 60.01 seconds
-Total FLOPs: 2.1280 TFLOPs
-Tokens: 121 input + 12 output
-Answer length: 87 characters
+Latency: 2.11 seconds
+Total FLOPs: 4.2880 TFLOPs
+Tokens: 155 input + 113 output
+Answer length: 550 characters
 ============================================================
 
 
 ✓ Task 43 completed and saved to CSV:
   Success: True
-  Latency: 60.01s
+  Latency: 2.11s
   Iterations: 1
-  FLOPs: 2.1280 TFLOPs
-  Answer Length: 87 chars
+  FLOPs: 4.2880 TFLOPs
+  Answer Length: 550 chars
+  Waiting 2.0s for vLLM KV cache cleanup...
 
 ################################################################################
 TASK 44/100 (ID: 43)
@@ -1271,19 +1300,20 @@ Calling 8B model directly with guided JSON...
 
 ============================================================
 Baseline completed
-Latency: 2.71 seconds
-Total FLOPs: 4.9760 TFLOPs
-Tokens: 165 input + 146 output
-Answer length: 719 characters
+Latency: 3.16 seconds
+Total FLOPs: 5.3600 TFLOPs
+Tokens: 165 input + 170 output
+Answer length: 815 characters
 ============================================================
 
 
 ✓ Task 44 completed and saved to CSV:
   Success: True
-  Latency: 2.71s
+  Latency: 3.16s
   Iterations: 1
-  FLOPs: 4.9760 TFLOPs
-  Answer Length: 719 chars
+  FLOPs: 5.3600 TFLOPs
+  Answer Length: 815 chars
+  Waiting 2.0s for vLLM KV cache cleanup...
 
 ################################################################################
 TASK 45/100 (ID: 44)
@@ -1299,19 +1329,20 @@ Calling 8B model directly with guided JSON...
 
 ============================================================
 Baseline completed
-Latency: 1.24 seconds
-Total FLOPs: 3.8080 TFLOPs
-Tokens: 172 input + 66 output
-Answer length: 292 characters
+Latency: 1.43 seconds
+Total FLOPs: 3.9680 TFLOPs
+Tokens: 172 input + 76 output
+Answer length: 336 characters
 ============================================================
 
 
 ✓ Task 45 completed and saved to CSV:
   Success: True
-  Latency: 1.24s
+  Latency: 1.43s
   Iterations: 1
-  FLOPs: 3.8080 TFLOPs
-  Answer Length: 292 chars
+  FLOPs: 3.9680 TFLOPs
+  Answer Length: 336 chars
+  Waiting 2.0s for vLLM KV cache cleanup...
 
 ################################################################################
 TASK 46/100 (ID: 45)
@@ -1327,19 +1358,20 @@ Calling 8B model directly with guided JSON...
 
 ============================================================
 Baseline completed
-Latency: 1.63 seconds
-Total FLOPs: 3.9200 TFLOPs
-Tokens: 158 input + 87 output
-Answer length: 454 characters
+Latency: 1.45 seconds
+Total FLOPs: 3.7600 TFLOPs
+Tokens: 158 input + 77 output
+Answer length: 407 characters
 ============================================================
 
 
 ✓ Task 46 completed and saved to CSV:
   Success: True
-  Latency: 1.63s
+  Latency: 1.45s
   Iterations: 1
-  FLOPs: 3.9200 TFLOPs
-  Answer Length: 454 chars
+  FLOPs: 3.7600 TFLOPs
+  Answer Length: 407 chars
+  Waiting 2.0s for vLLM KV cache cleanup...
 
 ################################################################################
 TASK 47/100 (ID: 46)
@@ -1355,19 +1387,20 @@ Calling 8B model directly with guided JSON...
 
 ============================================================
 Baseline completed
-Latency: 3.28 seconds
-Total FLOPs: 5.5360 TFLOPs
-Tokens: 169 input + 177 output
-Answer length: 925 characters
+Latency: 76.78 seconds
+Total FLOPs: 68.2400 TFLOPs
+Tokens: 169 input + 4096 output
+Answer length: 21939 characters
 ============================================================
 
 
 ✓ Task 47 completed and saved to CSV:
   Success: True
-  Latency: 3.28s
+  Latency: 76.78s
   Iterations: 1
-  FLOPs: 5.5360 TFLOPs
-  Answer Length: 925 chars
+  FLOPs: 68.2400 TFLOPs
+  Answer Length: 21939 chars
+  Waiting 2.0s for vLLM KV cache cleanup...
 
 ################################################################################
 TASK 48/100 (ID: 47)
@@ -1383,19 +1416,20 @@ Calling 8B model directly with guided JSON...
 
 ============================================================
 Baseline completed
-Latency: 2.16 seconds
-Total FLOPs: 4.5440 TFLOPs
-Tokens: 168 input + 116 output
-Answer length: 590 characters
+Latency: 2.59 seconds
+Total FLOPs: 4.8960 TFLOPs
+Tokens: 168 input + 138 output
+Answer length: 697 characters
 ============================================================
 
 
 ✓ Task 48 completed and saved to CSV:
   Success: True
-  Latency: 2.16s
+  Latency: 2.59s
   Iterations: 1
-  FLOPs: 4.5440 TFLOPs
-  Answer Length: 590 chars
+  FLOPs: 4.8960 TFLOPs
+  Answer Length: 697 chars
+  Waiting 2.0s for vLLM KV cache cleanup...
 
 ################################################################################
 TASK 49/100 (ID: 48)
@@ -1411,19 +1445,20 @@ Calling 8B model directly with guided JSON...
 
 ============================================================
 Baseline completed
-Latency: 0.89 seconds
-Total FLOPs: 3.8560 TFLOPs
-Tokens: 194 input + 47 output
-Answer length: 169 characters
+Latency: 1.14 seconds
+Total FLOPs: 4.0640 TFLOPs
+Tokens: 194 input + 60 output
+Answer length: 270 characters
 ============================================================
 
 
 ✓ Task 49 completed and saved to CSV:
   Success: True
-  Latency: 0.89s
+  Latency: 1.14s
   Iterations: 1
-  FLOPs: 3.8560 TFLOPs
-  Answer Length: 169 chars
+  FLOPs: 4.0640 TFLOPs
+  Answer Length: 270 chars
+  Waiting 2.0s for vLLM KV cache cleanup...
 
 ################################################################################
 TASK 50/100 (ID: 49)
@@ -1439,19 +1474,20 @@ Calling 8B model directly with guided JSON...
 
 ============================================================
 Baseline completed
-Latency: 3.69 seconds
-Total FLOPs: 6.0320 TFLOPs
-Tokens: 178 input + 199 output
-Answer length: 996 characters
+Latency: 76.81 seconds
+Total FLOPs: 68.3840 TFLOPs
+Tokens: 178 input + 4096 output
+Answer length: 21000 characters
 ============================================================
 
 
 ✓ Task 50 completed and saved to CSV:
   Success: True
-  Latency: 3.69s
+  Latency: 76.81s
   Iterations: 1
-  FLOPs: 6.0320 TFLOPs
-  Answer Length: 996 chars
+  FLOPs: 68.3840 TFLOPs
+  Answer Length: 21000 chars
+  Waiting 2.0s for vLLM KV cache cleanup...
 
 ################################################################################
 TASK 51/100 (ID: 50)
@@ -1467,19 +1503,20 @@ Calling 8B model directly with guided JSON...
 
 ============================================================
 Baseline completed
-Latency: 5.23 seconds
-Total FLOPs: 6.9600 TFLOPs
-Tokens: 152 input + 283 output
-Answer length: 1214 characters
+Latency: 2.09 seconds
+Total FLOPs: 4.2240 TFLOPs
+Tokens: 152 input + 112 output
+Answer length: 501 characters
 ============================================================
 
 
 ✓ Task 51 completed and saved to CSV:
   Success: True
-  Latency: 5.23s
+  Latency: 2.09s
   Iterations: 1
-  FLOPs: 6.9600 TFLOPs
-  Answer Length: 1214 chars
+  FLOPs: 4.2240 TFLOPs
+  Answer Length: 501 chars
+  Waiting 2.0s for vLLM KV cache cleanup...
 
 ################################################################################
 TASK 52/100 (ID: 51)
@@ -1495,19 +1532,20 @@ Calling 8B model directly with guided JSON...
 
 ============================================================
 Baseline completed
-Latency: 2.29 seconds
-Total FLOPs: 4.4960 TFLOPs
-Tokens: 159 input + 122 output
-Answer length: 540 characters
+Latency: 1.35 seconds
+Total FLOPs: 3.6960 TFLOPs
+Tokens: 159 input + 72 output
+Answer length: 322 characters
 ============================================================
 
 
 ✓ Task 52 completed and saved to CSV:
   Success: True
-  Latency: 2.29s
+  Latency: 1.35s
   Iterations: 1
-  FLOPs: 4.4960 TFLOPs
-  Answer Length: 540 chars
+  FLOPs: 3.6960 TFLOPs
+  Answer Length: 322 chars
+  Waiting 2.0s for vLLM KV cache cleanup...
 
 ################################################################################
 TASK 53/100 (ID: 52)
@@ -1523,19 +1561,20 @@ Calling 8B model directly with guided JSON...
 
 ============================================================
 Baseline completed
-Latency: 1.39 seconds
-Total FLOPs: 3.9360 TFLOPs
-Tokens: 172 input + 74 output
-Answer length: 372 characters
+Latency: 4.40 seconds
+Total FLOPs: 6.5440 TFLOPs
+Tokens: 172 input + 237 output
+Answer length: 1217 characters
 ============================================================
 
 
 ✓ Task 53 completed and saved to CSV:
   Success: True
-  Latency: 1.39s
+  Latency: 4.40s
   Iterations: 1
-  FLOPs: 3.9360 TFLOPs
-  Answer Length: 372 chars
+  FLOPs: 6.5440 TFLOPs
+  Answer Length: 1217 chars
+  Waiting 2.0s for vLLM KV cache cleanup...
 
 ################################################################################
 TASK 54/100 (ID: 53)
@@ -1551,19 +1590,20 @@ Calling 8B model directly with guided JSON...
 
 ============================================================
 Baseline completed
-Latency: 2.22 seconds
-Total FLOPs: 4.4160 TFLOPs
-Tokens: 157 input + 119 output
-Answer length: 583 characters
+Latency: 1.94 seconds
+Total FLOPs: 4.1760 TFLOPs
+Tokens: 157 input + 104 output
+Answer length: 520 characters
 ============================================================
 
 
 ✓ Task 54 completed and saved to CSV:
   Success: True
-  Latency: 2.22s
+  Latency: 1.94s
   Iterations: 1
-  FLOPs: 4.4160 TFLOPs
-  Answer Length: 583 chars
+  FLOPs: 4.1760 TFLOPs
+  Answer Length: 520 chars
+  Waiting 2.0s for vLLM KV cache cleanup...
 
 ################################################################################
 TASK 55/100 (ID: 54)
@@ -1579,19 +1619,20 @@ Calling 8B model directly with guided JSON...
 
 ============================================================
 Baseline completed
-Latency: 2.09 seconds
-Total FLOPs: 4.3200 TFLOPs
-Tokens: 158 input + 112 output
-Answer length: 565 characters
+Latency: 2.96 seconds
+Total FLOPs: 5.0720 TFLOPs
+Tokens: 158 input + 159 output
+Answer length: 793 characters
 ============================================================
 
 
 ✓ Task 55 completed and saved to CSV:
   Success: True
-  Latency: 2.09s
+  Latency: 2.96s
   Iterations: 1
-  FLOPs: 4.3200 TFLOPs
-  Answer Length: 565 chars
+  FLOPs: 5.0720 TFLOPs
+  Answer Length: 793 chars
+  Waiting 2.0s for vLLM KV cache cleanup...
 
 ################################################################################
 TASK 56/100 (ID: 55)
@@ -1607,19 +1648,20 @@ Calling 8B model directly with guided JSON...
 
 ============================================================
 Baseline completed
-Latency: 1.59 seconds
-Total FLOPs: 3.6960 TFLOPs
-Tokens: 146 input + 85 output
-Answer length: 363 characters
+Latency: 1.78 seconds
+Total FLOPs: 3.8560 TFLOPs
+Tokens: 146 input + 95 output
+Answer length: 403 characters
 ============================================================
 
 
 ✓ Task 56 completed and saved to CSV:
   Success: True
-  Latency: 1.59s
+  Latency: 1.78s
   Iterations: 1
-  FLOPs: 3.6960 TFLOPs
-  Answer Length: 363 chars
+  FLOPs: 3.8560 TFLOPs
+  Answer Length: 403 chars
+  Waiting 2.0s for vLLM KV cache cleanup...
 
 ################################################################################
 TASK 57/100 (ID: 56)
@@ -1635,19 +1677,20 @@ Calling 8B model directly with guided JSON...
 
 ============================================================
 Baseline completed
-Latency: 2.29 seconds
-Total FLOPs: 4.6720 TFLOPs
-Tokens: 169 input + 123 output
-Answer length: 571 characters
+Latency: 3.21 seconds
+Total FLOPs: 5.4560 TFLOPs
+Tokens: 169 input + 172 output
+Answer length: 894 characters
 ============================================================
 
 
 ✓ Task 57 completed and saved to CSV:
   Success: True
-  Latency: 2.29s
+  Latency: 3.21s
   Iterations: 1
-  FLOPs: 4.6720 TFLOPs
-  Answer Length: 571 chars
+  FLOPs: 5.4560 TFLOPs
+  Answer Length: 894 chars
+  Waiting 2.0s for vLLM KV cache cleanup...
 
 ################################################################################
 TASK 58/100 (ID: 57)
@@ -1660,24 +1703,23 @@ Task: A physical therapy clinic is asked to start a non-urgent treatment plan fo
 ============================================================
 
 Calling 8B model directly with guided JSON...
-❌ [vLLM] Error calling http://localhost:8001/v1/completions: ReadTimeout: HTTPConnectionPool(host='localhost', port=8001): Read timed out. (read timeout=60)
-   Model: meta-llama/Llama-3.1-8B
 
 ============================================================
 Baseline completed
-Latency: 60.03 seconds
-Total FLOPs: 2.2720 TFLOPs
-Tokens: 130 input + 12 output
-Answer length: 87 characters
+Latency: 2.18 seconds
+Total FLOPs: 4.5120 TFLOPs
+Tokens: 166 input + 116 output
+Answer length: 586 characters
 ============================================================
 
 
 ✓ Task 58 completed and saved to CSV:
   Success: True
-  Latency: 60.03s
+  Latency: 2.18s
   Iterations: 1
-  FLOPs: 2.2720 TFLOPs
-  Answer Length: 87 chars
+  FLOPs: 4.5120 TFLOPs
+  Answer Length: 586 chars
+  Waiting 2.0s for vLLM KV cache cleanup...
 
 ################################################################################
 TASK 59/100 (ID: 58)
@@ -1693,19 +1735,20 @@ Calling 8B model directly with guided JSON...
 
 ============================================================
 Baseline completed
-Latency: 2.45 seconds
-Total FLOPs: 4.2880 TFLOPs
-Tokens: 136 input + 132 output
-Answer length: 651 characters
+Latency: 2.44 seconds
+Total FLOPs: 4.2720 TFLOPs
+Tokens: 136 input + 131 output
+Answer length: 683 characters
 ============================================================
 
 
 ✓ Task 59 completed and saved to CSV:
   Success: True
-  Latency: 2.45s
+  Latency: 2.44s
   Iterations: 1
-  FLOPs: 4.2880 TFLOPs
-  Answer Length: 651 chars
+  FLOPs: 4.2720 TFLOPs
+  Answer Length: 683 chars
+  Waiting 2.0s for vLLM KV cache cleanup...
 
 ################################################################################
 TASK 60/100 (ID: 59)
@@ -1721,19 +1764,20 @@ Calling 8B model directly with guided JSON...
 
 ============================================================
 Baseline completed
-Latency: 2.09 seconds
-Total FLOPs: 4.3680 TFLOPs
-Tokens: 161 input + 112 output
-Answer length: 555 characters
+Latency: 2.65 seconds
+Total FLOPs: 4.8480 TFLOPs
+Tokens: 161 input + 142 output
+Answer length: 723 characters
 ============================================================
 
 
 ✓ Task 60 completed and saved to CSV:
   Success: True
-  Latency: 2.09s
+  Latency: 2.65s
   Iterations: 1
-  FLOPs: 4.3680 TFLOPs
-  Answer Length: 555 chars
+  FLOPs: 4.8480 TFLOPs
+  Answer Length: 723 chars
+  Waiting 2.0s for vLLM KV cache cleanup...
 
 ################################################################################
 TASK 61/100 (ID: 60)
@@ -1749,7 +1793,7 @@ Calling 8B model directly with guided JSON...
 
 ============================================================
 Baseline completed
-Latency: 0.10 seconds
+Latency: 0.11 seconds
 Total FLOPs: 2.7360 TFLOPs
 Tokens: 167 input + 4 output
 Answer length: 1 characters
@@ -1758,10 +1802,11 @@ Answer length: 1 characters
 
 ✓ Task 61 completed and saved to CSV:
   Success: True
-  Latency: 0.10s
+  Latency: 0.11s
   Iterations: 1
   FLOPs: 2.7360 TFLOPs
   Answer Length: 1 chars
+  Waiting 2.0s for vLLM KV cache cleanup...
 
 ################################################################################
 TASK 62/100 (ID: 61)
@@ -1774,24 +1819,23 @@ Task: A small urgent-care clinic in a state with a stated rule that patients und
 ============================================================
 
 Calling 8B model directly with guided JSON...
-❌ [vLLM] Error calling http://localhost:8001/v1/completions: ReadTimeout: HTTPConnectionPool(host='localhost', port=8001): Read timed out. (read timeout=60)
-   Model: meta-llama/Llama-3.1-8B
 
 ============================================================
 Baseline completed
-Latency: 60.06 seconds
-Total FLOPs: 2.3200 TFLOPs
-Tokens: 133 input + 12 output
-Answer length: 87 characters
+Latency: 2.54 seconds
+Total FLOPs: 4.9760 TFLOPs
+Tokens: 175 input + 136 output
+Answer length: 612 characters
 ============================================================
 
 
 ✓ Task 62 completed and saved to CSV:
   Success: True
-  Latency: 60.06s
+  Latency: 2.54s
   Iterations: 1
-  FLOPs: 2.3200 TFLOPs
-  Answer Length: 87 chars
+  FLOPs: 4.9760 TFLOPs
+  Answer Length: 612 chars
+  Waiting 2.0s for vLLM KV cache cleanup...
 
 ################################################################################
 TASK 63/100 (ID: 62)
@@ -1807,19 +1851,20 @@ Calling 8B model directly with guided JSON...
 
 ============================================================
 Baseline completed
-Latency: 2.99 seconds
-Total FLOPs: 5.2160 TFLOPs
-Tokens: 165 input + 161 output
-Answer length: 866 characters
+Latency: 3.07 seconds
+Total FLOPs: 5.2800 TFLOPs
+Tokens: 165 input + 165 output
+Answer length: 883 characters
 ============================================================
 
 
 ✓ Task 63 completed and saved to CSV:
   Success: True
-  Latency: 2.99s
+  Latency: 3.07s
   Iterations: 1
-  FLOPs: 5.2160 TFLOPs
-  Answer Length: 866 chars
+  FLOPs: 5.2800 TFLOPs
+  Answer Length: 883 chars
+  Waiting 2.0s for vLLM KV cache cleanup...
 
 ################################################################################
 TASK 64/100 (ID: 63)
@@ -1832,24 +1877,23 @@ Task: A home health agency is asked to start non-emergency in-home nursing visit
 ============================================================
 
 Calling 8B model directly with guided JSON...
-❌ [vLLM] Error calling http://localhost:8001/v1/completions: ReadTimeout: HTTPConnectionPool(host='localhost', port=8001): Read timed out. (read timeout=60)
-   Model: meta-llama/Llama-3.1-8B
 
 ============================================================
 Baseline completed
-Latency: 60.06 seconds
-Total FLOPs: 2.5600 TFLOPs
-Tokens: 148 input + 12 output
-Answer length: 87 characters
+Latency: 76.81 seconds
+Total FLOPs: 68.5120 TFLOPs
+Tokens: 186 input + 4096 output
+Answer length: 20080 characters
 ============================================================
 
 
 ✓ Task 64 completed and saved to CSV:
   Success: True
-  Latency: 60.06s
+  Latency: 76.81s
   Iterations: 1
-  FLOPs: 2.5600 TFLOPs
-  Answer Length: 87 chars
+  FLOPs: 68.5120 TFLOPs
+  Answer Length: 20080 chars
+  Waiting 2.0s for vLLM KV cache cleanup...
 
 ################################################################################
 TASK 65/100 (ID: 64)
@@ -1865,19 +1909,20 @@ Calling 8B model directly with guided JSON...
 
 ============================================================
 Baseline completed
-Latency: 2.99 seconds
+Latency: 3.01 seconds
 Total FLOPs: 5.3280 TFLOPs
 Tokens: 172 input + 161 output
-Answer length: 838 characters
+Answer length: 841 characters
 ============================================================
 
 
 ✓ Task 65 completed and saved to CSV:
   Success: True
-  Latency: 2.99s
+  Latency: 3.01s
   Iterations: 1
   FLOPs: 5.3280 TFLOPs
-  Answer Length: 838 chars
+  Answer Length: 841 chars
+  Waiting 2.0s for vLLM KV cache cleanup...
 
 ################################################################################
 TASK 66/100 (ID: 65)
@@ -1890,24 +1935,23 @@ Task: A pharmacy-run clinic is asked to give a 17-year-old a non-urgent travel v
 ============================================================
 
 Calling 8B model directly with guided JSON...
-❌ [vLLM] Error calling http://localhost:8001/v1/completions: ReadTimeout: HTTPConnectionPool(host='localhost', port=8001): Read timed out. (read timeout=60)
-   Model: meta-llama/Llama-3.1-8B
 
 ============================================================
 Baseline completed
-Latency: 60.06 seconds
-Total FLOPs: 2.2080 TFLOPs
-Tokens: 126 input + 12 output
-Answer length: 87 characters
+Latency: 76.79 seconds
+Total FLOPs: 68.1280 TFLOPs
+Tokens: 162 input + 4096 output
+Answer length: 19818 characters
 ============================================================
 
 
 ✓ Task 66 completed and saved to CSV:
   Success: True
-  Latency: 60.06s
+  Latency: 76.79s
   Iterations: 1
-  FLOPs: 2.2080 TFLOPs
-  Answer Length: 87 chars
+  FLOPs: 68.1280 TFLOPs
+  Answer Length: 19818 chars
+  Waiting 2.0s for vLLM KV cache cleanup...
 
 ################################################################################
 TASK 67/100 (ID: 66)
@@ -1923,19 +1967,20 @@ Calling 8B model directly with guided JSON...
 
 ============================================================
 Baseline completed
-Latency: 3.74 seconds
-Total FLOPs: 5.8560 TFLOPs
-Tokens: 164 input + 202 output
-Answer length: 1057 characters
+Latency: 2.11 seconds
+Total FLOPs: 4.4320 TFLOPs
+Tokens: 164 input + 113 output
+Answer length: 552 characters
 ============================================================
 
 
 ✓ Task 67 completed and saved to CSV:
   Success: True
-  Latency: 3.74s
+  Latency: 2.11s
   Iterations: 1
-  FLOPs: 5.8560 TFLOPs
-  Answer Length: 1057 chars
+  FLOPs: 4.4320 TFLOPs
+  Answer Length: 552 chars
+  Waiting 2.0s for vLLM KV cache cleanup...
 
 ################################################################################
 TASK 68/100 (ID: 67)
@@ -1951,19 +1996,20 @@ Calling 8B model directly with guided JSON...
 
 ============================================================
 Baseline completed
-Latency: 4.29 seconds
-Total FLOPs: 6.5440 TFLOPs
-Tokens: 177 input + 232 output
-Answer length: 1139 characters
+Latency: 4.05 seconds
+Total FLOPs: 6.3200 TFLOPs
+Tokens: 177 input + 218 output
+Answer length: 1100 characters
 ============================================================
 
 
 ✓ Task 68 completed and saved to CSV:
   Success: True
-  Latency: 4.29s
+  Latency: 4.05s
   Iterations: 1
-  FLOPs: 6.5440 TFLOPs
-  Answer Length: 1139 chars
+  FLOPs: 6.3200 TFLOPs
+  Answer Length: 1100 chars
+  Waiting 2.0s for vLLM KV cache cleanup...
 
 ################################################################################
 TASK 69/100 (ID: 68)
@@ -1979,7 +2025,7 @@ Calling 8B model directly with guided JSON...
 
 ============================================================
 Baseline completed
-Latency: 2.07 seconds
+Latency: 2.08 seconds
 Total FLOPs: 4.3840 TFLOPs
 Tokens: 163 input + 111 output
 Answer length: 556 characters
@@ -1988,10 +2034,11 @@ Answer length: 556 characters
 
 ✓ Task 69 completed and saved to CSV:
   Success: True
-  Latency: 2.07s
+  Latency: 2.08s
   Iterations: 1
   FLOPs: 4.3840 TFLOPs
   Answer Length: 556 chars
+  Waiting 2.0s for vLLM KV cache cleanup...
 
 ################################################################################
 TASK 70/100 (ID: 69)
@@ -2007,19 +2054,20 @@ Calling 8B model directly with guided JSON...
 
 ============================================================
 Baseline completed
-Latency: 3.06 seconds
-Total FLOPs: 5.3760 TFLOPs
-Tokens: 171 input + 165 output
-Answer length: 844 characters
+Latency: 2.96 seconds
+Total FLOPs: 5.2800 TFLOPs
+Tokens: 171 input + 159 output
+Answer length: 827 characters
 ============================================================
 
 
 ✓ Task 70 completed and saved to CSV:
   Success: True
-  Latency: 3.06s
+  Latency: 2.96s
   Iterations: 1
-  FLOPs: 5.3760 TFLOPs
-  Answer Length: 844 chars
+  FLOPs: 5.2800 TFLOPs
+  Answer Length: 827 chars
+  Waiting 2.0s for vLLM KV cache cleanup...
 
 ################################################################################
 TASK 71/100 (ID: 70)
@@ -2032,24 +2080,23 @@ Task: A small pharmacy clinic is asked to administer a routine (non-emergency) v
 ============================================================
 
 Calling 8B model directly with guided JSON...
-❌ [vLLM] Error calling http://localhost:8001/v1/completions: ReadTimeout: HTTPConnectionPool(host='localhost', port=8001): Read timed out. (read timeout=60)
-   Model: meta-llama/Llama-3.1-8B
 
 ============================================================
 Baseline completed
-Latency: 60.06 seconds
-Total FLOPs: 2.0000 TFLOPs
-Tokens: 113 input + 12 output
-Answer length: 87 characters
+Latency: 76.79 seconds
+Total FLOPs: 67.8720 TFLOPs
+Tokens: 146 input + 4096 output
+Answer length: 21154 characters
 ============================================================
 
 
 ✓ Task 71 completed and saved to CSV:
   Success: True
-  Latency: 60.06s
+  Latency: 76.79s
   Iterations: 1
-  FLOPs: 2.0000 TFLOPs
-  Answer Length: 87 chars
+  FLOPs: 67.8720 TFLOPs
+  Answer Length: 21154 chars
+  Waiting 2.0s for vLLM KV cache cleanup...
 
 ################################################################################
 TASK 72/100 (ID: 71)
@@ -2065,19 +2112,20 @@ Calling 8B model directly with guided JSON...
 
 ============================================================
 Baseline completed
-Latency: 3.21 seconds
-Total FLOPs: 5.0720 TFLOPs
-Tokens: 144 input + 173 output
-Answer length: 925 characters
+Latency: 2.81 seconds
+Total FLOPs: 4.6720 TFLOPs
+Tokens: 144 input + 148 output
+Answer length: 767 characters
 ============================================================
 
 
 ✓ Task 72 completed and saved to CSV:
   Success: True
-  Latency: 3.21s
+  Latency: 2.81s
   Iterations: 1
-  FLOPs: 5.0720 TFLOPs
-  Answer Length: 925 chars
+  FLOPs: 4.6720 TFLOPs
+  Answer Length: 767 chars
+  Waiting 2.0s for vLLM KV cache cleanup...
 
 ################################################################################
 TASK 73/100 (ID: 72)
@@ -2093,19 +2141,20 @@ Calling 8B model directly with guided JSON...
 
 ============================================================
 Baseline completed
-Latency: 2.03 seconds
-Total FLOPs: 4.5440 TFLOPs
-Tokens: 175 input + 109 output
-Answer length: 533 characters
+Latency: 1.38 seconds
+Total FLOPs: 3.9680 TFLOPs
+Tokens: 175 input + 73 output
+Answer length: 352 characters
 ============================================================
 
 
 ✓ Task 73 completed and saved to CSV:
   Success: True
-  Latency: 2.03s
+  Latency: 1.38s
   Iterations: 1
-  FLOPs: 4.5440 TFLOPs
-  Answer Length: 533 chars
+  FLOPs: 3.9680 TFLOPs
+  Answer Length: 352 chars
+  Waiting 2.0s for vLLM KV cache cleanup...
 
 ################################################################################
 TASK 74/100 (ID: 73)
@@ -2121,19 +2170,20 @@ Calling 8B model directly with guided JSON...
 
 ============================================================
 Baseline completed
-Latency: 2.77 seconds
-Total FLOPs: 4.8320 TFLOPs
-Tokens: 153 input + 149 output
-Answer length: 736 characters
+Latency: 76.81 seconds
+Total FLOPs: 67.9840 TFLOPs
+Tokens: 153 input + 4096 output
+Answer length: 21008 characters
 ============================================================
 
 
 ✓ Task 74 completed and saved to CSV:
   Success: True
-  Latency: 2.77s
+  Latency: 76.81s
   Iterations: 1
-  FLOPs: 4.8320 TFLOPs
-  Answer Length: 736 chars
+  FLOPs: 67.9840 TFLOPs
+  Answer Length: 21008 chars
+  Waiting 2.0s for vLLM KV cache cleanup...
 
 ################################################################################
 TASK 75/100 (ID: 74)
@@ -2149,19 +2199,20 @@ Calling 8B model directly with guided JSON...
 
 ============================================================
 Baseline completed
-Latency: 3.48 seconds
-Total FLOPs: 5.7280 TFLOPs
-Tokens: 170 input + 188 output
-Answer length: 799 characters
+Latency: 4.26 seconds
+Total FLOPs: 6.3040 TFLOPs
+Tokens: 170 input + 224 output
+Answer length: 1036 characters
 ============================================================
 
 
 ✓ Task 75 completed and saved to CSV:
   Success: True
-  Latency: 3.48s
+  Latency: 4.26s
   Iterations: 1
-  FLOPs: 5.7280 TFLOPs
-  Answer Length: 799 chars
+  FLOPs: 6.3040 TFLOPs
+  Answer Length: 1036 chars
+  Waiting 2.0s for vLLM KV cache cleanup...
 
 ################################################################################
 TASK 76/100 (ID: 75)
@@ -2177,19 +2228,20 @@ Calling 8B model directly with guided JSON...
 
 ============================================================
 Baseline completed
-Latency: 2.41 seconds
-Total FLOPs: 4.8960 TFLOPs
-Tokens: 176 input + 130 output
-Answer length: 523 characters
+Latency: 2.48 seconds
+Total FLOPs: 4.9440 TFLOPs
+Tokens: 176 input + 133 output
+Answer length: 596 characters
 ============================================================
 
 
 ✓ Task 76 completed and saved to CSV:
   Success: True
-  Latency: 2.41s
+  Latency: 2.48s
   Iterations: 1
-  FLOPs: 4.8960 TFLOPs
-  Answer Length: 523 chars
+  FLOPs: 4.9440 TFLOPs
+  Answer Length: 596 chars
+  Waiting 2.0s for vLLM KV cache cleanup...
 
 ################################################################################
 TASK 77/100 (ID: 76)
@@ -2205,19 +2257,20 @@ Calling 8B model directly with guided JSON...
 
 ============================================================
 Baseline completed
-Latency: 1.54 seconds
-Total FLOPs: 4.1120 TFLOPs
-Tokens: 175 input + 82 output
-Answer length: 420 characters
+Latency: 1.23 seconds
+Total FLOPs: 3.8400 TFLOPs
+Tokens: 175 input + 65 output
+Answer length: 341 characters
 ============================================================
 
 
 ✓ Task 77 completed and saved to CSV:
   Success: True
-  Latency: 1.54s
+  Latency: 1.23s
   Iterations: 1
-  FLOPs: 4.1120 TFLOPs
-  Answer Length: 420 chars
+  FLOPs: 3.8400 TFLOPs
+  Answer Length: 341 chars
+  Waiting 2.0s for vLLM KV cache cleanup...
 
 ################################################################################
 TASK 78/100 (ID: 77)
@@ -2233,19 +2286,20 @@ Calling 8B model directly with guided JSON...
 
 ============================================================
 Baseline completed
-Latency: 0.91 seconds
-Total FLOPs: 3.3280 TFLOPs
-Tokens: 160 input + 48 output
-Answer length: 205 characters
+Latency: 1.89 seconds
+Total FLOPs: 4.1760 TFLOPs
+Tokens: 160 input + 101 output
+Answer length: 438 characters
 ============================================================
 
 
 ✓ Task 78 completed and saved to CSV:
   Success: True
-  Latency: 0.91s
+  Latency: 1.89s
   Iterations: 1
-  FLOPs: 3.3280 TFLOPs
-  Answer Length: 205 chars
+  FLOPs: 4.1760 TFLOPs
+  Answer Length: 438 chars
+  Waiting 2.0s for vLLM KV cache cleanup...
 
 ################################################################################
 TASK 79/100 (ID: 78)
@@ -2261,19 +2315,20 @@ Calling 8B model directly with guided JSON...
 
 ============================================================
 Baseline completed
-Latency: 3.85 seconds
-Total FLOPs: 5.9680 TFLOPs
-Tokens: 165 input + 208 output
-Answer length: 1146 characters
+Latency: 2.20 seconds
+Total FLOPs: 4.5280 TFLOPs
+Tokens: 165 input + 118 output
+Answer length: 613 characters
 ============================================================
 
 
 ✓ Task 79 completed and saved to CSV:
   Success: True
-  Latency: 3.85s
+  Latency: 2.20s
   Iterations: 1
-  FLOPs: 5.9680 TFLOPs
-  Answer Length: 1146 chars
+  FLOPs: 4.5280 TFLOPs
+  Answer Length: 613 chars
+  Waiting 2.0s for vLLM KV cache cleanup...
 
 ################################################################################
 TASK 80/100 (ID: 79)
@@ -2289,19 +2344,20 @@ Calling 8B model directly with guided JSON...
 
 ============================================================
 Baseline completed
-Latency: 2.42 seconds
-Total FLOPs: 4.8480 TFLOPs
-Tokens: 173 input + 130 output
-Answer length: 624 characters
+Latency: 76.81 seconds
+Total FLOPs: 68.3040 TFLOPs
+Tokens: 173 input + 4096 output
+Answer length: 20627 characters
 ============================================================
 
 
 ✓ Task 80 completed and saved to CSV:
   Success: True
-  Latency: 2.42s
+  Latency: 76.81s
   Iterations: 1
-  FLOPs: 4.8480 TFLOPs
-  Answer Length: 624 chars
+  FLOPs: 68.3040 TFLOPs
+  Answer Length: 20627 chars
+  Waiting 2.0s for vLLM KV cache cleanup...
 
 ################################################################################
 TASK 81/100 (ID: 80)
@@ -2317,19 +2373,20 @@ Calling 8B model directly with guided JSON...
 
 ============================================================
 Baseline completed
-Latency: 3.02 seconds
-Total FLOPs: 5.1360 TFLOPs
-Tokens: 158 input + 163 output
-Answer length: 655 characters
+Latency: 76.81 seconds
+Total FLOPs: 68.0640 TFLOPs
+Tokens: 158 input + 4096 output
+Answer length: 16214 characters
 ============================================================
 
 
 ✓ Task 81 completed and saved to CSV:
   Success: True
-  Latency: 3.02s
+  Latency: 76.81s
   Iterations: 1
-  FLOPs: 5.1360 TFLOPs
-  Answer Length: 655 chars
+  FLOPs: 68.0640 TFLOPs
+  Answer Length: 16214 chars
+  Waiting 2.0s for vLLM KV cache cleanup...
 
 ################################################################################
 TASK 82/100 (ID: 81)
@@ -2345,19 +2402,20 @@ Calling 8B model directly with guided JSON...
 
 ============================================================
 Baseline completed
-Latency: 0.10 seconds
-Total FLOPs: 2.5760 TFLOPs
-Tokens: 157 input + 4 output
-Answer length: 1 characters
+Latency: 2.00 seconds
+Total FLOPs: 4.2240 TFLOPs
+Tokens: 157 input + 107 output
+Answer length: 533 characters
 ============================================================
 
 
 ✓ Task 82 completed and saved to CSV:
   Success: True
-  Latency: 0.10s
+  Latency: 2.00s
   Iterations: 1
-  FLOPs: 2.5760 TFLOPs
-  Answer Length: 1 chars
+  FLOPs: 4.2240 TFLOPs
+  Answer Length: 533 chars
+  Waiting 2.0s for vLLM KV cache cleanup...
 
 ################################################################################
 TASK 83/100 (ID: 82)
@@ -2373,19 +2431,20 @@ Calling 8B model directly with guided JSON...
 
 ============================================================
 Baseline completed
-Latency: 2.01 seconds
-Total FLOPs: 4.6880 TFLOPs
-Tokens: 185 input + 108 output
-Answer length: 559 characters
+Latency: 76.83 seconds
+Total FLOPs: 68.4960 TFLOPs
+Tokens: 185 input + 4096 output
+Answer length: 22020 characters
 ============================================================
 
 
 ✓ Task 83 completed and saved to CSV:
   Success: True
-  Latency: 2.01s
+  Latency: 76.83s
   Iterations: 1
-  FLOPs: 4.6880 TFLOPs
-  Answer Length: 559 chars
+  FLOPs: 68.4960 TFLOPs
+  Answer Length: 22020 chars
+  Waiting 2.0s for vLLM KV cache cleanup...
 
 ################################################################################
 TASK 84/100 (ID: 83)
@@ -2401,19 +2460,20 @@ Calling 8B model directly with guided JSON...
 
 ============================================================
 Baseline completed
-Latency: 2.12 seconds
-Total FLOPs: 4.1120 TFLOPs
-Tokens: 143 input + 114 output
-Answer length: 569 characters
+Latency: 2.94 seconds
+Total FLOPs: 4.8160 TFLOPs
+Tokens: 143 input + 158 output
+Answer length: 771 characters
 ============================================================
 
 
 ✓ Task 84 completed and saved to CSV:
   Success: True
-  Latency: 2.12s
+  Latency: 2.94s
   Iterations: 1
-  FLOPs: 4.1120 TFLOPs
-  Answer Length: 569 chars
+  FLOPs: 4.8160 TFLOPs
+  Answer Length: 771 chars
+  Waiting 2.0s for vLLM KV cache cleanup...
 
 ################################################################################
 TASK 85/100 (ID: 84)
@@ -2429,7 +2489,7 @@ Calling 8B model directly with guided JSON...
 
 ============================================================
 Baseline completed
-Latency: 2.31 seconds
+Latency: 2.37 seconds
 Total FLOPs: 4.4160 TFLOPs
 Tokens: 152 input + 124 output
 Answer length: 637 characters
@@ -2438,10 +2498,11 @@ Answer length: 637 characters
 
 ✓ Task 85 completed and saved to CSV:
   Success: True
-  Latency: 2.31s
+  Latency: 2.37s
   Iterations: 1
   FLOPs: 4.4160 TFLOPs
   Answer Length: 637 chars
+  Waiting 2.0s for vLLM KV cache cleanup...
 
 ################################################################################
 TASK 86/100 (ID: 85)
@@ -2457,19 +2518,20 @@ Calling 8B model directly with guided JSON...
 
 ============================================================
 Baseline completed
-Latency: 1.79 seconds
-Total FLOPs: 4.3040 TFLOPs
-Tokens: 173 input + 96 output
-Answer length: 466 characters
+Latency: 1.90 seconds
+Total FLOPs: 4.3840 TFLOPs
+Tokens: 173 input + 101 output
+Answer length: 501 characters
 ============================================================
 
 
 ✓ Task 86 completed and saved to CSV:
   Success: True
-  Latency: 1.79s
+  Latency: 1.90s
   Iterations: 1
-  FLOPs: 4.3040 TFLOPs
-  Answer Length: 466 chars
+  FLOPs: 4.3840 TFLOPs
+  Answer Length: 501 chars
+  Waiting 2.0s for vLLM KV cache cleanup...
 
 ################################################################################
 TASK 87/100 (ID: 86)
@@ -2482,24 +2544,23 @@ Task: A pharmacy clinic is asked to give a routine vaccine to a 15-year-old for 
 ============================================================
 
 Calling 8B model directly with guided JSON...
-❌ [vLLM] Error calling http://localhost:8001/v1/completions: ReadTimeout: HTTPConnectionPool(host='localhost', port=8001): Read timed out. (read timeout=60)
-   Model: meta-llama/Llama-3.1-8B
 
 ============================================================
 Baseline completed
-Latency: 60.06 seconds
-Total FLOPs: 2.2400 TFLOPs
-Tokens: 128 input + 12 output
-Answer length: 87 characters
+Latency: 76.71 seconds
+Total FLOPs: 68.0800 TFLOPs
+Tokens: 159 input + 4096 output
+Answer length: 20852 characters
 ============================================================
 
 
 ✓ Task 87 completed and saved to CSV:
   Success: True
-  Latency: 60.06s
+  Latency: 76.71s
   Iterations: 1
-  FLOPs: 2.2400 TFLOPs
-  Answer Length: 87 chars
+  FLOPs: 68.0800 TFLOPs
+  Answer Length: 20852 chars
+  Waiting 2.0s for vLLM KV cache cleanup...
 
 ################################################################################
 TASK 88/100 (ID: 87)
@@ -2515,19 +2576,20 @@ Calling 8B model directly with guided JSON...
 
 ============================================================
 Baseline completed
-Latency: 2.69 seconds
-Total FLOPs: 4.8320 TFLOPs
-Tokens: 157 input + 145 output
-Answer length: 831 characters
+Latency: 2.64 seconds
+Total FLOPs: 4.7840 TFLOPs
+Tokens: 157 input + 142 output
+Answer length: 790 characters
 ============================================================
 
 
 ✓ Task 88 completed and saved to CSV:
   Success: True
-  Latency: 2.69s
+  Latency: 2.64s
   Iterations: 1
-  FLOPs: 4.8320 TFLOPs
-  Answer Length: 831 chars
+  FLOPs: 4.7840 TFLOPs
+  Answer Length: 790 chars
+  Waiting 2.0s for vLLM KV cache cleanup...
 
 ################################################################################
 TASK 89/100 (ID: 88)
@@ -2543,19 +2605,20 @@ Calling 8B model directly with guided JSON...
 
 ============================================================
 Baseline completed
-Latency: 1.53 seconds
-Total FLOPs: 3.7760 TFLOPs
-Tokens: 154 input + 82 output
-Answer length: 466 characters
+Latency: 1.15 seconds
+Total FLOPs: 3.4400 TFLOPs
+Tokens: 154 input + 61 output
+Answer length: 335 characters
 ============================================================
 
 
 ✓ Task 89 completed and saved to CSV:
   Success: True
-  Latency: 1.53s
+  Latency: 1.15s
   Iterations: 1
-  FLOPs: 3.7760 TFLOPs
-  Answer Length: 466 chars
+  FLOPs: 3.4400 TFLOPs
+  Answer Length: 335 chars
+  Waiting 2.0s for vLLM KV cache cleanup...
 
 ################################################################################
 TASK 90/100 (ID: 89)
@@ -2571,19 +2634,20 @@ Calling 8B model directly with guided JSON...
 
 ============================================================
 Baseline completed
-Latency: 2.12 seconds
-Total FLOPs: 4.5600 TFLOPs
-Tokens: 171 input + 114 output
-Answer length: 592 characters
+Latency: 3.70 seconds
+Total FLOPs: 5.9200 TFLOPs
+Tokens: 171 input + 199 output
+Answer length: 1023 characters
 ============================================================
 
 
 ✓ Task 90 completed and saved to CSV:
   Success: True
-  Latency: 2.12s
+  Latency: 3.70s
   Iterations: 1
-  FLOPs: 4.5600 TFLOPs
-  Answer Length: 592 chars
+  FLOPs: 5.9200 TFLOPs
+  Answer Length: 1023 chars
+  Waiting 2.0s for vLLM KV cache cleanup...
 
 ################################################################################
 TASK 91/100 (ID: 90)
@@ -2599,19 +2663,20 @@ Calling 8B model directly with guided JSON...
 
 ============================================================
 Baseline completed
-Latency: 1.64 seconds
-Total FLOPs: 4.1280 TFLOPs
-Tokens: 170 input + 88 output
-Answer length: 410 characters
+Latency: 2.22 seconds
+Total FLOPs: 4.6240 TFLOPs
+Tokens: 170 input + 119 output
+Answer length: 593 characters
 ============================================================
 
 
 ✓ Task 91 completed and saved to CSV:
   Success: True
-  Latency: 1.64s
+  Latency: 2.22s
   Iterations: 1
-  FLOPs: 4.1280 TFLOPs
-  Answer Length: 410 chars
+  FLOPs: 4.6240 TFLOPs
+  Answer Length: 593 chars
+  Waiting 2.0s for vLLM KV cache cleanup...
 
 ################################################################################
 TASK 92/100 (ID: 91)
@@ -2627,19 +2692,20 @@ Calling 8B model directly with guided JSON...
 
 ============================================================
 Baseline completed
-Latency: 2.29 seconds
-Total FLOPs: 4.6080 TFLOPs
-Tokens: 165 input + 123 output
-Answer length: 589 characters
+Latency: 2.85 seconds
+Total FLOPs: 5.0880 TFLOPs
+Tokens: 165 input + 153 output
+Answer length: 739 characters
 ============================================================
 
 
 ✓ Task 92 completed and saved to CSV:
   Success: True
-  Latency: 2.29s
+  Latency: 2.85s
   Iterations: 1
-  FLOPs: 4.6080 TFLOPs
-  Answer Length: 589 chars
+  FLOPs: 5.0880 TFLOPs
+  Answer Length: 739 chars
+  Waiting 2.0s for vLLM KV cache cleanup...
 
 ################################################################################
 TASK 93/100 (ID: 92)
@@ -2655,19 +2721,20 @@ Calling 8B model directly with guided JSON...
 
 ============================================================
 Baseline completed
-Latency: 2.41 seconds
-Total FLOPs: 4.3520 TFLOPs
-Tokens: 142 input + 130 output
-Answer length: 680 characters
+Latency: 0.10 seconds
+Total FLOPs: 2.3360 TFLOPs
+Tokens: 142 input + 4 output
+Answer length: 1 characters
 ============================================================
 
 
 ✓ Task 93 completed and saved to CSV:
   Success: True
-  Latency: 2.41s
+  Latency: 0.10s
   Iterations: 1
-  FLOPs: 4.3520 TFLOPs
-  Answer Length: 680 chars
+  FLOPs: 2.3360 TFLOPs
+  Answer Length: 1 chars
+  Waiting 2.0s for vLLM KV cache cleanup...
 
 ################################################################################
 TASK 94/100 (ID: 93)
@@ -2683,19 +2750,20 @@ Calling 8B model directly with guided JSON...
 
 ============================================================
 Baseline completed
-Latency: 3.89 seconds
-Total FLOPs: 5.9520 TFLOPs
-Tokens: 162 input + 210 output
-Answer length: 1065 characters
+Latency: 2.73 seconds
+Total FLOPs: 4.9440 TFLOPs
+Tokens: 162 input + 147 output
+Answer length: 730 characters
 ============================================================
 
 
 ✓ Task 94 completed and saved to CSV:
   Success: True
-  Latency: 3.89s
+  Latency: 2.73s
   Iterations: 1
-  FLOPs: 5.9520 TFLOPs
-  Answer Length: 1065 chars
+  FLOPs: 4.9440 TFLOPs
+  Answer Length: 730 chars
+  Waiting 2.0s for vLLM KV cache cleanup...
 
 ################################################################################
 TASK 95/100 (ID: 94)
@@ -2724,6 +2792,7 @@ Answer length: 664 characters
   Iterations: 1
   FLOPs: 4.5280 TFLOPs
   Answer Length: 664 chars
+  Waiting 2.0s for vLLM KV cache cleanup...
 
 ################################################################################
 TASK 96/100 (ID: 95)
@@ -2739,19 +2808,20 @@ Calling 8B model directly with guided JSON...
 
 ============================================================
 Baseline completed
-Latency: 5.90 seconds
-Total FLOPs: 7.7280 TFLOPs
-Tokens: 165 input + 318 output
-Answer length: 1671 characters
+Latency: 2.99 seconds
+Total FLOPs: 5.2160 TFLOPs
+Tokens: 165 input + 161 output
+Answer length: 772 characters
 ============================================================
 
 
 ✓ Task 96 completed and saved to CSV:
   Success: True
-  Latency: 5.90s
+  Latency: 2.99s
   Iterations: 1
-  FLOPs: 7.7280 TFLOPs
-  Answer Length: 1671 chars
+  FLOPs: 5.2160 TFLOPs
+  Answer Length: 772 chars
+  Waiting 2.0s for vLLM KV cache cleanup...
 
 ################################################################################
 TASK 97/100 (ID: 96)
@@ -2767,19 +2837,20 @@ Calling 8B model directly with guided JSON...
 
 ============================================================
 Baseline completed
-Latency: 2.16 seconds
-Total FLOPs: 4.5600 TFLOPs
-Tokens: 169 input + 116 output
-Answer length: 589 characters
+Latency: 3.27 seconds
+Total FLOPs: 5.5200 TFLOPs
+Tokens: 169 input + 176 output
+Answer length: 938 characters
 ============================================================
 
 
 ✓ Task 97 completed and saved to CSV:
   Success: True
-  Latency: 2.16s
+  Latency: 3.27s
   Iterations: 1
-  FLOPs: 4.5600 TFLOPs
-  Answer Length: 589 chars
+  FLOPs: 5.5200 TFLOPs
+  Answer Length: 938 chars
+  Waiting 2.0s for vLLM KV cache cleanup...
 
 ################################################################################
 TASK 98/100 (ID: 97)
@@ -2795,19 +2866,20 @@ Calling 8B model directly with guided JSON...
 
 ============================================================
 Baseline completed
-Latency: 2.71 seconds
-Total FLOPs: 5.0400 TFLOPs
-Tokens: 169 input + 146 output
-Answer length: 737 characters
+Latency: 2.40 seconds
+Total FLOPs: 4.7680 TFLOPs
+Tokens: 169 input + 129 output
+Answer length: 639 characters
 ============================================================
 
 
 ✓ Task 98 completed and saved to CSV:
   Success: True
-  Latency: 2.71s
+  Latency: 2.40s
   Iterations: 1
-  FLOPs: 5.0400 TFLOPs
-  Answer Length: 737 chars
+  FLOPs: 4.7680 TFLOPs
+  Answer Length: 639 chars
+  Waiting 2.0s for vLLM KV cache cleanup...
 
 ################################################################################
 TASK 99/100 (ID: 98)
@@ -2823,19 +2895,20 @@ Calling 8B model directly with guided JSON...
 
 ============================================================
 Baseline completed
-Latency: 2.58 seconds
-Total FLOPs: 4.6880 TFLOPs
-Tokens: 154 input + 139 output
-Answer length: 679 characters
+Latency: 3.71 seconds
+Total FLOPs: 5.6640 TFLOPs
+Tokens: 154 input + 200 output
+Answer length: 1069 characters
 ============================================================
 
 
 ✓ Task 99 completed and saved to CSV:
   Success: True
-  Latency: 2.58s
+  Latency: 3.71s
   Iterations: 1
-  FLOPs: 4.6880 TFLOPs
-  Answer Length: 679 chars
+  FLOPs: 5.6640 TFLOPs
+  Answer Length: 1069 chars
+  Waiting 2.0s for vLLM KV cache cleanup...
 
 ################################################################################
 TASK 100/100 (ID: 99)
@@ -2848,24 +2921,22 @@ Task: A pharmacy clinic is asked to administer a vaccine to a 15-year-old who ar
 ============================================================
 
 Calling 8B model directly with guided JSON...
-❌ [vLLM] Error calling http://localhost:8001/v1/completions: ReadTimeout: HTTPConnectionPool(host='localhost', port=8001): Read timed out. (read timeout=60)
-   Model: meta-llama/Llama-3.1-8B
 
 ============================================================
 Baseline completed
-Latency: 60.01 seconds
-Total FLOPs: 2.3200 TFLOPs
-Tokens: 133 input + 12 output
-Answer length: 87 characters
+Latency: 2.63 seconds
+Total FLOPs: 4.9120 TFLOPs
+Tokens: 170 input + 137 output
+Answer length: 714 characters
 ============================================================
 
 
 ✓ Task 100 completed and saved to CSV:
   Success: True
-  Latency: 60.01s
+  Latency: 2.63s
   Iterations: 1
-  FLOPs: 2.3200 TFLOPs
-  Answer Length: 87 chars
+  FLOPs: 4.9120 TFLOPs
+  Answer Length: 714 chars
 
 ================================================================================
 EVALUATION SUMMARY
@@ -2873,10 +2944,10 @@ EVALUATION SUMMARY
 Total tasks: 100
 Successful: 100
 Failed: 0
-Avg Latency: 12.31s
-Avg FLOPs: 4.3650 TFLOPs
+Avg Latency: 17.33s
+Avg FLOPs: 17.3970 TFLOPs
 
-✓ All results saved to: examples/eval_results_baseline_20251215_211253.csv
+✓ All results saved to: examples/eval_results_baseline_20251217_005635.csv
 ================================================================================
 
 
