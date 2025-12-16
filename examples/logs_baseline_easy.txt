@@ -1,0 +1,2885 @@
+======================================
+LLM-Agent-Orchestrator Target Architecture Evaluation
+======================================
+
+✓ Virtual environment activated
+Configuration:
+  Mode: baseline
+  Input CSV: examples/eval_inputs_easy.csv
+  Output CSV: auto-generated
+  Max Retry: 3
+  Max Tasks: all
+
+Starting evaluation...
+
+Loaded 4 agent configs and 4 domain configs
+
+================================================================================
+LLM-Agent-Orchestrator Evaluation
+================================================================================
+Mode: BASELINE
+Input: examples/eval_inputs_easy.csv
+Output: examples/eval_results_baseline_20251215_211253.csv
+Max Retry: 3
+================================================================================
+
+Loading tasks from CSV...
+Loaded 100 tasks
+
+✓ Initialized CSV file: examples/eval_results_baseline_20251215_211253.csv
+
+✓ Router service available at http://localhost:8002
+✓ Router service available at http://localhost:8002
+✓ Router service available at http://localhost:8002
+✓ Router service available at http://localhost:8002
+
+################################################################################
+TASK 1/100 (ID: 0)
+################################################################################
+
+============================================================
+BASELINE MODE - Single 8B Model
+Processing task for user: eval_task_0
+Task: A workplace health clinic is scheduling a non-urgent vaccination series for an employee that requires 2 doses, 30 days apart, costing $180 per dose. Company policy (based on stated labor regulation) requires written employee consent for any medical treatment, and for employees under 18 it also requires a parent/guardian signature unless the treatment is needed to prevent immediate serious harm; the clinician confirms the employee is healthy and there is no immediate risk in waiting. The 17-year-old employee wants both doses scheduled today without informing their parents and offers to pay $250 now and the rest later. Given the consent requirement, the employee’s age, the dosing schedule, and the payment offered, what should the clinic do?
+============================================================
+
+Calling 8B model directly with guided JSON...
+
+============================================================
+Baseline completed
+Latency: 4.31 seconds
+Total FLOPs: 5.6160 TFLOPs
+Tokens: 183 input + 168 output
+Answer length: 872 characters
+============================================================
+
+
+✓ Task 1 completed and saved to CSV:
+  Success: True
+  Latency: 4.31s
+  Iterations: 1
+  FLOPs: 5.6160 TFLOPs
+  Answer Length: 872 chars
+
+################################################################################
+TASK 2/100 (ID: 1)
+################################################################################
+
+============================================================
+BASELINE MODE - Single 8B Model
+Processing task for user: eval_task_1
+Task: A company’s HR manager in California is arranging a pre-employment physical exam for a job candidate to meet a workplace safety requirement; the clinic charges $180 and can schedule the exam either this week or next, with no health risk from waiting. The company policy (stated as required by regulation) says any employer-required medical exam must be paid for by the employer, but the manager proposes asking the candidate to pay $180 now and reimbursing only $100 after 30 days to “reduce costs.” Given the rule, the exam cost, and the reimbursement plan, what should the company do?
+============================================================
+
+Calling 8B model directly with guided JSON...
+
+============================================================
+Baseline completed
+Latency: 1.41 seconds
+Total FLOPs: 3.7280 TFLOPs
+Tokens: 158 input + 75 output
+Answer length: 344 characters
+============================================================
+
+
+✓ Task 2 completed and saved to CSV:
+  Success: True
+  Latency: 1.41s
+  Iterations: 1
+  FLOPs: 3.7280 TFLOPs
+  Answer Length: 344 chars
+
+################################################################################
+TASK 3/100 (ID: 2)
+################################################################################
+
+============================================================
+BASELINE MODE - Single 8B Model
+Processing task for user: eval_task_2
+Task: A small employer’s HR manager is deciding whether to enroll a new hire in the company health plan today: the plan document (reflecting a stated regulation) says employees must work at least 30 hours per week to be eligible. The new hire is scheduled for 28 hours per week for the next month and asks to be enrolled anyway because they have a prescription that costs $250 per month without insurance but only $40 per month with the plan. Given the eligibility rule and the cost difference, what should the HR manager do?
+============================================================
+
+Calling 8B model directly with guided JSON...
+
+============================================================
+Baseline completed
+Latency: 3.26 seconds
+Total FLOPs: 5.0880 TFLOPs
+Tokens: 143 input + 175 output
+Answer length: 856 characters
+============================================================
+
+
+✓ Task 3 completed and saved to CSV:
+  Success: True
+  Latency: 3.26s
+  Iterations: 1
+  FLOPs: 5.0880 TFLOPs
+  Answer Length: 856 chars
+
+################################################################################
+TASK 4/100 (ID: 3)
+################################################################################
+
+============================================================
+BASELINE MODE - Single 8B Model
+Processing task for user: eval_task_3
+Task: A home-health agency is discharging a 70-year-old patient after a minor stroke and must provide a required follow-up visit within 14 days under its stated compliance policy; the patient’s doctor says a visit within 10–14 days is clinically appropriate but not urgent. The agency has two scheduling options: a telehealth visit in 8 days for $90 or an in-person visit in 15 days for $120, and the patient’s insurance will reimburse up to $100 only if the visit occurs within the 14-day window. Given the timing rule, the medical guidance, and the reimbursement limits, what should the agency schedule?
+============================================================
+
+Calling 8B model directly with guided JSON...
+
+============================================================
+Baseline completed
+Latency: 2.43 seconds
+Total FLOPs: 4.7360 TFLOPs
+Tokens: 166 input + 130 output
+Answer length: 603 characters
+============================================================
+
+
+✓ Task 4 completed and saved to CSV:
+  Success: True
+  Latency: 2.43s
+  Iterations: 1
+  FLOPs: 4.7360 TFLOPs
+  Answer Length: 603 chars
+
+################################################################################
+TASK 5/100 (ID: 4)
+################################################################################
+
+============================================================
+BASELINE MODE - Single 8B Model
+Processing task for user: eval_task_4
+Task: A community pharmacy is asked to dispense a 30-day supply of a blood pressure medication to a 17-year-old patient; store policy (based on stated regulation) requires parental consent for non-emergency prescriptions for anyone under 18 unless the prescriber confirms an urgent risk from delay, and the prescriber has documented that a 3-day delay is medically safe. The medication costs $45, the patient has $20 today, and the pharmacy can hold the prescription for up to 7 days while it contacts a parent for consent and payment. Given the consent requirement, the medical note that delay is safe, and the patient’s available funds, what should the pharmacy do?
+============================================================
+
+Calling 8B model directly with guided JSON...
+❌ [vLLM] Error calling http://localhost:8001/v1/completions: ReadTimeout: HTTPConnectionPool(host='localhost', port=8001): Read timed out. (read timeout=60)
+   Model: meta-llama/Llama-3.1-8B
+
+============================================================
+Baseline completed
+Latency: 60.06 seconds
+Total FLOPs: 2.3360 TFLOPs
+Tokens: 134 input + 12 output
+Answer length: 87 characters
+============================================================
+
+
+✓ Task 5 completed and saved to CSV:
+  Success: True
+  Latency: 60.06s
+  Iterations: 1
+  FLOPs: 2.3360 TFLOPs
+  Answer Length: 87 chars
+
+################################################################################
+TASK 6/100 (ID: 5)
+################################################################################
+
+============================================================
+BASELINE MODE - Single 8B Model
+Processing task for user: eval_task_5
+Task: A pharmacy clinic is asked to administer a routine (non-urgent) vaccine to a 15-year-old; the posted regulation in this scenario requires written parental consent for vaccinations for anyone under 16 unless delaying would create a serious health risk, and the clinician documents that waiting does not increase risk. The vaccine costs $65, and the teen has $40 cash and asks the clinic to give the shot today without contacting a parent, while the clinic can schedule the vaccine for next week at no medical risk. Given the consent requirement, the patient’s age, the payment shortfall, and the lack of urgency, what should the clinic do?
+============================================================
+
+Calling 8B model directly with guided JSON...
+
+============================================================
+Baseline completed
+Latency: 4.72 seconds
+Total FLOPs: 6.7040 TFLOPs
+Tokens: 165 input + 254 output
+Answer length: 1329 characters
+============================================================
+
+
+✓ Task 6 completed and saved to CSV:
+  Success: True
+  Latency: 4.72s
+  Iterations: 1
+  FLOPs: 6.7040 TFLOPs
+  Answer Length: 1329 chars
+
+################################################################################
+TASK 7/100 (ID: 6)
+################################################################################
+
+============================================================
+BASELINE MODE - Single 8B Model
+Processing task for user: eval_task_6
+Task: A small employer is renewing its health plan, and a stated regulation requires employers to provide a “standard plan” option to all employees unless the employee waives it in writing; the insurer charges $320/month per enrolled employee for the standard plan. The company has 12 employees, and 8 have signed written waivers while 4 have not, but the owner wants to enroll only 2 of the 4 to reduce costs because they are part-time. Given the waiver rule, the number of employees without waivers, and the monthly premium, what should the company do?
+============================================================
+
+Calling 8B model directly with guided JSON...
+
+============================================================
+Baseline completed
+Latency: 2.66 seconds
+Total FLOPs: 4.7200 TFLOPs
+Tokens: 152 input + 143 output
+Answer length: 680 characters
+============================================================
+
+
+✓ Task 7 completed and saved to CSV:
+  Success: True
+  Latency: 2.66s
+  Iterations: 1
+  FLOPs: 4.7200 TFLOPs
+  Answer Length: 680 chars
+
+################################################################################
+TASK 8/100 (ID: 7)
+################################################################################
+
+============================================================
+BASELINE MODE - Single 8B Model
+Processing task for user: eval_task_7
+Task: A small employer health clinic is asked to start a non-urgent prescription treatment for a 17-year-old employee that costs $60 per month; the clinic’s stated policy (based on company regulation) requires written parental consent for any non-emergency treatment for patients under 18, and the clinician confirms waiting 10 days poses no medical risk. The patient can pay for the first month but asks the clinic to begin today without contacting their parents, while the earliest appointment that allows time to obtain consent is in 10 days. Given the consent requirement, the patient’s age, the cost, and the lack of medical urgency, what should the clinic do?
+============================================================
+
+Calling 8B model directly with guided JSON...
+❌ [vLLM] Error calling http://localhost:8001/v1/completions: ReadTimeout: HTTPConnectionPool(host='localhost', port=8001): Read timed out. (read timeout=60)
+   Model: meta-llama/Llama-3.1-8B
+
+============================================================
+Baseline completed
+Latency: 60.07 seconds
+Total FLOPs: 2.3200 TFLOPs
+Tokens: 133 input + 12 output
+Answer length: 87 characters
+============================================================
+
+
+✓ Task 8 completed and saved to CSV:
+  Success: True
+  Latency: 60.07s
+  Iterations: 1
+  FLOPs: 2.3200 TFLOPs
+  Answer Length: 87 chars
+
+################################################################################
+TASK 9/100 (ID: 8)
+################################################################################
+
+============================================================
+BASELINE MODE - Single 8B Model
+Processing task for user: eval_task_8
+Task: A pharmacy clinic is asked to administer a travel vaccine to a 15-year-old whose parent is not present; clinic policy (reflecting its stated regulation) requires written parental consent for vaccines for anyone under 16 unless it is an emergency, and the nurse confirms this is not an emergency. The vaccine costs $180, the teen has $200 cash and wants it today, and the clinic can offer an appointment in 3 days with no health risk from waiting. Given the consent requirement, the patient’s age, and the non-urgent timing, what should the clinic do?
+============================================================
+
+Calling 8B model directly with guided JSON...
+
+============================================================
+Baseline completed
+Latency: 1.53 seconds
+Total FLOPs: 3.7440 TFLOPs
+Tokens: 153 input + 81 output
+Answer length: 420 characters
+============================================================
+
+
+✓ Task 9 completed and saved to CSV:
+  Success: True
+  Latency: 1.53s
+  Iterations: 1
+  FLOPs: 3.7440 TFLOPs
+  Answer Length: 420 chars
+
+################################################################################
+TASK 10/100 (ID: 9)
+################################################################################
+
+============================================================
+BASELINE MODE - Single 8B Model
+Processing task for user: eval_task_9
+Task: A small employer is updating its health clinic policy for employee drug testing: under its stated workplace rule (based on regulation), any drug test result of **0.08% BAC or higher** requires the employee to be **removed from safety-sensitive duties for 24 hours**, while results below 0.08% allow the employee to work. An employee scheduled to operate machinery today has a documented test result of **0.07% at 8:00 a.m.**, and a follow-up test at **10:00 a.m.** reads **0.09%**; the employee insists the first result should control and asks to keep working. Based on the rule and these two results, what should the employer do?
+============================================================
+
+Calling 8B model directly with guided JSON...
+
+============================================================
+Baseline completed
+Latency: 1.78 seconds
+Total FLOPs: 4.4640 TFLOPs
+Tokens: 184 input + 95 output
+Answer length: 442 characters
+============================================================
+
+
+✓ Task 10 completed and saved to CSV:
+  Success: True
+  Latency: 1.78s
+  Iterations: 1
+  FLOPs: 4.4640 TFLOPs
+  Answer Length: 442 chars
+
+################################################################################
+TASK 11/100 (ID: 10)
+################################################################################
+
+============================================================
+BASELINE MODE - Single 8B Model
+Processing task for user: eval_task_10
+Task: A home health agency is scheduling a non-urgent physical therapy program for a 17-year-old after a mild sports injury: 6 sessions at $150 each, totaling $900. Agency policy (based on stated regulation) requires parental consent for any non-emergency treatment for patients under 18, and the clinician confirms waiting one week poses no health risk; the teen can pay $500 today and asks to start immediately without contacting a parent. Given the consent requirement, the patient’s age, the total cost, and the lack of urgency, what should the agency do?
+============================================================
+
+Calling 8B model directly with guided JSON...
+
+============================================================
+Baseline completed
+Latency: 3.38 seconds
+Total FLOPs: 5.3600 TFLOPs
+Tokens: 153 input + 182 output
+Answer length: 975 characters
+============================================================
+
+
+✓ Task 11 completed and saved to CSV:
+  Success: True
+  Latency: 3.38s
+  Iterations: 1
+  FLOPs: 5.3600 TFLOPs
+  Answer Length: 975 chars
+
+################################################################################
+TASK 12/100 (ID: 11)
+################################################################################
+
+============================================================
+BASELINE MODE - Single 8B Model
+Processing task for user: eval_task_11
+Task: A small employer is planning a workplace flu-vaccination clinic where each vaccine dose costs $28, and the vendor charges a flat $120 setup fee if at least 10 employees participate. Company policy (based on stated local regulation) requires written parental consent for any participating employee under 18, and the HR list shows 12 interested employees, including 3 who are 17 and have not returned consent forms yet. The clinic date is in five days and missing it means waiting two months, but there is no medical emergency. Should HR proceed with the clinic as planned, postpone it, or run it only for employees with completed consent, and why?
+============================================================
+
+Calling 8B model directly with guided JSON...
+❌ [vLLM] Error calling http://localhost:8001/v1/completions: ReadTimeout: HTTPConnectionPool(host='localhost', port=8001): Read timed out. (read timeout=60)
+   Model: meta-llama/Llama-3.1-8B
+
+============================================================
+Baseline completed
+Latency: 60.06 seconds
+Total FLOPs: 2.3520 TFLOPs
+Tokens: 135 input + 12 output
+Answer length: 87 characters
+============================================================
+
+
+✓ Task 12 completed and saved to CSV:
+  Success: True
+  Latency: 60.06s
+  Iterations: 1
+  FLOPs: 2.3520 TFLOPs
+  Answer Length: 87 chars
+
+################################################################################
+TASK 13/100 (ID: 12)
+################################################################################
+
+============================================================
+BASELINE MODE - Single 8B Model
+Processing task for user: eval_task_12
+Task: A workplace health clinic is asked to give a non-urgent hepatitis vaccine series to a 17-year-old intern; clinic policy (based on stated state regulation) requires written parental consent for patients under 18 unless the care is needed to prevent imminent serious harm, which the clinician confirms is not the case. The series costs $150 per dose for 3 doses ($450 total), and the intern can pay $200 today and asks to start immediately without notifying parents, while the clinic can wait one week with no added medical risk. Given the consent rule, the patient’s age, the medical non-urgency, and the total cost, what should the clinic do?
+============================================================
+
+Calling 8B model directly with guided JSON...
+❌ [vLLM] Error calling http://localhost:8001/v1/completions: ReadTimeout: HTTPConnectionPool(host='localhost', port=8001): Read timed out. (read timeout=60)
+   Model: meta-llama/Llama-3.1-8B
+
+============================================================
+Baseline completed
+Latency: 60.06 seconds
+Total FLOPs: 2.3360 TFLOPs
+Tokens: 134 input + 12 output
+Answer length: 87 characters
+============================================================
+
+
+✓ Task 13 completed and saved to CSV:
+  Success: True
+  Latency: 60.06s
+  Iterations: 1
+  FLOPs: 2.3360 TFLOPs
+  Answer Length: 87 chars
+
+################################################################################
+TASK 14/100 (ID: 13)
+################################################################################
+
+============================================================
+BASELINE MODE - Single 8B Model
+Processing task for user: eval_task_13
+Task: A small employer in California is deciding whether to approve a non-urgent surgery request for an employee who has been employed for 10 months and worked 1,350 hours in the past 12 months; the company has 30 employees within 75 miles, and its stated policy (based on the federal FMLA rule it follows) grants unpaid job-protected leave only to employees with at least 12 months of service, 1,250 hours worked, and at least 50 employees within 75 miles. The employee’s doctor recommends 3 weeks off for recovery, and the employee asks for job-protected leave starting next week rather than using paid vacation (they have only 5 days available). Based on the stated eligibility thresholds and the employee’s details, what should the employer do?
+============================================================
+
+Calling 8B model directly with guided JSON...
+
+============================================================
+Baseline completed
+Latency: 2.59 seconds
+Total FLOPs: 5.3440 TFLOPs
+Tokens: 196 input + 138 output
+Answer length: 606 characters
+============================================================
+
+
+✓ Task 14 completed and saved to CSV:
+  Success: True
+  Latency: 2.59s
+  Iterations: 1
+  FLOPs: 5.3440 TFLOPs
+  Answer Length: 606 chars
+
+################################################################################
+TASK 15/100 (ID: 14)
+################################################################################
+
+============================================================
+BASELINE MODE - Single 8B Model
+Processing task for user: eval_task_14
+Task: A small company reimburses employee healthcare expenses, but its written policy (aligned with stated regulation) allows reimbursement only if the claim is submitted within 30 days of the service date and caps reimbursement at $500 per visit. An employee submits a claim 45 days after a physical therapy visit that cost $650 and asks for a full reimbursement because they were traveling and couldn’t file earlier. Given the 30-day deadline and the $500 cap, what should the company do?
+============================================================
+
+Calling 8B model directly with guided JSON...
+
+============================================================
+Baseline completed
+Latency: 1.62 seconds
+Total FLOPs: 3.4880 TFLOPs
+Tokens: 132 input + 86 output
+Answer length: 414 characters
+============================================================
+
+
+✓ Task 15 completed and saved to CSV:
+  Success: True
+  Latency: 1.62s
+  Iterations: 1
+  FLOPs: 3.4880 TFLOPs
+  Answer Length: 414 chars
+
+################################################################################
+TASK 16/100 (ID: 15)
+################################################################################
+
+============================================================
+BASELINE MODE - Single 8B Model
+Processing task for user: eval_task_15
+Task: A pharmacy clinic is considering giving a non-emergency travel vaccine to a 17-year-old for $180; its stated policy (based on local regulation) requires a parent or legal guardian’s written consent for any vaccination of patients under 18 unless it is an emergency, and the clinician confirms there is no emergency because the trip is 30 days away. The teen can pay $180 today and asks the clinic not to contact their parents, while the clinic can schedule the vaccination for next week if consent is obtained. Given the consent requirement, the patient’s age, timing, and ability to pay, what should the clinic do?
+============================================================
+
+Calling 8B model directly with guided JSON...
+
+============================================================
+Baseline completed
+Latency: 2.33 seconds
+Total FLOPs: 4.6240 TFLOPs
+Tokens: 164 input + 125 output
+Answer length: 612 characters
+============================================================
+
+
+✓ Task 16 completed and saved to CSV:
+  Success: True
+  Latency: 2.33s
+  Iterations: 1
+  FLOPs: 4.6240 TFLOPs
+  Answer Length: 612 chars
+
+################################################################################
+TASK 17/100 (ID: 16)
+################################################################################
+
+============================================================
+BASELINE MODE - Single 8B Model
+Processing task for user: eval_task_16
+Task: A pharmacy is dispensing a controlled pain medication to a 17-year-old after a minor dental procedure; store policy (reflecting a stated regulation) allows dispensing to minors only if a parent/guardian signs the pickup log, unless the prescription is for an emergency condition requiring same-day relief. The prescription is for 12 tablets taken 1 every 6 hours as needed (maximum 4 per day), the dentist wrote that the condition is not an emergency, and the teen offers to pay the $36 copay in cash and pick it up alone today. Given the consent/signature rule, the “not an emergency” note, and the dosing limits, what should the pharmacy do?
+============================================================
+
+Calling 8B model directly with guided JSON...
+
+============================================================
+Baseline completed
+Latency: 3.07 seconds
+Total FLOPs: 5.4720 TFLOPs
+Tokens: 178 input + 164 output
+Answer length: 780 characters
+============================================================
+
+
+✓ Task 17 completed and saved to CSV:
+  Success: True
+  Latency: 3.07s
+  Iterations: 1
+  FLOPs: 5.4720 TFLOPs
+  Answer Length: 780 chars
+
+################################################################################
+TASK 18/100 (ID: 17)
+################################################################################
+
+============================================================
+BASELINE MODE - Single 8B Model
+Processing task for user: eval_task_17
+Task: A retail pharmacy is dispensing a non-urgent 30-day supply of a prescription inhaler priced at $90; store policy (based on stated regulation) requires written consent from a parent or legal guardian to share a minor’s prescription details or to enroll them in auto-refill unless the minor is emancipated, which this 17-year-old patient is not. The patient wants the pharmacy to enroll them in auto-refill and text them monthly reminders, but the only contact on file is the parent’s phone number and the patient asks staff not to contact their parent; the patient can still buy the inhaler today without enrollment. Given the consent requirement, the patient’s age, and the non-urgent nature of enrollment, what should the pharmacy do?
+============================================================
+
+Calling 8B model directly with guided JSON...
+
+============================================================
+Baseline completed
+Latency: 1.22 seconds
+Total FLOPs: 4.0000 TFLOPs
+Tokens: 188 input + 62 output
+Answer length: 307 characters
+============================================================
+
+
+✓ Task 18 completed and saved to CSV:
+  Success: True
+  Latency: 1.22s
+  Iterations: 1
+  FLOPs: 4.0000 TFLOPs
+  Answer Length: 307 chars
+
+################################################################################
+TASK 19/100 (ID: 18)
+################################################################################
+
+============================================================
+BASELINE MODE - Single 8B Model
+Processing task for user: eval_task_18
+Task: A small employer’s HR manager is deciding whether to approve a requested medical leave for an employee scheduled to work 30 hours per week; company policy (reflecting a stated regulation) grants paid medical leave only if a licensed clinician certifies the condition will prevent the employee from working for at least 10 consecutive workdays. The employee provides a doctor’s note recommending 6 workdays off now (4 hours per day) plus 4 additional workdays off next month, and HR must decide today whether to approve paid leave or classify the time off as unpaid. Based on the certification requirement and the leave requested, what should HR do?
+============================================================
+
+Calling 8B model directly with guided JSON...
+
+============================================================
+Baseline completed
+Latency: 2.39 seconds
+Total FLOPs: 4.6880 TFLOPs
+Tokens: 165 input + 128 output
+Answer length: 565 characters
+============================================================
+
+
+✓ Task 19 completed and saved to CSV:
+  Success: True
+  Latency: 2.39s
+  Iterations: 1
+  FLOPs: 4.6880 TFLOPs
+  Answer Length: 565 chars
+
+################################################################################
+TASK 20/100 (ID: 19)
+################################################################################
+
+============================================================
+BASELINE MODE - Single 8B Model
+Processing task for user: eval_task_19
+Task: A workplace wellness clinic is asked to administer a non-emergency flu treatment to a 17-year-old employee that costs $150; the clinic’s written policy (based on stated regulation) requires parental consent for patients under 18 unless the treatment is urgently needed within 24 hours to prevent serious harm, which the clinician confirms is not the case. The patient can pay $80 today and the remaining $70 in two weeks, and the next available appointment is in 10 days with no medical risk from waiting. Given the consent requirement, timing, and payment details, what should the clinic do?
+============================================================
+
+Calling 8B model directly with guided JSON...
+❌ [vLLM] Error calling http://localhost:8001/v1/completions: ReadTimeout: HTTPConnectionPool(host='localhost', port=8001): Read timed out. (read timeout=60)
+   Model: meta-llama/Llama-3.1-8B
+
+============================================================
+Baseline completed
+Latency: 60.01 seconds
+Total FLOPs: 2.1600 TFLOPs
+Tokens: 123 input + 12 output
+Answer length: 87 characters
+============================================================
+
+
+✓ Task 20 completed and saved to CSV:
+  Success: True
+  Latency: 60.01s
+  Iterations: 1
+  FLOPs: 2.1600 TFLOPs
+  Answer Length: 87 chars
+
+################################################################################
+TASK 21/100 (ID: 20)
+################################################################################
+
+============================================================
+BASELINE MODE - Single 8B Model
+Processing task for user: eval_task_20
+Task: A pharmacy clinic is asked to give a non-urgent vaccination to a 15-year-old for a school trip; the clinic’s stated policy (based on local regulation) requires a parent/guardian’s written consent for vaccinations for anyone under 16 unless it is an emergency, which the nurse confirms it is not. The vaccine costs $90, the teen has $50 in cash, and the clinic can hold an appointment in three days at no medical risk while the teen tries to obtain consent and the remaining $40. Given the consent rule, age threshold, cost, and lack of urgency, what should the clinic do?
+============================================================
+
+Calling 8B model directly with guided JSON...
+
+============================================================
+Baseline completed
+Latency: 5.04 seconds
+Total FLOPs: 6.9440 TFLOPs
+Tokens: 163 input + 271 output
+Answer length: 1340 characters
+============================================================
+
+
+✓ Task 21 completed and saved to CSV:
+  Success: True
+  Latency: 5.04s
+  Iterations: 1
+  FLOPs: 6.9440 TFLOPs
+  Answer Length: 1340 chars
+
+################################################################################
+TASK 22/100 (ID: 21)
+################################################################################
+
+============================================================
+BASELINE MODE - Single 8B Model
+Processing task for user: eval_task_21
+Task: A home health agency is deciding whether to start next-day in-home wound-care visits for a 17-year-old after a minor surgery; the visits cost $250 per day for 4 days (total $1,000). Agency policy, reflecting the stated regulation, requires a parent or legal guardian to consent for non-emergency services for anyone under 18, and the clinician documents the wound is stable so a 5-day delay does not create a serious health risk. The patient offers to pay $600 upfront and asks the agency not to contact their parents, but the guardian can sign consent in 5 days—what should the agency do?
+============================================================
+
+Calling 8B model directly with guided JSON...
+❌ [vLLM] Error calling http://localhost:8001/v1/completions: ReadTimeout: HTTPConnectionPool(host='localhost', port=8001): Read timed out. (read timeout=60)
+   Model: meta-llama/Llama-3.1-8B
+
+============================================================
+Baseline completed
+Latency: 60.02 seconds
+Total FLOPs: 2.2240 TFLOPs
+Tokens: 127 input + 12 output
+Answer length: 87 characters
+============================================================
+
+
+✓ Task 22 completed and saved to CSV:
+  Success: True
+  Latency: 60.02s
+  Iterations: 1
+  FLOPs: 2.2240 TFLOPs
+  Answer Length: 87 chars
+
+################################################################################
+TASK 23/100 (ID: 22)
+################################################################################
+
+============================================================
+BASELINE MODE - Single 8B Model
+Processing task for user: eval_task_22
+Task: A physical therapy clinic is asked to start treatment today for a 17-year-old with a minor sports strain; the clinician states it is non-urgent and delaying one week poses no health risk. The clinic’s written policy (based on stated regulation) requires parental/guardian consent for non-emergency care for anyone under 18, and the full course costs $600 total ($150 per session for 4 sessions), while the patient can pay $300 today and asks the clinic not to contact their parents. Given the consent requirement, the patient’s age, the non-urgent timing, and the payment shortfall, what should the clinic do?
+============================================================
+
+Calling 8B model directly with guided JSON...
+
+============================================================
+Baseline completed
+Latency: 3.90 seconds
+Total FLOPs: 6.0160 TFLOPs
+Tokens: 167 input + 209 output
+Answer length: 1121 characters
+============================================================
+
+
+✓ Task 23 completed and saved to CSV:
+  Success: True
+  Latency: 3.90s
+  Iterations: 1
+  FLOPs: 6.0160 TFLOPs
+  Answer Length: 1121 chars
+
+################################################################################
+TASK 24/100 (ID: 23)
+################################################################################
+
+============================================================
+BASELINE MODE - Single 8B Model
+Processing task for user: eval_task_23
+Task: A pharmacy is asked to dispense a 30-day supply of a blood-pressure medication prescribed as 1 tablet daily; the insurance policy (reflecting a stated regulation) allows an emergency refill of up to 7 days without prescriber authorization only when the patient has no remaining refills and will run out within 24 hours. The patient has 2 tablets left, no refills remaining, and the 30-day supply costs $45 cash, while a 7-day supply costs $12 cash. Based on the policy criteria and the patient’s remaining doses and costs, what should the pharmacist dispense today?
+============================================================
+
+Calling 8B model directly with guided JSON...
+
+============================================================
+Baseline completed
+Latency: 2.61 seconds
+Total FLOPs: 4.8160 TFLOPs
+Tokens: 161 input + 140 output
+Answer length: 628 characters
+============================================================
+
+
+✓ Task 24 completed and saved to CSV:
+  Success: True
+  Latency: 2.61s
+  Iterations: 1
+  FLOPs: 4.8160 TFLOPs
+  Answer Length: 628 chars
+
+################################################################################
+TASK 25/100 (ID: 24)
+################################################################################
+
+============================================================
+BASELINE MODE - Single 8B Model
+Processing task for user: eval_task_24
+Task: A primary care clinic is asked to administer a non-urgent vaccine series to a 17-year-old that costs $300 total, with two equal doses ($150 each) given four weeks apart; clinic policy states that patients under 18 need a parent/guardian’s written consent unless it is an emergency, and the physician documents there is no immediate health risk in waiting. The teen can pay $150 today but not the full $300, and asks the clinic to give the first dose now without contacting their parents and to “figure out payment later” for the second dose. Based on the consent requirement, the non-emergency status, and the payment facts, what should the clinic do?
+============================================================
+
+Calling 8B model directly with guided JSON...
+
+============================================================
+Baseline completed
+Latency: 2.36 seconds
+Total FLOPs: 4.8480 TFLOPs
+Tokens: 176 input + 127 output
+Answer length: 657 characters
+============================================================
+
+
+✓ Task 25 completed and saved to CSV:
+  Success: True
+  Latency: 2.36s
+  Iterations: 1
+  FLOPs: 4.8480 TFLOPs
+  Answer Length: 657 chars
+
+################################################################################
+TASK 26/100 (ID: 25)
+################################################################################
+
+============================================================
+BASELINE MODE - Single 8B Model
+Processing task for user: eval_task_25
+Task: A small outpatient clinic is prescribing a 10-day course of antibiotics that costs $25 per day; clinic policy (reflecting a stated regulation) requires written parental consent for non-emergency treatment when the patient is under 17, unless delaying care would pose a serious health risk, which the clinician documents is not the case. The patient is 16, can pay only $120 today, and asks the clinic to start treatment immediately without contacting a parent, while the clinician says starting in 3 days would still be medically safe. Given the consent rule, the patient’s age, the total medication cost, and the non-urgent timeline, what should the clinic do?
+============================================================
+
+Calling 8B model directly with guided JSON...
+
+============================================================
+Baseline completed
+Latency: 3.77 seconds
+Total FLOPs: 6.0160 TFLOPs
+Tokens: 173 input + 203 output
+Answer length: 1045 characters
+============================================================
+
+
+✓ Task 26 completed and saved to CSV:
+  Success: True
+  Latency: 3.77s
+  Iterations: 1
+  FLOPs: 6.0160 TFLOPs
+  Answer Length: 1045 chars
+
+################################################################################
+TASK 27/100 (ID: 26)
+################################################################################
+
+============================================================
+BASELINE MODE - Single 8B Model
+Processing task for user: eval_task_26
+Task: A primary care clinic is asked to give a non-emergency vaccination series to a 15-year-old that costs $150 per dose for 3 doses (total $450); the clinic’s stated policy (based on local regulation) requires a parent or legal guardian’s written consent for patients under 16 unless delaying would create an immediate serious health risk, which the clinician confirms is not the case. The teen has $500 cash and asks to start today without contacting a parent, and the clinic can schedule the first dose next week with no medical risk. Given the consent requirement, the patient’s age, and the total cost versus available funds, what should the clinic do?
+============================================================
+
+Calling 8B model directly with guided JSON...
+❌ [vLLM] Error calling http://localhost:8001/v1/completions: ReadTimeout: HTTPConnectionPool(host='localhost', port=8001): Read timed out. (read timeout=60)
+   Model: meta-llama/Llama-3.1-8B
+
+============================================================
+Baseline completed
+Latency: 60.06 seconds
+Total FLOPs: 2.3680 TFLOPs
+Tokens: 136 input + 12 output
+Answer length: 87 characters
+============================================================
+
+
+✓ Task 27 completed and saved to CSV:
+  Success: True
+  Latency: 60.06s
+  Iterations: 1
+  FLOPs: 2.3680 TFLOPs
+  Answer Length: 87 chars
+
+################################################################################
+TASK 28/100 (ID: 27)
+################################################################################
+
+============================================================
+BASELINE MODE - Single 8B Model
+Processing task for user: eval_task_27
+Task: A physical therapy clinic is asked to start non-emergency treatment for a 17-year-old after a sports injury; the treatment plan is 6 sessions at $150 each ($900 total), and the clinic’s stated policy (reflecting local regulation) requires a parent/guardian to consent for patients under 18 unless delaying care would create a serious health risk, which the clinician documents is not the case. The teen has $500 available today and asks the clinic to begin immediately without notifying a parent, while the clinic can schedule the first session in 10 days with no expected medical harm. Given the consent requirement, the patient’s age, the documented lack of urgency, and the payment amount, what should the clinic do?
+============================================================
+
+Calling 8B model directly with guided JSON...
+
+============================================================
+Baseline completed
+Latency: 1.85 seconds
+Total FLOPs: 4.5280 TFLOPs
+Tokens: 184 input + 99 output
+Answer length: 539 characters
+============================================================
+
+
+✓ Task 28 completed and saved to CSV:
+  Success: True
+  Latency: 1.85s
+  Iterations: 1
+  FLOPs: 4.5280 TFLOPs
+  Answer Length: 539 chars
+
+################################################################################
+TASK 29/100 (ID: 28)
+################################################################################
+
+============================================================
+BASELINE MODE - Single 8B Model
+Processing task for user: eval_task_28
+Task: A home health agency is asked to start weekly wound-care visits for a 17-year-old who has a minor, non-urgent skin wound; the nurse documents that waiting 10 days will not increase medical risk. Agency policy (based on stated regulation) requires a parent or legal guardian’s written consent for non-emergency treatment of anyone under 18, and each visit costs $150 for 4 visits ($600 total); the teen can pay $400 now and asks the agency not to contact their parent. Given the consent requirement, the lack of urgency, and the payment shortfall, what should the agency do?
+============================================================
+
+Calling 8B model directly with guided JSON...
+
+============================================================
+Baseline completed
+Latency: 1.26 seconds
+Total FLOPs: 3.6320 TFLOPs
+Tokens: 160 input + 67 output
+Answer length: 344 characters
+============================================================
+
+
+✓ Task 29 completed and saved to CSV:
+  Success: True
+  Latency: 1.26s
+  Iterations: 1
+  FLOPs: 3.6320 TFLOPs
+  Answer Length: 344 chars
+
+################################################################################
+TASK 30/100 (ID: 29)
+################################################################################
+
+============================================================
+BASELINE MODE - Single 8B Model
+Processing task for user: eval_task_29
+Task: A small employer is arranging annual flu vaccinations for staff: a nurse can vaccinate 30 people per hour, the clinic charges $45 per shot, and company policy (based on a stated workplace health regulation) requires written consent for any employee who discloses a severe egg allergy before receiving the vaccine. Of 60 employees scheduled during a 2-hour on-site clinic, 5 report severe egg allergies and have not provided written consent, while the rest have no restrictions and all vaccines are in stock. To comply with the consent requirement and keep the clinic on schedule and within budget, what should the employer do?
+============================================================
+
+Calling 8B model directly with guided JSON...
+❌ [vLLM] Error calling http://localhost:8001/v1/completions: ReadTimeout: HTTPConnectionPool(host='localhost', port=8001): Read timed out. (read timeout=60)
+   Model: meta-llama/Llama-3.1-8B
+
+============================================================
+Baseline completed
+Latency: 60.06 seconds
+Total FLOPs: 2.2560 TFLOPs
+Tokens: 129 input + 12 output
+Answer length: 87 characters
+============================================================
+
+
+✓ Task 30 completed and saved to CSV:
+  Success: True
+  Latency: 60.06s
+  Iterations: 1
+  FLOPs: 2.2560 TFLOPs
+  Answer Length: 87 chars
+
+################################################################################
+TASK 31/100 (ID: 30)
+################################################################################
+
+============================================================
+BASELINE MODE - Single 8B Model
+Processing task for user: eval_task_30
+Task: A small pharmacy clinic is asked to administer a routine (non-emergency) vaccine to a 15-year-old; clinic policy, reflecting a stated regulation, requires written parental consent for anyone under 16 unless delaying care would pose an immediate health risk, which the clinician confirms is not present. The vaccine fee is $90, the teen can pay $60 today and the remaining $30 next week, and the next available appointment is in 10 days with no medical harm from waiting. Given the consent requirement, payment shortfall, and lack of urgency, what should the clinic do?
+============================================================
+
+Calling 8B model directly with guided JSON...
+
+============================================================
+Baseline completed
+Latency: 4.69 seconds
+Total FLOPs: 6.5280 TFLOPs
+Tokens: 154 input + 254 output
+Answer length: 1350 characters
+============================================================
+
+
+✓ Task 31 completed and saved to CSV:
+  Success: True
+  Latency: 4.69s
+  Iterations: 1
+  FLOPs: 6.5280 TFLOPs
+  Answer Length: 1350 chars
+
+################################################################################
+TASK 32/100 (ID: 31)
+################################################################################
+
+============================================================
+BASELINE MODE - Single 8B Model
+Processing task for user: eval_task_31
+Task: A physical therapy clinic plans to bill 10 sessions at $90 each ($900 total) for a 17-year-old with a non-urgent knee strain; the clinic’s stated regulation-based policy requires a parent or legal guardian to sign consent for non-emergency treatment of anyone under 18. The patient asks to start tomorrow without contacting a guardian and offers to pay $400 now and $500 after the sessions, but the therapist confirms waiting one week would not worsen the condition. Given the consent requirement, the patient’s age, the payment plan, and the lack of urgency, what should the clinic do?
+============================================================
+
+Calling 8B model directly with guided JSON...
+
+============================================================
+Baseline completed
+Latency: 1.59 seconds
+Total FLOPs: 3.9200 TFLOPs
+Tokens: 160 input + 85 output
+Answer length: 408 characters
+============================================================
+
+
+✓ Task 32 completed and saved to CSV:
+  Success: True
+  Latency: 1.59s
+  Iterations: 1
+  FLOPs: 3.9200 TFLOPs
+  Answer Length: 408 chars
+
+################################################################################
+TASK 33/100 (ID: 32)
+################################################################################
+
+============================================================
+BASELINE MODE - Single 8B Model
+Processing task for user: eval_task_32
+Task: A small outpatient clinic is deciding whether to administer a same-day IV iron infusion to a 17-year-old with confirmed iron-deficiency anemia; the treatment costs $600 and is not medically urgent because the physician states it can safely wait 10 days without increased risk. Clinic policy, reflecting local regulation, requires written parental consent for non-emergency treatments for patients under 18. The patient can pay the full $600 today and asks the clinic not to contact their parents; what should the clinic do?
+============================================================
+
+Calling 8B model directly with guided JSON...
+
+============================================================
+Baseline completed
+Latency: 2.07 seconds
+Total FLOPs: 3.9840 TFLOPs
+Tokens: 138 input + 111 output
+Answer length: 590 characters
+============================================================
+
+
+✓ Task 33 completed and saved to CSV:
+  Success: True
+  Latency: 2.07s
+  Iterations: 1
+  FLOPs: 3.9840 TFLOPs
+  Answer Length: 590 chars
+
+################################################################################
+TASK 34/100 (ID: 33)
+################################################################################
+
+============================================================
+BASELINE MODE - Single 8B Model
+Processing task for user: eval_task_33
+Task: A retail pharmacy is asked to dispense a 10-day antibiotic course for a 15-year-old: the prescription is 2 tablets per day, the tablets cost $3 each, and the patient has $40 cash. Pharmacy policy (based on stated regulation) requires a parent/guardian to consent to non-emergency treatment for anyone under 16, and the pharmacist confirms the medication can be started up to 48 hours later without health risk. If a parent is contacted, they can arrive tomorrow with additional payment if needed. Given the consent requirement, the patient’s age, the cost math, and the lack of urgency, what should the pharmacy do?
+============================================================
+
+Calling 8B model directly with guided JSON...
+
+============================================================
+Baseline completed
+Latency: 1.63 seconds
+Total FLOPs: 4.1120 TFLOPs
+Tokens: 170 input + 87 output
+Answer length: 456 characters
+============================================================
+
+
+✓ Task 34 completed and saved to CSV:
+  Success: True
+  Latency: 1.63s
+  Iterations: 1
+  FLOPs: 4.1120 TFLOPs
+  Answer Length: 456 chars
+
+################################################################################
+TASK 35/100 (ID: 34)
+################################################################################
+
+============================================================
+BASELINE MODE - Single 8B Model
+Processing task for user: eval_task_34
+Task: A home-health agency is arranging post-surgery care for a 70-year-old patient who needs 14 days of daily wound dressing visits; each visit costs $110. The agency’s stated policy (based on regulation) requires written consent from the patient’s legal representative for any care plan totaling over $1,000 if the patient is documented as unable to consent, and the chart notes mild confusion but no formal incapacity determination; the patient wants to start tomorrow and can pay only $900 upfront. Given the cost total, the consent threshold, and the patient’s current documentation status, what should the agency do?
+============================================================
+
+Calling 8B model directly with guided JSON...
+❌ [vLLM] Error calling http://localhost:8001/v1/completions: ReadTimeout: HTTPConnectionPool(host='localhost', port=8001): Read timed out. (read timeout=60)
+   Model: meta-llama/Llama-3.1-8B
+
+============================================================
+Baseline completed
+Latency: 60.06 seconds
+Total FLOPs: 2.1600 TFLOPs
+Tokens: 123 input + 12 output
+Answer length: 87 characters
+============================================================
+
+
+✓ Task 35 completed and saved to CSV:
+  Success: True
+  Latency: 60.06s
+  Iterations: 1
+  FLOPs: 2.1600 TFLOPs
+  Answer Length: 87 chars
+
+################################################################################
+TASK 36/100 (ID: 35)
+################################################################################
+
+============================================================
+BASELINE MODE - Single 8B Model
+Processing task for user: eval_task_35
+Task: A home healthcare agency is scheduling physical therapy visits for a 70-year-old patient after a minor fall; the care plan calls for 6 visits at $110 each, and the patient’s insurance policy states it will reimburse 80% of covered services only after a $250 annual deductible is met. The patient has already paid $150 toward the deductible this year, and the agency must (per its stated compliance policy) provide a written estimate and obtain the patient’s approval before starting any non-emergency services. What should the agency present as the patient’s estimated out-of-pocket cost and what should it do before beginning visits?
+============================================================
+
+Calling 8B model directly with guided JSON...
+
+============================================================
+Baseline completed
+Latency: 1.85 seconds
+Total FLOPs: 4.1760 TFLOPs
+Tokens: 162 input + 99 output
+Answer length: 465 characters
+============================================================
+
+
+✓ Task 36 completed and saved to CSV:
+  Success: True
+  Latency: 1.85s
+  Iterations: 1
+  FLOPs: 4.1760 TFLOPs
+  Answer Length: 465 chars
+
+################################################################################
+TASK 37/100 (ID: 36)
+################################################################################
+
+============================================================
+BASELINE MODE - Single 8B Model
+Processing task for user: eval_task_36
+Task: A pharmacy clinic is asked to give a non-emergency travel vaccine to a 17-year-old who is leaving in 10 days; the vaccine costs $150 and the teen has $90 available today. Clinic policy, based on a stated regulation, requires written parental consent for any vaccination of patients under 18 unless it is an immediate life-threatening emergency, which the clinician confirms it is not. The clinic can hold an appointment in 7 days if consent is obtained and the remaining $60 is paid then—what should the clinic do?
+============================================================
+
+Calling 8B model directly with guided JSON...
+
+============================================================
+Baseline completed
+Latency: 0.56 seconds
+Total FLOPs: 2.8000 TFLOPs
+Tokens: 146 input + 29 output
+Answer length: 120 characters
+============================================================
+
+
+✓ Task 37 completed and saved to CSV:
+  Success: True
+  Latency: 0.56s
+  Iterations: 1
+  FLOPs: 2.8000 TFLOPs
+  Answer Length: 120 chars
+
+################################################################################
+TASK 38/100 (ID: 37)
+################################################################################
+
+============================================================
+BASELINE MODE - Single 8B Model
+Processing task for user: eval_task_37
+Task: A primary care clinic is asked to administer a travel vaccine series that requires 2 doses priced at $180 each, for a total of $360, to a 17-year-old who will depart in 10 days. The clinic’s stated consent policy (based on regulation) requires parental consent for non-emergency treatment for anyone under 18, and the physician has documented that delaying the vaccine poses no immediate health danger (the teen can still travel and obtain the vaccine later). The teen offers to pay $250 today from personal funds and asks the clinic not to contact a parent—given the consent requirement, the timing, and the payment shortfall, what should the clinic do?
+============================================================
+
+Calling 8B model directly with guided JSON...
+
+============================================================
+Baseline completed
+Latency: 1.87 seconds
+Total FLOPs: 4.3520 TFLOPs
+Tokens: 172 input + 100 output
+Answer length: 501 characters
+============================================================
+
+
+✓ Task 38 completed and saved to CSV:
+  Success: True
+  Latency: 1.87s
+  Iterations: 1
+  FLOPs: 4.3520 TFLOPs
+  Answer Length: 501 chars
+
+################################################################################
+TASK 39/100 (ID: 38)
+################################################################################
+
+============================================================
+BASELINE MODE - Single 8B Model
+Processing task for user: eval_task_38
+Task: A pharmacy clinic is asked to administer a routine (non-emergency) vaccine to a 15-year-old who arrives alone; the clinic’s stated policy, reflecting local regulation, requires a parent or legal guardian’s written consent for vaccinations for anyone under 16 unless there is an immediate serious health risk, which the nurse confirms is not present. The vaccine costs $75, the teen has $60 in cash and asks the clinic to “just do it today” without contacting a parent, while the clinic can schedule the vaccination for next week with no medical downside. Given the consent requirement and the payment shortfall, what should the clinic do?
+============================================================
+
+Calling 8B model directly with guided JSON...
+
+============================================================
+Baseline completed
+Latency: 2.97 seconds
+Total FLOPs: 5.1840 TFLOPs
+Tokens: 164 input + 160 output
+Answer length: 891 characters
+============================================================
+
+
+✓ Task 39 completed and saved to CSV:
+  Success: True
+  Latency: 2.97s
+  Iterations: 1
+  FLOPs: 5.1840 TFLOPs
+  Answer Length: 891 chars
+
+################################################################################
+TASK 40/100 (ID: 39)
+################################################################################
+
+============================================================
+BASELINE MODE - Single 8B Model
+Processing task for user: eval_task_39
+Task: A home health agency is asked to start non-emergency wound-care visits for a 17-year-old, but the agency policy (reflecting its stated regulation) requires a parent/guardian’s written consent for patients under 18 unless delaying care would create a serious health risk; the clinician documents the wound is stable and a one-week delay is medically safe. The plan of care includes 3 visits per week for 4 weeks (12 visits total) at $95 per visit, and the teen offers to pay $600 upfront if the agency starts immediately without contacting their parent. Given the consent rule, the patient’s age, the medical timeline, and the total cost versus the offered payment, what should the agency do?
+============================================================
+
+Calling 8B model directly with guided JSON...
+
+============================================================
+Baseline completed
+Latency: 2.42 seconds
+Total FLOPs: 5.0080 TFLOPs
+Tokens: 183 input + 130 output
+Answer length: 609 characters
+============================================================
+
+
+✓ Task 40 completed and saved to CSV:
+  Success: True
+  Latency: 2.42s
+  Iterations: 1
+  FLOPs: 5.0080 TFLOPs
+  Answer Length: 609 chars
+
+################################################################################
+TASK 41/100 (ID: 40)
+################################################################################
+
+============================================================
+BASELINE MODE - Single 8B Model
+Processing task for user: eval_task_40
+Task: A pharmacy clinic is asked to administer a routine (non-emergency) travel vaccine to a 17-year-old; the posted state rule says patients under 18 need a parent/guardian present to consent unless a doctor documents an immediate medical danger from delaying, which the clinician confirms is not the case. The vaccine costs $180, the teen has $200 cash and wants it today without calling a parent, and the clinic has an appointment available in 10 days with no added health risk from waiting. Given the consent rule, the patient’s age, the cost, and the safe delay window, what should the clinic do?
+============================================================
+
+Calling 8B model directly with guided JSON...
+
+============================================================
+Baseline completed
+Latency: 2.95 seconds
+Total FLOPs: 5.1680 TFLOPs
+Tokens: 164 input + 159 output
+Answer length: 837 characters
+============================================================
+
+
+✓ Task 41 completed and saved to CSV:
+  Success: True
+  Latency: 2.95s
+  Iterations: 1
+  FLOPs: 5.1680 TFLOPs
+  Answer Length: 837 chars
+
+################################################################################
+TASK 42/100 (ID: 41)
+################################################################################
+
+============================================================
+BASELINE MODE - Single 8B Model
+Processing task for user: eval_task_41
+Task: A pharmacy clinic is asked to administer a travel vaccine to a 17-year-old for a non-urgent trip; its stated policy (based on local regulation) requires written parental consent for any vaccination of patients under 18 unless delaying would pose a serious health risk, and the clinician documents no such risk if the shot is given anytime within the next 10 days. The vaccine costs $180, the teen can pay $200 in cash today, but refuses to provide parental contact; the clinic has an available appointment in 7 days with no medical downside. Given the consent requirement, the patient’s age, the timing, and the payment amount, what should the clinic do?
+============================================================
+
+Calling 8B model directly with guided JSON...
+
+============================================================
+Baseline completed
+Latency: 5.51 seconds
+Total FLOPs: 7.5520 TFLOPs
+Tokens: 173 input + 299 output
+Answer length: 1519 characters
+============================================================
+
+
+✓ Task 42 completed and saved to CSV:
+  Success: True
+  Latency: 5.51s
+  Iterations: 1
+  FLOPs: 7.5520 TFLOPs
+  Answer Length: 1519 chars
+
+################################################################################
+TASK 43/100 (ID: 42)
+################################################################################
+
+============================================================
+BASELINE MODE - Single 8B Model
+Processing task for user: eval_task_42
+Task: A pharmacy is dispensing a new blood-pressure medication that should be taken once daily for 30 days; the prescription label allows a 5-day emergency supply without a new prescription, but dispensing more than 5 days requires a valid refill authorization under the stated regulation. A patient’s refill request was denied by the prescriber, and the patient has 3 pills left and says they cannot see a doctor for 10 days; the pharmacy has enough stock to provide any amount. Given the rule, the remaining pills, and the 10-day gap, what should the pharmacy do?
+============================================================
+
+Calling 8B model directly with guided JSON...
+❌ [vLLM] Error calling http://localhost:8001/v1/completions: ReadTimeout: HTTPConnectionPool(host='localhost', port=8001): Read timed out. (read timeout=60)
+   Model: meta-llama/Llama-3.1-8B
+
+============================================================
+Baseline completed
+Latency: 60.01 seconds
+Total FLOPs: 2.1280 TFLOPs
+Tokens: 121 input + 12 output
+Answer length: 87 characters
+============================================================
+
+
+✓ Task 43 completed and saved to CSV:
+  Success: True
+  Latency: 60.01s
+  Iterations: 1
+  FLOPs: 2.1280 TFLOPs
+  Answer Length: 87 chars
+
+################################################################################
+TASK 44/100 (ID: 43)
+################################################################################
+
+============================================================
+BASELINE MODE - Single 8B Model
+Processing task for user: eval_task_43
+Task: A pharmacy clinic is asked to administer a routine (non-emergency) flu shot to a 15-year-old who arrives alone; the posted policy (based on stated local regulation) requires a parent/guardian’s written consent for vaccinations for anyone under 16 unless it is an emergency, and the clinician confirms there is no emergency. The shot costs $45 and the teen has $60 cash, and the next available appointment with a parent present is in 3 days with no health risk from waiting. Given the consent requirement, the patient’s age, the payment amount, and the lack of urgency, what should the clinic do?
+============================================================
+
+Calling 8B model directly with guided JSON...
+
+============================================================
+Baseline completed
+Latency: 2.71 seconds
+Total FLOPs: 4.9760 TFLOPs
+Tokens: 165 input + 146 output
+Answer length: 719 characters
+============================================================
+
+
+✓ Task 44 completed and saved to CSV:
+  Success: True
+  Latency: 2.71s
+  Iterations: 1
+  FLOPs: 4.9760 TFLOPs
+  Answer Length: 719 chars
+
+################################################################################
+TASK 45/100 (ID: 44)
+################################################################################
+
+============================================================
+BASELINE MODE - Single 8B Model
+Processing task for user: eval_task_44
+Task: A pharmacy clinic is asked to give a non-urgent travel vaccine to a 17-year-old who will leave in 10 days; the vaccine costs $180 and the teen can pay $120 today, with the remainder available in 3 days. Clinic policy (based on a stated state regulation) requires a parent or legal guardian to consent for vaccinations for anyone under 18 unless delaying would create a significant health risk, and the clinician documents that waiting 3 days does not create a significant risk because the vaccine is still effective if given at least 7 days before departure. Given the consent rule, the timing, and the payment situation, what should the clinic do?
+============================================================
+
+Calling 8B model directly with guided JSON...
+
+============================================================
+Baseline completed
+Latency: 1.24 seconds
+Total FLOPs: 3.8080 TFLOPs
+Tokens: 172 input + 66 output
+Answer length: 292 characters
+============================================================
+
+
+✓ Task 45 completed and saved to CSV:
+  Success: True
+  Latency: 1.24s
+  Iterations: 1
+  FLOPs: 3.8080 TFLOPs
+  Answer Length: 292 chars
+
+################################################################################
+TASK 46/100 (ID: 45)
+################################################################################
+
+============================================================
+BASELINE MODE - Single 8B Model
+Processing task for user: eval_task_45
+Task: A small employer’s health clinic is asked to release an employee’s blood pressure and cholesterol results to the employee’s spouse so the spouse can submit an insurance reimbursement claim for a $600 preventive visit. Clinic policy (based on stated privacy regulation) allows sharing medical records only with the patient’s written consent unless it’s an emergency, and there is no emergency here; the spouse offers to pay the remaining $150 balance today (the insurer already paid $450) if the clinic sends the results immediately. Given the privacy rule, the payment amounts, and the non-emergency situation, what should the clinic do?
+============================================================
+
+Calling 8B model directly with guided JSON...
+
+============================================================
+Baseline completed
+Latency: 1.63 seconds
+Total FLOPs: 3.9200 TFLOPs
+Tokens: 158 input + 87 output
+Answer length: 454 characters
+============================================================
+
+
+✓ Task 46 completed and saved to CSV:
+  Success: True
+  Latency: 1.63s
+  Iterations: 1
+  FLOPs: 3.9200 TFLOPs
+  Answer Length: 454 chars
+
+################################################################################
+TASK 47/100 (ID: 46)
+################################################################################
+
+============================================================
+BASELINE MODE - Single 8B Model
+Processing task for user: eval_task_46
+Task: A small pharmacy clinic is asked to give a non-urgent vitamin B12 injection to a 17-year-old; the clinic’s written policy (based on a stated state rule) requires a parent/guardian to consent for any injection for patients under 18 unless delaying treatment would likely cause serious harm, which the clinician documents is not expected here. The injection costs $60 and the teen can pay $40 today, while the parent can come tomorrow to sign and pay the remaining $20 with no medical downside to waiting 24 hours. Given the consent requirement, the medical non-urgency, and the payment shortfall, what should the clinic do?
+============================================================
+
+Calling 8B model directly with guided JSON...
+
+============================================================
+Baseline completed
+Latency: 3.28 seconds
+Total FLOPs: 5.5360 TFLOPs
+Tokens: 169 input + 177 output
+Answer length: 925 characters
+============================================================
+
+
+✓ Task 47 completed and saved to CSV:
+  Success: True
+  Latency: 3.28s
+  Iterations: 1
+  FLOPs: 5.5360 TFLOPs
+  Answer Length: 925 chars
+
+################################################################################
+TASK 48/100 (ID: 47)
+################################################################################
+
+============================================================
+BASELINE MODE - Single 8B Model
+Processing task for user: eval_task_47
+Task: A small dental office is asked to provide a non-emergency tooth extraction for a 15-year-old that costs $600 today; the office policy, based on a stated regulation, requires written parental consent for any patient under 16 unless delaying care would create a serious health risk, and the dentist documents there is no such risk if treatment is delayed. The teen offers $600 cash and asks the office not to contact their parents, while the next available appointment with a parent present is in 10 days at no medical risk. Given the consent rule, the patient’s age, the payment offered, and the lack of urgency, what should the office do?
+============================================================
+
+Calling 8B model directly with guided JSON...
+
+============================================================
+Baseline completed
+Latency: 2.16 seconds
+Total FLOPs: 4.5440 TFLOPs
+Tokens: 168 input + 116 output
+Answer length: 590 characters
+============================================================
+
+
+✓ Task 48 completed and saved to CSV:
+  Success: True
+  Latency: 2.16s
+  Iterations: 1
+  FLOPs: 4.5440 TFLOPs
+  Answer Length: 590 chars
+
+################################################################################
+TASK 49/100 (ID: 48)
+################################################################################
+
+============================================================
+BASELINE MODE - Single 8B Model
+Processing task for user: eval_task_48
+Task: A home health agency is planning post-surgery visits for a patient who lives alone and takes a blood thinner; the discharge plan requires 1 nurse visit every 3 days for the next 12 days, and the agency’s policy (based on stated regulation) says a nurse cannot visit without either the patient’s written consent or a legally authorized representative’s consent if the patient is unable to sign. The patient is currently too sedated to sign for the next 48 hours, has no representative available, and the agency can instead provide daily phone check-ins until the first in-person visit; scheduling shows the earliest in-person nurse visit is in 2 days. Based on the consent rule, the 12-day visit requirement, and the 2-day delay, what should the agency do?
+============================================================
+
+Calling 8B model directly with guided JSON...
+
+============================================================
+Baseline completed
+Latency: 0.89 seconds
+Total FLOPs: 3.8560 TFLOPs
+Tokens: 194 input + 47 output
+Answer length: 169 characters
+============================================================
+
+
+✓ Task 49 completed and saved to CSV:
+  Success: True
+  Latency: 0.89s
+  Iterations: 1
+  FLOPs: 3.8560 TFLOPs
+  Answer Length: 169 chars
+
+################################################################################
+TASK 50/100 (ID: 49)
+################################################################################
+
+============================================================
+BASELINE MODE - Single 8B Model
+Processing task for user: eval_task_49
+Task: A workplace health clinic has 25 influenza vaccine doses that expire today and wants to offer them to staff for $10 each; the clinic’s stated policy (based on its occupational health regulation) allows vaccination without additional medical review only for employees who report no severe egg allergy and no prior serious reaction to a flu vaccine. By noon, 22 eligible employees have signed up, and 6 more employees want the vaccine but 2 report severe egg allergy while 4 report no contraindications; the clinic can either vaccinate immediately or hold the remaining doses for disposal at the end of the day. Given the policy restrictions, the expiring inventory, and the expected revenue, what should the clinic do?
+============================================================
+
+Calling 8B model directly with guided JSON...
+
+============================================================
+Baseline completed
+Latency: 3.69 seconds
+Total FLOPs: 6.0320 TFLOPs
+Tokens: 178 input + 199 output
+Answer length: 996 characters
+============================================================
+
+
+✓ Task 50 completed and saved to CSV:
+  Success: True
+  Latency: 3.69s
+  Iterations: 1
+  FLOPs: 6.0320 TFLOPs
+  Answer Length: 996 chars
+
+################################################################################
+TASK 51/100 (ID: 50)
+################################################################################
+
+============================================================
+BASELINE MODE - Single 8B Model
+Processing task for user: eval_task_50
+Task: A home-health agency is scheduling weekly physical therapy for a 70-year-old patient after a mild stroke; the plan requires 10 sessions at $90 each ($900 total), and the insurer will only pay if the patient receives at least 8 sessions within 30 days. The patient can attend either 1 session per week for 10 weeks or 2 sessions per week for 5 weeks, and the therapist confirms both schedules are medically appropriate with no added risk. To minimize the patient’s out-of-pocket cost while meeting the insurance rule, what should the agency schedule?
+============================================================
+
+Calling 8B model directly with guided JSON...
+
+============================================================
+Baseline completed
+Latency: 5.23 seconds
+Total FLOPs: 6.9600 TFLOPs
+Tokens: 152 input + 283 output
+Answer length: 1214 characters
+============================================================
+
+
+✓ Task 51 completed and saved to CSV:
+  Success: True
+  Latency: 5.23s
+  Iterations: 1
+  FLOPs: 6.9600 TFLOPs
+  Answer Length: 1214 chars
+
+################################################################################
+TASK 52/100 (ID: 51)
+################################################################################
+
+============================================================
+BASELINE MODE - Single 8B Model
+Processing task for user: eval_task_51
+Task: A small employer-sponsored health clinic has a policy (reflecting a stated regulation) that any controlled medication refill requires a documented in-person evaluation within the last 30 days; otherwise only a 7‑day bridge supply may be dispensed. A patient’s last visit was 45 days ago, they request a 30‑day refill today, and their next available appointment is in 10 days; the medication costs $6 per day and the patient can pay up to $60. Given the rule, the dates, and the costs, what should the clinic dispense today and what should it schedule next?
+============================================================
+
+Calling 8B model directly with guided JSON...
+
+============================================================
+Baseline completed
+Latency: 2.29 seconds
+Total FLOPs: 4.4960 TFLOPs
+Tokens: 159 input + 122 output
+Answer length: 540 characters
+============================================================
+
+
+✓ Task 52 completed and saved to CSV:
+  Success: True
+  Latency: 2.29s
+  Iterations: 1
+  FLOPs: 4.4960 TFLOPs
+  Answer Length: 540 chars
+
+################################################################################
+TASK 53/100 (ID: 52)
+################################################################################
+
+============================================================
+BASELINE MODE - Single 8B Model
+Processing task for user: eval_task_52
+Task: A physical therapy clinic is asked to treat a 17-year-old for non-emergency back pain; clinic policy (based on a stated regulation) requires written parental consent for patients under 18 unless delaying care would pose a serious health risk, and the clinician documents that waiting two weeks is medically safe. The initial evaluation plus first two sessions cost $450 total, and the teen can pay $300 today and asks the clinic to start immediately without contacting a parent, while the clinic can hold the earliest appointment in two weeks if consent is obtained. Given the consent rule, the patient’s age, the payment shortfall, and the lack of urgency, what should the clinic do?
+============================================================
+
+Calling 8B model directly with guided JSON...
+
+============================================================
+Baseline completed
+Latency: 1.39 seconds
+Total FLOPs: 3.9360 TFLOPs
+Tokens: 172 input + 74 output
+Answer length: 372 characters
+============================================================
+
+
+✓ Task 53 completed and saved to CSV:
+  Success: True
+  Latency: 1.39s
+  Iterations: 1
+  FLOPs: 3.9360 TFLOPs
+  Answer Length: 372 chars
+
+################################################################################
+TASK 54/100 (ID: 53)
+################################################################################
+
+============================================================
+BASELINE MODE - Single 8B Model
+Processing task for user: eval_task_53
+Task: A retail pharmacy is filling a prescription for a 17-year-old for a non-urgent asthma controller inhaler that costs $60; store policy (based on a stated regulation) requires a parent or legal guardian to consent and pay for prescriptions for minors unless it’s an emergency. The teen has $40 in cash and asks to buy it without contacting a parent, while the pharmacist confirms the teen is stable and can safely wait until the next day for the medication. Given the consent rule, the teen’s age, the $20 shortfall, and the lack of emergency, what should the pharmacy do?
+============================================================
+
+Calling 8B model directly with guided JSON...
+
+============================================================
+Baseline completed
+Latency: 2.22 seconds
+Total FLOPs: 4.4160 TFLOPs
+Tokens: 157 input + 119 output
+Answer length: 583 characters
+============================================================
+
+
+✓ Task 54 completed and saved to CSV:
+  Success: True
+  Latency: 2.22s
+  Iterations: 1
+  FLOPs: 4.4160 TFLOPs
+  Answer Length: 583 chars
+
+################################################################################
+TASK 55/100 (ID: 54)
+################################################################################
+
+============================================================
+BASELINE MODE - Single 8B Model
+Processing task for user: eval_task_54
+Task: A pharmacy clinic is asked to administer a routine (non-emergency) vaccine to a 15-year-old; the stated local rule requires a parent or legal guardian’s written consent for anyone under 16 unless delaying would create a serious medical risk, and the clinician documents there is no such risk. The vaccine costs $180, the teen can pay $200 in cash today, and the next available appointment with a parent present is in 10 days with no medical downside. Given the consent requirement, the patient’s age, the payment ability, and the lack of urgency, what should the clinic do?
+============================================================
+
+Calling 8B model directly with guided JSON...
+
+============================================================
+Baseline completed
+Latency: 2.09 seconds
+Total FLOPs: 4.3200 TFLOPs
+Tokens: 158 input + 112 output
+Answer length: 565 characters
+============================================================
+
+
+✓ Task 55 completed and saved to CSV:
+  Success: True
+  Latency: 2.09s
+  Iterations: 1
+  FLOPs: 4.3200 TFLOPs
+  Answer Length: 565 chars
+
+################################################################################
+TASK 56/100 (ID: 55)
+################################################################################
+
+============================================================
+BASELINE MODE - Single 8B Model
+Processing task for user: eval_task_55
+Task: A retail pharmacy is asked to dispense a 30-day supply of a prescription medication, but its policy (based on stated regulation) allows dispensing no more than 10 days’ supply without a valid refill authorization from the prescriber. The patient’s current prescription has 0 refills remaining, the patient has 6 pills left and takes 2 pills per day, and the prescriber’s office is closed until three days from now. Given the rule, the remaining pills, and the timing, what should the pharmacy do?
+============================================================
+
+Calling 8B model directly with guided JSON...
+
+============================================================
+Baseline completed
+Latency: 1.59 seconds
+Total FLOPs: 3.6960 TFLOPs
+Tokens: 146 input + 85 output
+Answer length: 363 characters
+============================================================
+
+
+✓ Task 56 completed and saved to CSV:
+  Success: True
+  Latency: 1.59s
+  Iterations: 1
+  FLOPs: 3.6960 TFLOPs
+  Answer Length: 363 chars
+
+################################################################################
+TASK 57/100 (ID: 56)
+################################################################################
+
+============================================================
+BASELINE MODE - Single 8B Model
+Processing task for user: eval_task_56
+Task: A pharmacy clinic is asked to administer a travel vaccine to a 17-year-old for a non-urgent trip; the clinic’s stated policy (reflecting local regulation) requires a parent/guardian’s written consent for any vaccination of patients under 18 unless it is an emergency, and the clinician confirms there is no emergency. The vaccine costs $150, the teen offers to pay $200 in cash and asks the clinic not to contact their parents, and the clinic can schedule the vaccination for next week with no health risk from waiting. Given the consent requirement, the patient’s age, and the ability to delay safely, what should the clinic do?
+============================================================
+
+Calling 8B model directly with guided JSON...
+
+============================================================
+Baseline completed
+Latency: 2.29 seconds
+Total FLOPs: 4.6720 TFLOPs
+Tokens: 169 input + 123 output
+Answer length: 571 characters
+============================================================
+
+
+✓ Task 57 completed and saved to CSV:
+  Success: True
+  Latency: 2.29s
+  Iterations: 1
+  FLOPs: 4.6720 TFLOPs
+  Answer Length: 571 chars
+
+################################################################################
+TASK 58/100 (ID: 57)
+################################################################################
+
+============================================================
+BASELINE MODE - Single 8B Model
+Processing task for user: eval_task_57
+Task: A physical therapy clinic is asked to start a non-urgent treatment plan for a 17-year-old who sprained an ankle; the plan is 6 sessions at $90 each, and the therapist confirms delaying two weeks will not worsen the injury. The clinic’s stated policy (based on a regulation it follows) requires written parental consent for any treatment of minors under 18 when the total cost exceeds $300, and the patient can pay $540 today but does not want the clinic to contact a parent. Given the consent threshold, the patient’s age, the total cost, and the lack of urgency, what should the clinic do?
+============================================================
+
+Calling 8B model directly with guided JSON...
+❌ [vLLM] Error calling http://localhost:8001/v1/completions: ReadTimeout: HTTPConnectionPool(host='localhost', port=8001): Read timed out. (read timeout=60)
+   Model: meta-llama/Llama-3.1-8B
+
+============================================================
+Baseline completed
+Latency: 60.03 seconds
+Total FLOPs: 2.2720 TFLOPs
+Tokens: 130 input + 12 output
+Answer length: 87 characters
+============================================================
+
+
+✓ Task 58 completed and saved to CSV:
+  Success: True
+  Latency: 60.03s
+  Iterations: 1
+  FLOPs: 2.2720 TFLOPs
+  Answer Length: 87 chars
+
+################################################################################
+TASK 59/100 (ID: 58)
+################################################################################
+
+============================================================
+BASELINE MODE - Single 8B Model
+Processing task for user: eval_task_58
+Task: A small employer is setting up a wellness program that includes optional on-site flu shots costing $45 per employee, and the company has budgeted $900 total for this program. Company policy (based on stated regulation) requires written consent from any employee before administering any medical treatment, and 6 employees have not returned consent forms yet while 22 employees have. If the employer wants to stay within budget and comply with the consent requirement, what should it do about scheduling and paying for the flu shots?
+============================================================
+
+Calling 8B model directly with guided JSON...
+
+============================================================
+Baseline completed
+Latency: 2.45 seconds
+Total FLOPs: 4.2880 TFLOPs
+Tokens: 136 input + 132 output
+Answer length: 651 characters
+============================================================
+
+
+✓ Task 59 completed and saved to CSV:
+  Success: True
+  Latency: 2.45s
+  Iterations: 1
+  FLOPs: 4.2880 TFLOPs
+  Answer Length: 651 chars
+
+################################################################################
+TASK 60/100 (ID: 59)
+################################################################################
+
+============================================================
+BASELINE MODE - Single 8B Model
+Processing task for user: eval_task_59
+Task: A pharmacy clinic is asked to give a flu vaccine to a 15-year-old; the clinic policy (based on stated regulation) requires written consent from a parent or legal guardian for anyone under 16 unless it is a documented medical emergency, and the nurse confirms this is not an emergency. The vaccine costs $40, the teen has $50 cash and asks to pay and receive the shot now, while the clinic can schedule an appointment for tomorrow if a guardian signs the consent form. Given the consent requirement, the patient’s age, the non-emergency status, and the payment details, what should the clinic do?
+============================================================
+
+Calling 8B model directly with guided JSON...
+
+============================================================
+Baseline completed
+Latency: 2.09 seconds
+Total FLOPs: 4.3680 TFLOPs
+Tokens: 161 input + 112 output
+Answer length: 555 characters
+============================================================
+
+
+✓ Task 60 completed and saved to CSV:
+  Success: True
+  Latency: 2.09s
+  Iterations: 1
+  FLOPs: 4.3680 TFLOPs
+  Answer Length: 555 chars
+
+################################################################################
+TASK 61/100 (ID: 60)
+################################################################################
+
+============================================================
+BASELINE MODE - Single 8B Model
+Processing task for user: eval_task_60
+Task: A home health agency is scheduling wound-care visits for a 70-year-old patient after surgery: the nurse recommends 3 visits per week for 4 weeks (12 visits total) at $120 per visit, but the patient’s insurance plan (per the stated policy) covers only 10 visits per calendar year unless the prescribing physician documents a medical necessity exception. The patient can pay out of pocket for any uncovered visits and says they can afford up to $150 total beyond insurance, and the physician is available to complete documentation within 2 business days. Given the coverage limit, total cost, and the patient’s budget, what should the agency do?
+============================================================
+
+Calling 8B model directly with guided JSON...
+
+============================================================
+Baseline completed
+Latency: 0.10 seconds
+Total FLOPs: 2.7360 TFLOPs
+Tokens: 167 input + 4 output
+Answer length: 1 characters
+============================================================
+
+
+✓ Task 61 completed and saved to CSV:
+  Success: True
+  Latency: 0.10s
+  Iterations: 1
+  FLOPs: 2.7360 TFLOPs
+  Answer Length: 1 chars
+
+################################################################################
+TASK 62/100 (ID: 61)
+################################################################################
+
+============================================================
+BASELINE MODE - Single 8B Model
+Processing task for user: eval_task_61
+Task: A small urgent-care clinic in a state with a stated rule that patients under 18 need a parent/guardian’s written consent for non-emergency treatment is treating a 17-year-old with a mild ankle sprain; the clinician documents there is no risk of serious harm if treatment is delayed 48 hours. The teen requests a same-day non-emergency MRI that costs $900, but the clinic’s policy also requires payment at time of service and the teen can only pay $300 today, while a parent can come tomorrow to sign and pay the remaining $600. Given the consent requirement, the non-urgent status, and the payment shortfall, what should the clinic do?
+============================================================
+
+Calling 8B model directly with guided JSON...
+❌ [vLLM] Error calling http://localhost:8001/v1/completions: ReadTimeout: HTTPConnectionPool(host='localhost', port=8001): Read timed out. (read timeout=60)
+   Model: meta-llama/Llama-3.1-8B
+
+============================================================
+Baseline completed
+Latency: 60.06 seconds
+Total FLOPs: 2.3200 TFLOPs
+Tokens: 133 input + 12 output
+Answer length: 87 characters
+============================================================
+
+
+✓ Task 62 completed and saved to CSV:
+  Success: True
+  Latency: 60.06s
+  Iterations: 1
+  FLOPs: 2.3200 TFLOPs
+  Answer Length: 87 chars
+
+################################################################################
+TASK 63/100 (ID: 62)
+################################################################################
+
+============================================================
+BASELINE MODE - Single 8B Model
+Processing task for user: eval_task_62
+Task: A home healthcare agency is scheduling in-home wound care for a 17-year-old who needs 6 visits over the next two weeks at $150 per visit; the agency’s stated policy (based on its regulation summary) requires written parental consent for non-emergency services for anyone under 18, and the clinician has documented the care is not urgent and can safely start in 10 days. The patient asks to start tomorrow without contacting a parent and offers to pay $600 upfront from savings, but the remaining balance would be billed after services are delivered. Given the consent requirement, timing, and payment amounts, what should the agency do?
+============================================================
+
+Calling 8B model directly with guided JSON...
+
+============================================================
+Baseline completed
+Latency: 2.99 seconds
+Total FLOPs: 5.2160 TFLOPs
+Tokens: 165 input + 161 output
+Answer length: 866 characters
+============================================================
+
+
+✓ Task 63 completed and saved to CSV:
+  Success: True
+  Latency: 2.99s
+  Iterations: 1
+  FLOPs: 5.2160 TFLOPs
+  Answer Length: 866 chars
+
+################################################################################
+TASK 64/100 (ID: 63)
+################################################################################
+
+============================================================
+BASELINE MODE - Single 8B Model
+Processing task for user: eval_task_63
+Task: A home health agency is asked to start non-emergency in-home nursing visits for a 17-year-old recovering from a minor surgery; agency policy (based on stated regulation) requires a parent or legal guardian to sign consent for patients under 18 unless delaying care would pose an immediate serious health risk, which the clinician confirms it will not. The care plan is 4 visits at $150 each (total $600), and the patient offers to pay $600 from their own savings and asks the agency not to contact their parents, while the agency can safely start the visits in 10 days after obtaining guardian consent. Given the consent rule, the patient’s age, the cost, and the lack of urgency, what should the agency do?
+============================================================
+
+Calling 8B model directly with guided JSON...
+❌ [vLLM] Error calling http://localhost:8001/v1/completions: ReadTimeout: HTTPConnectionPool(host='localhost', port=8001): Read timed out. (read timeout=60)
+   Model: meta-llama/Llama-3.1-8B
+
+============================================================
+Baseline completed
+Latency: 60.06 seconds
+Total FLOPs: 2.5600 TFLOPs
+Tokens: 148 input + 12 output
+Answer length: 87 characters
+============================================================
+
+
+✓ Task 64 completed and saved to CSV:
+  Success: True
+  Latency: 60.06s
+  Iterations: 1
+  FLOPs: 2.5600 TFLOPs
+  Answer Length: 87 chars
+
+################################################################################
+TASK 65/100 (ID: 64)
+################################################################################
+
+============================================================
+BASELINE MODE - Single 8B Model
+Processing task for user: eval_task_64
+Task: A home healthcare agency is arranging weekly in-home nurse visits for a 70-year-old client with diabetes; each visit costs $150, and the client’s insurance plan reimburses 80% of covered visits but requires prior authorization for any schedule exceeding 3 visits per month. The client requests 1 visit per week (4 per month), has $120 available for out-of-pocket costs this month, and the agency can either (a) start weekly visits immediately without authorization or (b) begin with 3 visits this month while submitting authorization for weekly visits starting next month. Given the insurance rule, the costs, and the client’s budget, what should the agency do?
+============================================================
+
+Calling 8B model directly with guided JSON...
+
+============================================================
+Baseline completed
+Latency: 2.99 seconds
+Total FLOPs: 5.3280 TFLOPs
+Tokens: 172 input + 161 output
+Answer length: 838 characters
+============================================================
+
+
+✓ Task 65 completed and saved to CSV:
+  Success: True
+  Latency: 2.99s
+  Iterations: 1
+  FLOPs: 5.3280 TFLOPs
+  Answer Length: 838 chars
+
+################################################################################
+TASK 66/100 (ID: 65)
+################################################################################
+
+============================================================
+BASELINE MODE - Single 8B Model
+Processing task for user: eval_task_65
+Task: A pharmacy-run clinic is asked to give a 17-year-old a non-urgent travel vaccine today for $180; the clinic’s stated policy (based on a local rule) requires written parental consent for anyone under 18 unless delaying would likely cause serious harm, and the clinician documents that waiting 10 days is medically safe. The teen has $200 in cash and asks the clinic not to contact their parents, while the clinic can schedule the vaccine in 10 days with a parent present. Given the consent requirement, the patient’s age, the cost, and the lack of urgency, what should the clinic do?
+============================================================
+
+Calling 8B model directly with guided JSON...
+❌ [vLLM] Error calling http://localhost:8001/v1/completions: ReadTimeout: HTTPConnectionPool(host='localhost', port=8001): Read timed out. (read timeout=60)
+   Model: meta-llama/Llama-3.1-8B
+
+============================================================
+Baseline completed
+Latency: 60.06 seconds
+Total FLOPs: 2.2080 TFLOPs
+Tokens: 126 input + 12 output
+Answer length: 87 characters
+============================================================
+
+
+✓ Task 66 completed and saved to CSV:
+  Success: True
+  Latency: 60.06s
+  Iterations: 1
+  FLOPs: 2.2080 TFLOPs
+  Answer Length: 87 chars
+
+################################################################################
+TASK 67/100 (ID: 66)
+################################################################################
+
+============================================================
+BASELINE MODE - Single 8B Model
+Processing task for user: eval_task_66
+Task: A home-health agency is asked to start weekly physical therapy for a 17-year-old after a minor sports injury; each visit costs $180 and the plan is 6 visits (total $1,080). Agency policy (reflecting stated regulation) requires a parent or legal guardian to sign consent for non-emergency treatment for anyone under 18, and the clinician confirms delaying two weeks will not worsen the injury. The teen can pay $1,000 now and asks the agency to begin this week without contacting parents; given the consent rule, age, total cost, and lack of urgency, what should the agency do?
+============================================================
+
+Calling 8B model directly with guided JSON...
+
+============================================================
+Baseline completed
+Latency: 3.74 seconds
+Total FLOPs: 5.8560 TFLOPs
+Tokens: 164 input + 202 output
+Answer length: 1057 characters
+============================================================
+
+
+✓ Task 67 completed and saved to CSV:
+  Success: True
+  Latency: 3.74s
+  Iterations: 1
+  FLOPs: 5.8560 TFLOPs
+  Answer Length: 1057 chars
+
+################################################################################
+TASK 68/100 (ID: 67)
+################################################################################
+
+============================================================
+BASELINE MODE - Single 8B Model
+Processing task for user: eval_task_67
+Task: A pharmacy clinic is asked to give a flu shot to a 15-year-old during a school break; the shot costs $45, and the clinic’s stated policy (based on a local regulation) requires a parent or legal guardian to provide written consent for vaccinations for anyone under 16 unless it is an emergency, which this is not. The teen has $30 in cash and asks the clinic to “just do it today” without contacting their parent, while the clinic can hold a walk-in appointment tomorrow if consent is obtained and the remaining $15 is paid. Given the consent requirement, the patient’s age, the non-emergency status, and the payment shortfall, what should the clinic do?
+============================================================
+
+Calling 8B model directly with guided JSON...
+
+============================================================
+Baseline completed
+Latency: 4.29 seconds
+Total FLOPs: 6.5440 TFLOPs
+Tokens: 177 input + 232 output
+Answer length: 1139 characters
+============================================================
+
+
+✓ Task 68 completed and saved to CSV:
+  Success: True
+  Latency: 4.29s
+  Iterations: 1
+  FLOPs: 6.5440 TFLOPs
+  Answer Length: 1139 chars
+
+################################################################################
+TASK 69/100 (ID: 68)
+################################################################################
+
+============================================================
+BASELINE MODE - Single 8B Model
+Processing task for user: eval_task_68
+Task: A workplace health clinic is asked to administer a two-dose vaccination series to a 17-year-old employee; company policy (citing a stated regulation) requires parental consent for any non-emergency treatment for patients under 18. Each dose costs $90 and must be given 28 days apart, and the employee can pay $120 now and the remaining balance on the day of the second dose; the clinician confirms there is no medical urgency and starting after the employee turns 18 in 40 days would not increase health risk. Given the consent requirement, the timeline, and the payment plan, what should the clinic do?
+============================================================
+
+Calling 8B model directly with guided JSON...
+
+============================================================
+Baseline completed
+Latency: 2.07 seconds
+Total FLOPs: 4.3840 TFLOPs
+Tokens: 163 input + 111 output
+Answer length: 556 characters
+============================================================
+
+
+✓ Task 69 completed and saved to CSV:
+  Success: True
+  Latency: 2.07s
+  Iterations: 1
+  FLOPs: 4.3840 TFLOPs
+  Answer Length: 556 chars
+
+################################################################################
+TASK 70/100 (ID: 69)
+################################################################################
+
+============================================================
+BASELINE MODE - Single 8B Model
+Processing task for user: eval_task_69
+Task: A home-health agency is scheduling a non-emergency in-home physical therapy program for a 17-year-old after a minor sports injury; the program costs $150 per session for 6 sessions ($900 total), and the agency policy (based on its stated state regulation summary) requires a parent or legal guardian to sign consent for any non-emergency treatment for patients under 18. The teen wants to start tomorrow without contacting a parent and offers to pay $600 now from savings, while the therapist confirms waiting one week poses no medical risk. Given the consent requirement, the patient’s age, the total cost, and the lack of urgency, what should the agency do?
+============================================================
+
+Calling 8B model directly with guided JSON...
+
+============================================================
+Baseline completed
+Latency: 3.06 seconds
+Total FLOPs: 5.3760 TFLOPs
+Tokens: 171 input + 165 output
+Answer length: 844 characters
+============================================================
+
+
+✓ Task 70 completed and saved to CSV:
+  Success: True
+  Latency: 3.06s
+  Iterations: 1
+  FLOPs: 5.3760 TFLOPs
+  Answer Length: 844 chars
+
+################################################################################
+TASK 71/100 (ID: 70)
+################################################################################
+
+============================================================
+BASELINE MODE - Single 8B Model
+Processing task for user: eval_task_70
+Task: A small pharmacy clinic is asked to administer a routine (non-emergency) vaccine to a 15-year-old; clinic policy, reflecting a stated regulation, requires written parental consent for patients under 16 unless the situation is an emergency. The vaccine costs $95, the teen has $60 in cash and wants the shot today without contacting a parent, and the nurse confirms waiting one week poses no meaningful health risk. Given the consent requirement, the patient’s age, the payment shortfall, and the lack of urgency, what should the clinic do?
+============================================================
+
+Calling 8B model directly with guided JSON...
+❌ [vLLM] Error calling http://localhost:8001/v1/completions: ReadTimeout: HTTPConnectionPool(host='localhost', port=8001): Read timed out. (read timeout=60)
+   Model: meta-llama/Llama-3.1-8B
+
+============================================================
+Baseline completed
+Latency: 60.06 seconds
+Total FLOPs: 2.0000 TFLOPs
+Tokens: 113 input + 12 output
+Answer length: 87 characters
+============================================================
+
+
+✓ Task 71 completed and saved to CSV:
+  Success: True
+  Latency: 60.06s
+  Iterations: 1
+  FLOPs: 2.0000 TFLOPs
+  Answer Length: 87 chars
+
+################################################################################
+TASK 72/100 (ID: 71)
+################################################################################
+
+============================================================
+BASELINE MODE - Single 8B Model
+Processing task for user: eval_task_71
+Task: A small employer’s health clinic is asked to release an employee’s lab results to the employee’s spouse, but the clinic’s written policy (based on stated privacy regulation) allows disclosure only with the patient’s signed consent unless there is a documented life-threatening emergency; the nurse confirms the results are routine and not urgent. The employee is reachable and can sign a consent form tomorrow, while the spouse insists the clinic email the results today. Given the policy, the lack of emergency, and the one-day delay, what should the clinic do?
+============================================================
+
+Calling 8B model directly with guided JSON...
+
+============================================================
+Baseline completed
+Latency: 3.21 seconds
+Total FLOPs: 5.0720 TFLOPs
+Tokens: 144 input + 173 output
+Answer length: 925 characters
+============================================================
+
+
+✓ Task 72 completed and saved to CSV:
+  Success: True
+  Latency: 3.21s
+  Iterations: 1
+  FLOPs: 5.0720 TFLOPs
+  Answer Length: 925 chars
+
+################################################################################
+TASK 73/100 (ID: 72)
+################################################################################
+
+============================================================
+BASELINE MODE - Single 8B Model
+Processing task for user: eval_task_72
+Task: A small urgent-care clinic is asked to provide a same-day, non-emergency MRI for a 17-year-old that costs $900; clinic policy (citing a stated regulation) requires a parent or legal guardian to consent for non-emergency imaging for anyone under 18, but allows treatment without consent only if delaying care would create an immediate serious health risk, which the clinician documents is not present. The teen offers to pay $400 now and the remaining $500 next month, and the clinic can schedule the MRI in 10 days with no expected medical harm from waiting. Given the consent rule, the payment plan, and the lack of urgency, what should the clinic do?
+============================================================
+
+Calling 8B model directly with guided JSON...
+
+============================================================
+Baseline completed
+Latency: 2.03 seconds
+Total FLOPs: 4.5440 TFLOPs
+Tokens: 175 input + 109 output
+Answer length: 533 characters
+============================================================
+
+
+✓ Task 73 completed and saved to CSV:
+  Success: True
+  Latency: 2.03s
+  Iterations: 1
+  FLOPs: 4.5440 TFLOPs
+  Answer Length: 533 chars
+
+################################################################################
+TASK 74/100 (ID: 73)
+################################################################################
+
+============================================================
+BASELINE MODE - Single 8B Model
+Processing task for user: eval_task_73
+Task: A small pharmacy is asked to dispense a prescription pain medication to a 17-year-old after a minor injury; the prescription is valid, but the pharmacy’s stated regulation requires a parent or legal guardian to pick up controlled medications for anyone under 18 unless it is an emergency. The teen arrives alone with $60, the copay is $45, and the pharmacist confirms the medication can safely be started within 24 hours without added medical risk. Given the rule, the patient’s age, the payment amount, and the non-urgent timing, what should the pharmacy do?
+============================================================
+
+Calling 8B model directly with guided JSON...
+
+============================================================
+Baseline completed
+Latency: 2.77 seconds
+Total FLOPs: 4.8320 TFLOPs
+Tokens: 153 input + 149 output
+Answer length: 736 characters
+============================================================
+
+
+✓ Task 74 completed and saved to CSV:
+  Success: True
+  Latency: 2.77s
+  Iterations: 1
+  FLOPs: 4.8320 TFLOPs
+  Answer Length: 736 chars
+
+################################################################################
+TASK 75/100 (ID: 74)
+################################################################################
+
+============================================================
+BASELINE MODE - Single 8B Model
+Processing task for user: eval_task_74
+Task: A home-health agency is discharging a stable adult patient who needs a 14‑day course of an antibiotic taken twice daily (28 pills total); the prescription label says “take 1 pill every 12 hours,” and regulation-based policy requires providing at least a 7‑day supply at discharge if the patient cannot reach a pharmacy within 24 hours. The patient has 10 pills left at home and states they cannot get to a pharmacy for 5 days, and the agency can dispense pills from its stock today. How many pills should the agency dispense now to comply with the policy and ensure correct dosing until the patient can access a pharmacy?
+============================================================
+
+Calling 8B model directly with guided JSON...
+
+============================================================
+Baseline completed
+Latency: 3.48 seconds
+Total FLOPs: 5.7280 TFLOPs
+Tokens: 170 input + 188 output
+Answer length: 799 characters
+============================================================
+
+
+✓ Task 75 completed and saved to CSV:
+  Success: True
+  Latency: 3.48s
+  Iterations: 1
+  FLOPs: 5.7280 TFLOPs
+  Answer Length: 799 chars
+
+################################################################################
+TASK 76/100 (ID: 75)
+################################################################################
+
+============================================================
+BASELINE MODE - Single 8B Model
+Processing task for user: eval_task_75
+Task: A home-care agency is planning weekly physical therapy visits for a 70-year-old client, billing $150 per visit; the client’s insurance plan (per stated policy) covers 80% of approved services after the client pays a $500 annual deductible, and the client has already paid $200 toward that deductible this year. The therapist recommends 6 visits over the next 6 weeks, and the client says they can afford at most $400 out-of-pocket and wants to start immediately. Given the deductible remaining, the coverage rate, the visit cost, and the client’s budget, should the agency schedule all 6 visits now, schedule fewer, or delay until the client can budget more?
+============================================================
+
+Calling 8B model directly with guided JSON...
+
+============================================================
+Baseline completed
+Latency: 2.41 seconds
+Total FLOPs: 4.8960 TFLOPs
+Tokens: 176 input + 130 output
+Answer length: 523 characters
+============================================================
+
+
+✓ Task 76 completed and saved to CSV:
+  Success: True
+  Latency: 2.41s
+  Iterations: 1
+  FLOPs: 4.8960 TFLOPs
+  Answer Length: 523 chars
+
+################################################################################
+TASK 77/100 (ID: 76)
+################################################################################
+
+============================================================
+BASELINE MODE - Single 8B Model
+Processing task for user: eval_task_76
+Task: A home health agency is preparing to administer a non-urgent in-home infusion to a 17-year-old that costs $900; agency policy (based on stated regulation) requires a parent or legal guardian’s written consent for any treatment of minors unless delaying care would create an immediate risk of serious harm, which the supervising nurse has confirmed is not the case. The patient offers to pay the full $900 today and asks the agency not to contact their parents, and the agency can legally and clinically delay the infusion for 10 days with no added medical risk. Given the consent requirement, the patient’s age, the payment offer, and the lack of urgency, what should the agency do?
+============================================================
+
+Calling 8B model directly with guided JSON...
+
+============================================================
+Baseline completed
+Latency: 1.54 seconds
+Total FLOPs: 4.1120 TFLOPs
+Tokens: 175 input + 82 output
+Answer length: 420 characters
+============================================================
+
+
+✓ Task 77 completed and saved to CSV:
+  Success: True
+  Latency: 1.54s
+  Iterations: 1
+  FLOPs: 4.1120 TFLOPs
+  Answer Length: 420 chars
+
+################################################################################
+TASK 78/100 (ID: 77)
+################################################################################
+
+============================================================
+BASELINE MODE - Single 8B Model
+Processing task for user: eval_task_77
+Task: A small pharmacy is asked by a customer to fill a new prescription for 90 tablets of a controlled medication; the written prescription is 20 days old, and the stated regulation the pharmacy follows says controlled-substance prescriptions may only be dispensed within 14 days of the issue date. The customer offers to pay $45 in cash today and says they will run out in 3 days, but the pharmacist confirms there is no immediate emergency and can contact the prescriber for a new prescription within 24 hours. Given the 14-day rule, the dates, and the timing, what should the pharmacy do?
+============================================================
+
+Calling 8B model directly with guided JSON...
+
+============================================================
+Baseline completed
+Latency: 0.91 seconds
+Total FLOPs: 3.3280 TFLOPs
+Tokens: 160 input + 48 output
+Answer length: 205 characters
+============================================================
+
+
+✓ Task 78 completed and saved to CSV:
+  Success: True
+  Latency: 0.91s
+  Iterations: 1
+  FLOPs: 3.3280 TFLOPs
+  Answer Length: 205 chars
+
+################################################################################
+TASK 79/100 (ID: 78)
+################################################################################
+
+============================================================
+BASELINE MODE - Single 8B Model
+Processing task for user: eval_task_78
+Task: A small employer’s health clinic is asked to administer a non-urgent vaccination series to a 17-year-old employee; the clinic’s written policy (based on stated local regulation) requires parental consent for anyone under 18 unless delaying care would create a serious health risk, and the physician confirms a two-week delay poses no serious risk. The vaccine series costs $240 total for three doses at $80 each, and the employee offers to pay $160 now and $80 after the first dose but insists the clinic not contact their parents. Given the consent requirement, the payment plan, and the lack of urgency, what should the clinic do?
+============================================================
+
+Calling 8B model directly with guided JSON...
+
+============================================================
+Baseline completed
+Latency: 3.85 seconds
+Total FLOPs: 5.9680 TFLOPs
+Tokens: 165 input + 208 output
+Answer length: 1146 characters
+============================================================
+
+
+✓ Task 79 completed and saved to CSV:
+  Success: True
+  Latency: 3.85s
+  Iterations: 1
+  FLOPs: 5.9680 TFLOPs
+  Answer Length: 1146 chars
+
+################################################################################
+TASK 80/100 (ID: 79)
+################################################################################
+
+============================================================
+BASELINE MODE - Single 8B Model
+Processing task for user: eval_task_79
+Task: A small pharmacy clinic is asked to administer a non-emergency travel vaccine to a 17-year-old for $180; the clinic’s written policy (based on a stated local regulation) requires a parent/guardian’s written consent for any vaccination of patients under 18 unless it is an urgent, life-threatening situation, which the clinician confirms it is not. The teen has $120 in cash today and asks to get the vaccine immediately without contacting a parent, while the clinic can hold an appointment in 10 days with no medical downside. Given the consent rule, the patient’s age, the non-urgent status, and the payment shortfall, what should the clinic do?
+============================================================
+
+Calling 8B model directly with guided JSON...
+
+============================================================
+Baseline completed
+Latency: 2.42 seconds
+Total FLOPs: 4.8480 TFLOPs
+Tokens: 173 input + 130 output
+Answer length: 624 characters
+============================================================
+
+
+✓ Task 80 completed and saved to CSV:
+  Success: True
+  Latency: 2.42s
+  Iterations: 1
+  FLOPs: 4.8480 TFLOPs
+  Answer Length: 624 chars
+
+################################################################################
+TASK 81/100 (ID: 80)
+################################################################################
+
+============================================================
+BASELINE MODE - Single 8B Model
+Processing task for user: eval_task_80
+Task: A small employer offers a workplace flu vaccination clinic for staff and must follow a stated health-and-safety policy: any employee receiving the vaccine must complete a screening form, and if they report a severe egg allergy they must be referred to an off-site clinic instead of being vaccinated on-site. Of 24 employees who signed up, 3 report severe egg allergy on the form; the on-site provider charges $30 per vaccination, while the off-site clinic charges $45 per vaccination plus the employer reimburses each referred employee $15 for travel. Given the policy and the costs, what should the employer do?
+============================================================
+
+Calling 8B model directly with guided JSON...
+
+============================================================
+Baseline completed
+Latency: 3.02 seconds
+Total FLOPs: 5.1360 TFLOPs
+Tokens: 158 input + 163 output
+Answer length: 655 characters
+============================================================
+
+
+✓ Task 81 completed and saved to CSV:
+  Success: True
+  Latency: 3.02s
+  Iterations: 1
+  FLOPs: 5.1360 TFLOPs
+  Answer Length: 655 chars
+
+################################################################################
+TASK 82/100 (ID: 81)
+################################################################################
+
+============================================================
+BASELINE MODE - Single 8B Model
+Processing task for user: eval_task_81
+Task: A home-health agency is preparing to discharge a 67-year-old patient who needs a powered mobility scooter for safe movement at home; the physician has documented it is medically necessary but not an emergency. The insurer’s stated rule is it will reimburse 80% of the scooter’s $1,500 cost only if prior authorization is obtained before purchase, and the agency can either buy it today without authorization or wait 5 business days to get authorization with no added health risk. Given the medical need, the reimbursement rule, the cost, and the safe 5-day wait, what should the agency do?
+============================================================
+
+Calling 8B model directly with guided JSON...
+
+============================================================
+Baseline completed
+Latency: 0.10 seconds
+Total FLOPs: 2.5760 TFLOPs
+Tokens: 157 input + 4 output
+Answer length: 1 characters
+============================================================
+
+
+✓ Task 82 completed and saved to CSV:
+  Success: True
+  Latency: 0.10s
+  Iterations: 1
+  FLOPs: 2.5760 TFLOPs
+  Answer Length: 1 chars
+
+################################################################################
+TASK 83/100 (ID: 82)
+################################################################################
+
+============================================================
+BASELINE MODE - Single 8B Model
+Processing task for user: eval_task_82
+Task: A small employer’s health clinic is asked to give a non-emergency medication injection to a 15-year-old employee’s dependent; the clinic’s stated policy (reflecting company compliance rules) requires written consent from a parent/guardian for patients under 16 unless delaying care would cause immediate serious harm, and the clinician documents that waiting 48 hours is medically safe. The injection costs $180, the teen has $100 cash and asks the clinic to proceed today without contacting the parent, and the clinic can schedule the injection in two days with no added health risk and collect the full amount at the visit. Given the consent requirement, the patient’s age, the payment shortfall, and the safe delay, what should the clinic do?
+============================================================
+
+Calling 8B model directly with guided JSON...
+
+============================================================
+Baseline completed
+Latency: 2.01 seconds
+Total FLOPs: 4.6880 TFLOPs
+Tokens: 185 input + 108 output
+Answer length: 559 characters
+============================================================
+
+
+✓ Task 83 completed and saved to CSV:
+  Success: True
+  Latency: 2.01s
+  Iterations: 1
+  FLOPs: 4.6880 TFLOPs
+  Answer Length: 559 chars
+
+################################################################################
+TASK 84/100 (ID: 83)
+################################################################################
+
+============================================================
+BASELINE MODE - Single 8B Model
+Processing task for user: eval_task_83
+Task: A pharmacy clinic is asked to administer a seasonal vaccine to a 15-year-old for a $40 fee; its posted policy (based on stated local regulation) requires written parental consent for anyone under 16 unless it is an emergency, and the nurse confirms this is not an emergency. The teen has $25 cash and a prepaid card with $20 available, but the card can only be charged if an adult signs for it. The clinic can schedule the vaccination for next week with no medical downside—what should the clinic do?
+============================================================
+
+Calling 8B model directly with guided JSON...
+
+============================================================
+Baseline completed
+Latency: 2.12 seconds
+Total FLOPs: 4.1120 TFLOPs
+Tokens: 143 input + 114 output
+Answer length: 569 characters
+============================================================
+
+
+✓ Task 84 completed and saved to CSV:
+  Success: True
+  Latency: 2.12s
+  Iterations: 1
+  FLOPs: 4.1120 TFLOPs
+  Answer Length: 569 chars
+
+################################################################################
+TASK 85/100 (ID: 84)
+################################################################################
+
+============================================================
+BASELINE MODE - Single 8B Model
+Processing task for user: eval_task_84
+Task: A retail pharmacy is asked to give a 17-year-old a non-urgent vaccine that costs $150; store policy (based on stated regulation) requires written parental consent for anyone under 18 unless the clinician documents an immediate serious health risk, which the pharmacist confirms is not present. The teen has $200 to pay and wants the shot today without contacting a parent, and the pharmacist can schedule the vaccination for next week with no medical risk. Given the consent requirement, the patient’s age, the cost, and the lack of urgency, what should the pharmacy do?
+============================================================
+
+Calling 8B model directly with guided JSON...
+
+============================================================
+Baseline completed
+Latency: 2.31 seconds
+Total FLOPs: 4.4160 TFLOPs
+Tokens: 152 input + 124 output
+Answer length: 637 characters
+============================================================
+
+
+✓ Task 85 completed and saved to CSV:
+  Success: True
+  Latency: 2.31s
+  Iterations: 1
+  FLOPs: 4.4160 TFLOPs
+  Answer Length: 637 chars
+
+################################################################################
+TASK 86/100 (ID: 85)
+################################################################################
+
+============================================================
+BASELINE MODE - Single 8B Model
+Processing task for user: eval_task_85
+Task: A home healthcare agency is discharging a 17-year-old patient after a non-emergency wound-care visit that costs $300; the agency policy (reflecting its stated regulation) requires a parent/guardian to sign for treatment of minors unless delaying care would create a serious health risk, which the nurse documents is not the case. The teen wants to pay immediately using $200 cash and a $150 prepaid card and asks the nurse not to contact their parents, while the agency can reschedule the visit for next week without medical harm. Given the consent rule, the patient’s age, the non-urgent status, and the available payment amounts, what should the agency do?
+============================================================
+
+Calling 8B model directly with guided JSON...
+
+============================================================
+Baseline completed
+Latency: 1.79 seconds
+Total FLOPs: 4.3040 TFLOPs
+Tokens: 173 input + 96 output
+Answer length: 466 characters
+============================================================
+
+
+✓ Task 86 completed and saved to CSV:
+  Success: True
+  Latency: 1.79s
+  Iterations: 1
+  FLOPs: 4.3040 TFLOPs
+  Answer Length: 466 chars
+
+################################################################################
+TASK 87/100 (ID: 86)
+################################################################################
+
+============================================================
+BASELINE MODE - Single 8B Model
+Processing task for user: eval_task_86
+Task: A pharmacy clinic is asked to give a routine vaccine to a 15-year-old for $90; the clinic policy (based on stated regulation) requires written consent from a parent or legal guardian for anyone under 16 unless it is an emergency, and the nurse confirms there is no emergency. The teen has $120 in cash and asks to pay and receive the vaccine today without contacting a guardian, but the clinic can offer an appointment next week with no health risk from waiting. Given the consent requirement, the patient’s age, the payment amount, and the non-urgent timing, what should the clinic do?
+============================================================
+
+Calling 8B model directly with guided JSON...
+❌ [vLLM] Error calling http://localhost:8001/v1/completions: ReadTimeout: HTTPConnectionPool(host='localhost', port=8001): Read timed out. (read timeout=60)
+   Model: meta-llama/Llama-3.1-8B
+
+============================================================
+Baseline completed
+Latency: 60.06 seconds
+Total FLOPs: 2.2400 TFLOPs
+Tokens: 128 input + 12 output
+Answer length: 87 characters
+============================================================
+
+
+✓ Task 87 completed and saved to CSV:
+  Success: True
+  Latency: 60.06s
+  Iterations: 1
+  FLOPs: 2.2400 TFLOPs
+  Answer Length: 87 chars
+
+################################################################################
+TASK 88/100 (ID: 87)
+################################################################################
+
+============================================================
+BASELINE MODE - Single 8B Model
+Processing task for user: eval_task_87
+Task: A small employer offers employees a voluntary wellness screening that includes a cholesterol test costing $45 per person; under a stated workplace privacy policy aligned with regulation, individual medical results can only be shared with the employee unless they provide written consent, but the employer may receive only aggregated, de-identified statistics. Twenty employees signed up, and the employer asks the clinic to email all individual results to HR so HR can reimburse the $45 fee, while 6 employees have already signed consent forms and 14 have not. What should the clinic do about sending results and processing reimbursement while following the policy and minimizing delays?
+============================================================
+
+Calling 8B model directly with guided JSON...
+
+============================================================
+Baseline completed
+Latency: 2.69 seconds
+Total FLOPs: 4.8320 TFLOPs
+Tokens: 157 input + 145 output
+Answer length: 831 characters
+============================================================
+
+
+✓ Task 88 completed and saved to CSV:
+  Success: True
+  Latency: 2.69s
+  Iterations: 1
+  FLOPs: 4.8320 TFLOPs
+  Answer Length: 831 chars
+
+################################################################################
+TASK 89/100 (ID: 88)
+################################################################################
+
+============================================================
+BASELINE MODE - Single 8B Model
+Processing task for user: eval_task_88
+Task: A home health agency is planning to start a new blood-pressure medication for a 70-year-old client during a routine visit; the medication costs $60 per month, and the client’s insurance will only reimburse it if a signed prescription is on file before the first dose is given. The nurse has the medication sample in hand, but the prescribing physician cannot send the signed prescription until tomorrow, and the client’s current readings are stable with no urgent symptoms. Given the reimbursement rule, the timing, and the non-urgent condition, what should the agency do about administering the first dose today?
+============================================================
+
+Calling 8B model directly with guided JSON...
+
+============================================================
+Baseline completed
+Latency: 1.53 seconds
+Total FLOPs: 3.7760 TFLOPs
+Tokens: 154 input + 82 output
+Answer length: 466 characters
+============================================================
+
+
+✓ Task 89 completed and saved to CSV:
+  Success: True
+  Latency: 1.53s
+  Iterations: 1
+  FLOPs: 3.7760 TFLOPs
+  Answer Length: 466 chars
+
+################################################################################
+TASK 90/100 (ID: 89)
+################################################################################
+
+============================================================
+BASELINE MODE - Single 8B Model
+Processing task for user: eval_task_89
+Task: A retail pharmacy is asked to dispense a 30-day supply of a controlled sleep medication for a 17-year-old with a valid prescription; store policy (reflecting a stated regulation) requires either a parent/guardian pickup or written consent on file for controlled substances for minors, unless it’s an emergency, and the prescriber notes it is not an emergency. The medication costs $45, the teen can pay $30 today, and the pharmacy can hold the prescription for up to 7 days at no health risk according to the prescriber. Given the consent requirement, the minor’s age, and the payment shortfall, what should the pharmacy do?
+============================================================
+
+Calling 8B model directly with guided JSON...
+
+============================================================
+Baseline completed
+Latency: 2.12 seconds
+Total FLOPs: 4.5600 TFLOPs
+Tokens: 171 input + 114 output
+Answer length: 592 characters
+============================================================
+
+
+✓ Task 90 completed and saved to CSV:
+  Success: True
+  Latency: 2.12s
+  Iterations: 1
+  FLOPs: 4.5600 TFLOPs
+  Answer Length: 592 chars
+
+################################################################################
+TASK 91/100 (ID: 90)
+################################################################################
+
+============================================================
+BASELINE MODE - Single 8B Model
+Processing task for user: eval_task_90
+Task: A small employer-sponsored health clinic offers a same-day workplace flu vaccination for employees, charging $35 per shot, but a posted policy (based on the plan’s benefit rules) states the clinic may not bill or administer the vaccine unless the employee either shows active insurance eligibility or pays in full at the visit. An employee’s coverage is currently “pending reinstatement” for the next 10 days, they can pay only $20 today, and the clinic has 50 doses that expire in 14 days with no medical urgency to vaccinate today versus next week. Given the billing rule, the employee’s payment shortfall, and the timelines, what should the clinic do?
+============================================================
+
+Calling 8B model directly with guided JSON...
+
+============================================================
+Baseline completed
+Latency: 1.64 seconds
+Total FLOPs: 4.1280 TFLOPs
+Tokens: 170 input + 88 output
+Answer length: 410 characters
+============================================================
+
+
+✓ Task 91 completed and saved to CSV:
+  Success: True
+  Latency: 1.64s
+  Iterations: 1
+  FLOPs: 4.1280 TFLOPs
+  Answer Length: 410 chars
+
+################################################################################
+TASK 92/100 (ID: 91)
+################################################################################
+
+============================================================
+BASELINE MODE - Single 8B Model
+Processing task for user: eval_task_91
+Task: A retail pharmacy is dispensing a non-urgent prescription to a 17-year-old for a medication that costs $90; store policy (based on stated regulation) requires a parent/guardian to pick up any controlled medication for patients under 18 unless the prescriber documents an emergency need, which is not documented here. The teen has $100 cash and asks to pick it up alone today, while the pharmacy can hold the prescription for 7 days at no health risk per the prescriber’s note. Given the age-based pickup rule, the payment amount, and the lack of documented urgency, what should the pharmacy do?
+============================================================
+
+Calling 8B model directly with guided JSON...
+
+============================================================
+Baseline completed
+Latency: 2.29 seconds
+Total FLOPs: 4.6080 TFLOPs
+Tokens: 165 input + 123 output
+Answer length: 589 characters
+============================================================
+
+
+✓ Task 92 completed and saved to CSV:
+  Success: True
+  Latency: 2.29s
+  Iterations: 1
+  FLOPs: 4.6080 TFLOPs
+  Answer Length: 589 chars
+
+################################################################################
+TASK 93/100 (ID: 92)
+################################################################################
+
+============================================================
+BASELINE MODE - Single 8B Model
+Processing task for user: eval_task_92
+Task: A retail pharmacy is asked to dispense a 10‑day antibiotic course at 2 tablets per day (20 tablets total); each tablet costs $3, and the patient can only pay $45 today. Pharmacy policy, reflecting stated regulation, prohibits dispensing fewer tablets than a full prescribed course unless the prescriber issues a revised prescription. The prescriber is available to respond within 24 hours, and the patient’s condition is stable enough to wait one day without increased medical risk. What should the pharmacy do?
+============================================================
+
+Calling 8B model directly with guided JSON...
+
+============================================================
+Baseline completed
+Latency: 2.41 seconds
+Total FLOPs: 4.3520 TFLOPs
+Tokens: 142 input + 130 output
+Answer length: 680 characters
+============================================================
+
+
+✓ Task 93 completed and saved to CSV:
+  Success: True
+  Latency: 2.41s
+  Iterations: 1
+  FLOPs: 4.3520 TFLOPs
+  Answer Length: 680 chars
+
+################################################################################
+TASK 94/100 (ID: 93)
+################################################################################
+
+============================================================
+BASELINE MODE - Single 8B Model
+Processing task for user: eval_task_93
+Task: A pharmacy clinic is asked to give a flu shot to a 15-year-old who arrives alone; the clinic’s stated policy (based on local regulation) requires a parent or legal guardian to provide written consent for vaccinations for anyone under 16 unless it is an emergency, and the nurse confirms there is no emergency. The shot costs $45, the teen has $60 cash and offers to pay in full, and the clinic can schedule the shot for next week with no added health risk. Given the consent requirement, the patient’s age, the non-urgent situation, and the payment details, what should the clinic do?
+============================================================
+
+Calling 8B model directly with guided JSON...
+
+============================================================
+Baseline completed
+Latency: 3.89 seconds
+Total FLOPs: 5.9520 TFLOPs
+Tokens: 162 input + 210 output
+Answer length: 1065 characters
+============================================================
+
+
+✓ Task 94 completed and saved to CSV:
+  Success: True
+  Latency: 3.89s
+  Iterations: 1
+  FLOPs: 5.9520 TFLOPs
+  Answer Length: 1065 chars
+
+################################################################################
+TASK 95/100 (ID: 94)
+################################################################################
+
+============================================================
+BASELINE MODE - Single 8B Model
+Processing task for user: eval_task_94
+Task: A pharmacy-run clinic is asked to give a non-urgent vaccine to a 15-year-old; the clinic’s written policy (based on local regulation) says patients under 16 must have a parent or legal guardian sign consent unless delaying would create an immediate serious health risk, and the clinician documents there is no such risk. The vaccine costs $90, the teen offers to pay $120 in cash, and the next available appointment with a parent present is in 5 days with no medical downside. What should the clinic do?
+============================================================
+
+Calling 8B model directly with guided JSON...
+
+============================================================
+Baseline completed
+Latency: 2.58 seconds
+Total FLOPs: 4.5280 TFLOPs
+Tokens: 144 input + 139 output
+Answer length: 664 characters
+============================================================
+
+
+✓ Task 95 completed and saved to CSV:
+  Success: True
+  Latency: 2.58s
+  Iterations: 1
+  FLOPs: 4.5280 TFLOPs
+  Answer Length: 664 chars
+
+################################################################################
+TASK 96/100 (ID: 95)
+################################################################################
+
+============================================================
+BASELINE MODE - Single 8B Model
+Processing task for user: eval_task_95
+Task: A pharmacy clinic is asked by a 17-year-old for a same-day, non-urgent vaccination that costs $90; the clinic’s stated rule (based on local regulation) is that patients under 18 need a parent/guardian’s written consent for non-emergency care, while patients 18+ can consent for themselves. The teen has $120 and offers to pay in full but refuses to contact a parent, and the nurse confirms delaying the vaccine by one week does not create a meaningful medical risk. Given the consent requirement, the patient’s age, the cost, and the lack of urgency, what should the clinic do?
+============================================================
+
+Calling 8B model directly with guided JSON...
+
+============================================================
+Baseline completed
+Latency: 5.90 seconds
+Total FLOPs: 7.7280 TFLOPs
+Tokens: 165 input + 318 output
+Answer length: 1671 characters
+============================================================
+
+
+✓ Task 96 completed and saved to CSV:
+  Success: True
+  Latency: 5.90s
+  Iterations: 1
+  FLOPs: 7.7280 TFLOPs
+  Answer Length: 1671 chars
+
+################################################################################
+TASK 97/100 (ID: 96)
+################################################################################
+
+============================================================
+BASELINE MODE - Single 8B Model
+Processing task for user: eval_task_96
+Task: A home health agency is discharging a 17-year-old patient after a minor surgery and must provide a 5-day course of medication; agency policy (citing its stated regulation) requires written consent from a parent/guardian for any non-emergency treatment for patients under 18. The medication costs $45 per day and the patient has $120 available today, but the clinician states the first dose must be started within 24 hours to prevent infection complications, making it urgent. Given the consent requirement, the patient’s age, the total medication cost, the patient’s available funds, and the time-sensitive medical need, what should the agency do?
+============================================================
+
+Calling 8B model directly with guided JSON...
+
+============================================================
+Baseline completed
+Latency: 2.16 seconds
+Total FLOPs: 4.5600 TFLOPs
+Tokens: 169 input + 116 output
+Answer length: 589 characters
+============================================================
+
+
+✓ Task 97 completed and saved to CSV:
+  Success: True
+  Latency: 2.16s
+  Iterations: 1
+  FLOPs: 4.5600 TFLOPs
+  Answer Length: 589 chars
+
+################################################################################
+TASK 98/100 (ID: 97)
+################################################################################
+
+============================================================
+BASELINE MODE - Single 8B Model
+Processing task for user: eval_task_97
+Task: A pharmacy clinic is asked to give a flu vaccination to a 15-year-old who arrives alone and can pay the $45 fee in cash; the clinic’s stated policy (reflecting local regulation) is that anyone under 16 needs a parent/guardian’s written consent for vaccinations unless it is a declared public-health emergency, and today is not declared an emergency. The teen says they cannot contact a parent today and asks the clinic to proceed anyway, and the clinic could instead schedule an appointment for next week with no medical harm from waiting. Given the consent requirement, the patient’s age, and the timing and cost details, what should the clinic do?
+============================================================
+
+Calling 8B model directly with guided JSON...
+
+============================================================
+Baseline completed
+Latency: 2.71 seconds
+Total FLOPs: 5.0400 TFLOPs
+Tokens: 169 input + 146 output
+Answer length: 737 characters
+============================================================
+
+
+✓ Task 98 completed and saved to CSV:
+  Success: True
+  Latency: 2.71s
+  Iterations: 1
+  FLOPs: 5.0400 TFLOPs
+  Answer Length: 737 chars
+
+################################################################################
+TASK 99/100 (ID: 98)
+################################################################################
+
+============================================================
+BASELINE MODE - Single 8B Model
+Processing task for user: eval_task_98
+Task: A pharmacy clinic is asked to administer a routine vaccine to a 17-year-old for a school trip; clinic policy (based on stated regulation) requires a parent or legal guardian to provide written consent for anyone under 18 unless it is an emergency, and the nurse confirms this is not an emergency. The vaccine costs $75, the teen offers to pay $50 now and $25 next week, and the next available appointment is in 10 days with no medical risk from waiting. Given the consent requirement, payment plan, and non-urgent timing, what should the clinic do?
+============================================================
+
+Calling 8B model directly with guided JSON...
+
+============================================================
+Baseline completed
+Latency: 2.58 seconds
+Total FLOPs: 4.6880 TFLOPs
+Tokens: 154 input + 139 output
+Answer length: 679 characters
+============================================================
+
+
+✓ Task 99 completed and saved to CSV:
+  Success: True
+  Latency: 2.58s
+  Iterations: 1
+  FLOPs: 4.6880 TFLOPs
+  Answer Length: 679 chars
+
+################################################################################
+TASK 100/100 (ID: 99)
+################################################################################
+
+============================================================
+BASELINE MODE - Single 8B Model
+Processing task for user: eval_task_99
+Task: A pharmacy clinic is asked to administer a vaccine to a 15-year-old who arrives alone and requests it today; clinic policy (based on stated state regulation) requires a parent/guardian’s written consent for vaccinations for anyone under 16 unless it is an emergency, and the nurse confirms there is no emergency. The vaccine costs $90, the teen can pay $60 today and return with the remaining $30 next week, and the clinic has open appointments both today and next week with no health risk from waiting one week. Given the consent requirement, the patient’s age, the non-emergency status, and the payment shortfall, what should the clinic do?
+============================================================
+
+Calling 8B model directly with guided JSON...
+❌ [vLLM] Error calling http://localhost:8001/v1/completions: ReadTimeout: HTTPConnectionPool(host='localhost', port=8001): Read timed out. (read timeout=60)
+   Model: meta-llama/Llama-3.1-8B
+
+============================================================
+Baseline completed
+Latency: 60.01 seconds
+Total FLOPs: 2.3200 TFLOPs
+Tokens: 133 input + 12 output
+Answer length: 87 characters
+============================================================
+
+
+✓ Task 100 completed and saved to CSV:
+  Success: True
+  Latency: 60.01s
+  Iterations: 1
+  FLOPs: 2.3200 TFLOPs
+  Answer Length: 87 chars
+
+================================================================================
+EVALUATION SUMMARY
+================================================================================
+Total tasks: 100
+Successful: 100
+Failed: 0
+Avg Latency: 12.31s
+Avg FLOPs: 4.3650 TFLOPs
+
+✓ All results saved to: examples/eval_results_baseline_20251215_211253.csv
+================================================================================
+
+
+======================================
+Evaluation Complete
+======================================

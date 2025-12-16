@@ -64,24 +64,38 @@ class LLMOrchestrator:
         print(f"Task: {task}")
         print(f"{'='*60}\n")
         
-        # Create prompt with minimal instruction to avoid end token
-        baseline_prompt = f"{task}\n\n Your Answer:"
+        # Create structured baseline prompt
+        baseline_system = "You are a comprehensive AI assistant that provides detailed, accurate, and well-structured answers. Analyze the task carefully and provide a complete response."
+
+        baseline_prompt = f"{baseline_system}\n\nTask: {task}\n\nProvide your detailed answer:"
         
-        print("Calling 8B model directly...")
+        print("Calling 8B model directly with guided JSON...")
         
-        # Call 8B model without guided JSON for better quality
+        # Use guided JSON to ensure structured output
+        guided_schema = BaselineResponse.model_json_schema()
+        
         result = self.llm_loader.call_model(
             model_type="global-router",
             prompt=baseline_prompt,
-            max_tokens=1024,
-            temperature=0.5,
+            max_tokens=4096,
+            temperature=0.1,
+            guided_json=guided_schema,
             return_usage=True
         )
         
-        # Extract text and usage
+        # Extract text and usage from guided JSON response
         if isinstance(result, dict):
-            final_answer = result.get("text", "")
+            text_content = result.get("text", "")
             usage = result.get("usage", {})
+            
+            # Parse guided JSON response
+            try:
+                import json
+                parsed = json.loads(text_content)
+                final_answer = parsed.get("answer", text_content)
+            except (json.JSONDecodeError, AttributeError):
+                # Fallback if JSON parsing fails
+                final_answer = text_content
         else:
             final_answer = str(result)
             usage = {}

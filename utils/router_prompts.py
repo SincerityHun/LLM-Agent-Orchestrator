@@ -21,21 +21,6 @@ DO NOT use: "legal", "legal_analysis", "mathematics", "healthcare", "medicine"
 
 IMPORTANT: For complex tasks involving multiple domains, create separate subtasks for each domain.
 
-Example 1 - Medical Task:
-Input: "Diagnose chest pain and recommend treatment"
-Output: {"tasks": [
-  {"id": "task1", "domain": "medical", "content": "Analyze chest pain symptoms and potential diagnoses", "dependencies": []},
-  {"id": "task2", "domain": "medical", "content": "Recommend evidence-based treatment options", "dependencies": ["task1"]}
-]}
-
-Example 2 - Multi-Domain Task (Note: use "law" NOT "legal"):
-Input: "Analyze medical malpractice case and calculate damages"
-Output: {"tasks": [
-  {"id": "task1", "domain": "medical", "content": "Evaluate standard of care in diagnosis and treatment", "dependencies": []},
-  {"id": "task2", "domain": "law", "content": "Analyze legal liability and negligence elements", "dependencies": ["task1"]},
-  {"id": "task3", "domain": "math", "content": "Calculate economic and non-economic damages", "dependencies": ["task1", "task2"]}
-]}
-
 Rules:
 - Create detailed, actionable task descriptions (NOT "..." or vague text)
 - Identify ALL domains needed for the task

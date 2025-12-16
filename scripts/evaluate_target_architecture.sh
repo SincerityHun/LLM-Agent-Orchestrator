@@ -21,11 +21,11 @@ else
 fi
 
 # Parse command line arguments
-INPUT_CSV="${1:-examples/eval_inputs.csv}"
+INPUT_CSV="${1:-examples/eval_inputs_easy.csv}"
 OUTPUT_CSV="${2:-}"
 MAX_RETRY="${3:-3}"
 MAX_TASKS="${4:-}"
-MODE="${5:-baseline}"  # orchestrator or baseline
+MODE="${5:-orchestrator}"  # orchestrator or baseline
 
 echo "Configuration:"
 echo "  Mode: $MODE"

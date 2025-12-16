@@ -1,4 +1,4 @@
 {
-    "task": "Analyze the legal implications of a medical malpractice case involving chest pain diagnosis, calculate damages, and provide commonsense recommendations.",
-    "user_id": "test_user_01"
+    "task": "A workplace health clinic is scheduling a non-urgent vaccination series for an employee that requires 2 doses, 30 days apart, costing $180 per dose. Company policy (based on stated labor regulation) requires written employee consent for any medical treatment, and for employees under 18 it also requires a parent/guardian signature unless the treatment is needed to prevent immediate serious harm; the clinician confirms the employee is healthy and there is no immediate risk in waiting. The 17-year-old employee wants both doses scheduled today without informing their parents and offers to pay $250 now and the rest later. Given the consent requirement, the employee’s age, the dosing schedule, and the payment offered, what should the clinic do?",
+    "user_id": "test_user_02"
 }
