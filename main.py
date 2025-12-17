@@ -11,6 +11,8 @@ from orchestrator.graph_builder import GraphBuilder
 from orchestrator.result_handler import ResultHandler
 from utils.merge_utils import merge_outputs, format_graph_summary
 from utils.metrics import MetricsCollector
+from utils.fact_extractor import FactExtractor
+from utils.contradiction_checker import ContradictionChecker
 
 
 class BaselineResponse(BaseModel):
@@ -35,6 +37,10 @@ class LLMOrchestrator:
         self.result_handler = ResultHandler(max_retry=max_retry)
         self.max_retry = max_retry
         self.metrics = MetricsCollector()
+        
+        # NEW: Fact extraction and contradiction checking
+        self.fact_extractor = FactExtractor()
+        self.contradiction_checker = ContradictionChecker()
         
         # Import here to avoid circular dependency
         from utils.llm_loader import VLLMLoader
@@ -165,21 +171,34 @@ class LLMOrchestrator:
         print(f"Task: {task}")
         print(f"{'='*60}\n")
         
+        # STEP 0: Extract immutable facts (GROUND TRUTH)
+        # print("Step 0: Extracting Immutable Facts")
+        # immutable_facts = self.fact_extractor.extract_immutable_facts(task)
+        # facts_prompt = self.fact_extractor.format_facts_for_prompt(immutable_facts)
+        
+        # print(f"{'='*80}")
+        # print(facts_prompt)
+        # print(f"{'='*80}\n")
+        
         retry_count = 0
         feedback = None
         previous_results = None
+        dag = None  # DAG will be fixed after first iteration
         
         # Main refinement loop
         while retry_count < self.max_retry:
             print(f"\n--- Iteration {retry_count + 1} ---\n")
             
-            # Step 1: Global Router generates DAG
-            print("Step 1: Global Router - Task Decomposition")
-            dag = self.global_router.decompose_task(
-                task=task,
-                feedback=feedback,
-                previous_results=previous_results
-            )
+            # Step 1: Global Router generates DAG (only on first iteration)
+            if retry_count == 0:
+                print("Step 1: Global Router - Task Decomposition")
+                dag = self.global_router.decompose_task(
+                    task=task,
+                    feedback=feedback,
+                    previous_results=previous_results
+                )
+            else:
+                print("Step 1: Using fixed DAG from first iteration (no re-decomposition)")
             
             # Track router usage (estimate based on typical calls)
             # Global router makes 1-3 calls, estimate ~500 input + 300 output tokens per call
@@ -253,20 +272,45 @@ class LLMOrchestrator:
                     "result": result
                 })
             
-            merged_results = merge_outputs(agent_outputs)
+            # Step 4.5: Contradiction Checking
+            # print(f"\nStep 4.5: Contradiction Checking")
+            # print(f"{'='*80}")
             
+            # contradiction_result = self.contradiction_checker.check_contradictions(
+            #     final_state.get("results", {}),
+            #     immutable_facts
+            # )
+            
+            # print(self.contradiction_checker.generate_report(contradiction_result))
+            # print(f"{'='*80}\n")
+            
+            # Use only safe (validated) results
+            # if contradiction_result["has_contradictions"]:
+            #     print(f"⚠️  Using only {len(contradiction_result['safe_results'])} validated results\n")
+            #     safe_agent_outputs = []
+            #     for node_id, result_data in contradiction_result["safe_results"].items():
+            #         safe_agent_outputs.append({
+            #             "domain": result_data.get("domain", "unknown"),
+            #             "result": result_data.get("result", "")
+            #         })
+            #     merged_results = merge_outputs(safe_agent_outputs)
+            # else:
+            #     merged_results = merge_outputs(agent_outputs)
+            merged_results = merge_outputs(agent_outputs)
             print(f"\n{'-'*80}")
             print(f"MERGED RESULTS ({len(merged_results)} characters):")
             print(f"{'-'*80}")
             print(merged_results)
             print(f"{'='*80}\n")
             
-            # Step 5: Results Handler evaluation
-            print("Step 5: Results Handler - Evaluation")
+            # Step 5: Results Handler evaluation with structured context and immutable facts
+            print("Step 5: Results Handler - Evaluation (Judge Mode)")
             final_answer, should_stop, evaluation_feedback = self.result_handler.evaluate_results(
                 original_task=task,
                 merged_results=merged_results,
-                retry_count=retry_count
+                retry_count=retry_count,
+                dag=dag,
+                agent_results=final_state.get("results", {}),
             )
             
             # Track handler usage

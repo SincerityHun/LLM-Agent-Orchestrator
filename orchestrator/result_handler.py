@@ -1,5 +1,5 @@
 """
-Results Handler - Evaluates merged results and determines next steps using JSON schema
+Results Handler - Synthesizes final answers from agent results using RAG-style approach
 """
 import json
 from typing import Tuple, Dict, Any
@@ -8,7 +8,7 @@ from utils.llm_loader import VLLMLoader
 
 class ResultHandler:
     """
-    Evaluates results and decides whether to continue or finalize based on the original task.
+    Synthesizes final answers from agent results, treating them as retrieved reference materials.
     """
     
     def __init__(self, max_retry: int = 3):
@@ -16,40 +16,42 @@ class ResultHandler:
         self.max_retry = max_retry
         self.last_usage = {}  # Track last call's token usage
         
-        # Define JSON Schema for vLLM guided generation
-        self.evaluation_schema = {
+        # Define JSON Schema for answer synthesis
+        self.answer_schema = {
             "type": "object",
             "properties": {
-                "thoughts": {
+                "answer": {
                     "type": "string",
-                    "description": "Step-by-step analysis of the original task requirements and the provided merged results."
+                    "description": "Final answer to the original task using agent results as supporting knowledge. Must be non-empty and directly address the task."
                 },
-                "status": {
-                    "type": "string",
-                    "enum": ["YES", "NO"],
-                    "description": "YES if results are sufficient, NO if information is missing."
-                },
-                "content": {
-                    "type": "string",
-                    "description": "If status is YES, the final synthesized answer. If NO, feedback on what specific information is missing."
+                "used_agents": {
+                    "type": "array",
+                    "items": {"type": "string"},
+                    "description": "List of agent domains or subtask IDs whose results were used."
                 }
             },
-            "required": ["thoughts", "status", "content"]
+            "required": ["answer"]
         }
     
     def evaluate_results(
         self,
         original_task: str,
         merged_results: str,
-        retry_count: int
+        retry_count: int,
+        dag: Dict = None,
+        agent_results: Dict = None,
+        immutable_facts: Dict = None
     ) -> Tuple[str, bool, str]:
         """
-        Evaluate merged results using vLLM's guided_json.
+        Synthesize final answer from agent results using RAG-style approach.
         
         Args:
             original_task: Original user task
-            merged_results: Merged output from all agents
+            merged_results: Merged output from all agents (for backward compatibility)
             retry_count: Current retry iteration count
+            dag: DAG structure with nodes and edges (optional, provides structure)
+            agent_results: Dict of agent execution results with subtask info (optional)
+            immutable_facts: Ground truth facts extracted from original task (optional, unused)
             
         Returns:
             Tuple of (final_answer, should_stop, feedback)
@@ -58,22 +60,42 @@ class ResultHandler:
         if retry_count >= self.max_retry:
             return (merged_results, True, "Max retry limit reached")
         
-        # 2. Build evaluation prompt (Simplified for JSON)
-        evaluation_prompt = self._build_evaluation_prompt(
+        # 2. Build synthesis prompt with structured context
+        synthesis_prompt = self._build_synthesis_prompt(
             original_task,
-            merged_results
+            merged_results,
+            dag,
+            agent_results
         )
         
+        # Debug: Print structured context info
+        import sys
+        print(f"\n{'='*80}", flush=True)
+        print(f"RESULT HANDLER - ANSWER SYNTHESIS", flush=True)
+        print(f"{'='*80}", flush=True)
+        print(f"Has DAG: {dag is not None}", flush=True)
+        print(f"Has Agent Results: {agent_results is not None}", flush=True)
+        if dag:
+            print(f"Number of subtasks: {len(dag.get('nodes', []))}", flush=True)
+        if agent_results:
+            print(f"Number of agent results: {len(agent_results)}", flush=True)
+        print(f"\nPrompt length: {len(synthesis_prompt)} characters", flush=True)
+        print(f"\n{'='*80}", flush=True)
+        print(f"FULL SYNTHESIS PROMPT:", flush=True)
+        print(f"{'='*80}", flush=True)
+        print(synthesis_prompt, flush=True)
+        print(f"{'='*80}\n", flush=True)
+        sys.stdout.flush()
+        
         # 3. Call LLM with guided_json and track usage
-        # vLLM will force the output to match self.evaluation_schema
-        # Increased max_tokens to handle long responses
+        # vLLM will force the output to match self.answer_schema
         try:
             result = self.llm_loader.call_model(
                 model_type="global-router",
-                prompt=evaluation_prompt,
-                max_tokens=4096,  # Increased from 2048 to handle longer responses
-                temperature=0.1, # Keep low for structural consistency
-                guided_json=self.evaluation_schema,
+                prompt=synthesis_prompt,
+                max_tokens=2048,
+                temperature=0.5,  # Slightly higher for better synthesis
+                guided_json=self.answer_schema,
                 return_usage=True  # Track token usage
             )
         except (ValueError, Exception) as e:
@@ -99,40 +121,108 @@ class ResultHandler:
         # 4. Parse JSON
         return self._parse_json_response(json_response_str, merged_results)
     
-    def _build_evaluation_prompt(
+    def _build_synthesis_prompt(
         self,
         original_task: str,
-        merged_results: str
+        merged_results: str,
+        dag: Dict = None,
+        agent_results: Dict = None
     ) -> str:
         """
-        Build prompt focused on logic, relying on schema for structure.
+        Build RAG-style synthesis prompt treating agent results as retrieved reference materials.
         """
-        prompt = f"""You are a Result Synthesizer. Your goal is to create a comprehensive answer to the Original Task using the Merged Results from domain experts.
+        # Build structured context if dag and agent_results are provided
+        structured_context = ""
+        if dag and agent_results:
+            structured_context = self._build_structured_context(dag, agent_results)
+        
+        # Use structured context if available, otherwise fall back to merged_results
+        if structured_context:
+            results_section = f"""Structured Task Decomposition and Results:
+{structured_context}"""
+        else:
+            results_section = f"""Retrieved Agent Results:
+{merged_results}"""
+        
+        prompt = f"""You are an answer synthesis component.
 
-Original Task:
-{original_task}
+Below are results generated by multiple specialized agents.
+Treat them as retrieved reference materials.
+They may be incomplete or partially irrelevant.
 
-Merged Results from Agents:
-{merged_results}
+Your task:
+- Answer the Original Task directly and clearly.
+- Use the agent results only as supporting knowledge.
+- Do NOT judge, score, or reject the results.
+- If the information is insufficient to answer, return an empty answer.
 
-Instructions:
-1. In 'thoughts': Briefly analyze if the merged results contain sufficient information to answer the original task.
-2. Set 'status':
-   - "YES" if merged results are sufficient to answer the original task
-   - "NO" if critical information is missing
-3. In 'content':
-   - If "YES": Write a DIRECT, COMPREHENSIVE ANSWER to the Original Task. Synthesize all relevant information from the merged results. Answer the question that was asked, not just evaluate the results.
-   - If "NO": Specify exactly what information is missing to answer the original task.
+Original Task:(
+{original_task})
 
-IMPORTANT: When status is YES, the 'content' field must be the final answer to "{original_task}", NOT an evaluation of whether results are sufficient.
+({results_section})
 
-Response (JSON):
-"""
+Response (JSON):"""
         return prompt
+    
+    def _build_structured_context(self, dag: Dict, agent_results: Dict) -> str:
+        """
+        Build structured context showing subtask-agent-result relationships and dependencies.
+        
+        Args:
+            dag: DAG structure with nodes and edges
+            agent_results: Dict of agent execution results
+            
+        Returns:
+            Formatted string with structured context
+        """
+        lines = []
+        nodes = dag.get("nodes", [])
+        edges = dag.get("edges", [])
+        
+        # Build dependency mapping
+        dependencies_map = {}
+        for edge in edges:
+            target = edge.get("to")
+            source = edge.get("from")
+            if target not in dependencies_map:
+                dependencies_map[target] = []
+            dependencies_map[target].append(source)
+        
+        # Process each subtask
+        subtask_counter = 0
+        for node in nodes:
+            node_id = node.get("id")
+            subtask = node.get("task", "")
+            domain = node.get("domain", "unknown")
+            
+            # Get agent result
+            result_data = agent_results.get(node_id, {})
+            result = result_data.get("result", "[No result available]")
+            # model_size = result_data.get("model_size", "unknown")
+            
+            # Skip subtasks with no actual results - don't pass them to Result Handler at all
+            if result.startswith("[MOCK RESPONSE") or result == "[No result available]":
+                continue
+            
+            subtask_counter += 1
+            
+            # Get dependencies
+            deps = dependencies_map.get(node_id, [])
+            dep_str = f"Depends on: {', '.join(deps)}" if deps else "No dependencies (independent subtask)"
+            
+            lines.append(f"\nSubtask {subtask_counter} (ID: {node_id}):")
+            lines.append(f"  Domain: {domain.upper()}")
+            # lines.append(f"  Model: {model_size}")
+            lines.append(f"  Dependencies: {dep_str}")
+            lines.append(f"  Subtask Description: {subtask}")
+            lines.append(f"  Agent Response: {result}")
+            lines.append("-" * 80)
+        
+        return "\n".join(lines)
     
     def _parse_json_response(self, json_str: str, original_merged_results: str) -> Tuple[str, bool, str]:
         """
-        Parse the JSON string returned by vLLM.
+        Parse the JSON string returned by vLLM (answer schema).
         """
         try:
             # Try to clean up the response first
@@ -148,56 +238,92 @@ Response (JSON):
             
             data = json.loads(cleaned_json)
             
-            thoughts = data.get("thoughts", "")
-            status = data.get("status", "NO").upper()
-            content = data.get("content", "")
+            answer = data.get("answer", "").strip()
+            used_agents = data.get("used_agents", [])
             
-            # Logging thoughts for debugging (Optional)
-            print(f"\n[Evaluator Content]: {content}...\n")  # Truncate for readability
+            # Log synthesized answer preview
+            preview = answer[:200] + "..." if len(answer) > 200 else answer
+            print(f"\n[Synthesized Answer Preview]: {preview}\n")
+            if used_agents:
+                print(f"[Used Agents]: {', '.join(used_agents)}\n")
             
-            if status == "YES":
-                # Success: Content is Final Answer
-                final_answer = content
-                if not final_answer:
-                    return (original_merged_results, False, "Empty final answer despite YES status")
-
-                return (final_answer, True, "Task completed successfully")
+            # Check if answer is empty or insufficient
+            if self._is_empty_answer(answer):
+                feedback = "Empty or insufficient answer generated. Agent results may be incomplete. Retrying with refinement."
+                return (original_merged_results, False, feedback)
             else:
-                # Failure: Content is Feedback
-                return (original_merged_results, False, content)
+                return (answer, True, "Answer synthesized successfully")
                 
         except json.JSONDecodeError as e:
             print(f"JSON Parse Error: {e}")
             print(f"Raw Response (first 500 chars): {json_str[:500]}...")
             print(f"Raw Response (last 200 chars): ...{json_str[-200:]}")
             
-            # Don't treat parsing error as success - trigger retry instead
-            # Return merged results but with should_stop=False to allow refinement
-            print(f"⚠️ JSON parsing failed - triggering retry with feedback")
-            feedback = "ResultHandler failed to generate valid JSON response. The evaluation could not be completed. Please regenerate task decomposition with clearer instructions."
+            print(f"⚠️ JSON parsing failed - triggering retry")
+            feedback = "ResultHandler failed to generate valid JSON response. Retrying with clearer synthesis instructions."
             return (original_merged_results, False, feedback)
+
+    def _is_empty_answer(self, answer: str) -> bool:
+        """
+        Check if answer is empty or contains only placeholder text.
+        """
+        if not answer:
+            return True
+        
+        # Check for common placeholder patterns
+        answer_lower = answer.lower().strip()
+        placeholders = [
+            "[no result available]",
+            "no answer",
+            "insufficient information",
+            "unable to answer",
+            "cannot answer"
+        ]
+        
+        # Answer is too short (less than 20 characters)
+        if len(answer) < 20:
+            return True
+        
+        # Check if answer is just a placeholder
+        for placeholder in placeholders:
+            if answer_lower == placeholder or answer_lower.startswith(placeholder):
+                return True
+        
+        return False
 
 if __name__ == "__main__":
     # Mock Test
-    print("Testing ResultHandler with guided_json Logic...")
+    print("Testing ResultHandler with answer synthesis...")
     
     handler = ResultHandler(max_retry=3)
     
     # Simulate a valid JSON response from vLLM
-    mock_json_response_yes = """
+    mock_json_response = """
     {
-        "thoughts": "The user asked for the weather. The results show it is sunny and 25 degrees. This is sufficient.",
-        "status": "YES",
-        "content": "The weather is currently sunny with a temperature of 25 degrees."
+        "answer": "The weather is currently sunny with a temperature of 25 degrees Celsius. This is ideal weather for outdoor activities.",
+        "used_agents": ["commonsense", "task-1"]
     }
     """
     
     final_answer, should_stop, feedback = handler._parse_json_response(
-        mock_json_response_yes, "Raw Merged Results"
+        mock_json_response, "Raw Merged Results"
     )
     
-    print(f"Status: {should_stop}")
+    print(f"Should Stop: {should_stop}")
     print(f"Final Answer: {final_answer}")
+    print(f"Feedback: {feedback}")
     
     assert should_stop is True
     assert "sunny" in final_answer
+    assert len(final_answer) > 20
+    
+    # Test empty answer
+    mock_empty_response = '{"answer": ""}'
+    final_answer_empty, should_stop_empty, feedback_empty = handler._parse_json_response(
+        mock_empty_response, "Raw Merged Results"
+    )
+    
+    assert should_stop_empty is False
+    assert "Empty or insufficient" in feedback_empty
+    
+    print("\nAll tests passed!")

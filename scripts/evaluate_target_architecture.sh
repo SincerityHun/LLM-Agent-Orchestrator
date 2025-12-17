@@ -22,7 +22,7 @@ fi
 
 # Parse command line arguments
 INPUT_CSV="${1:-examples/eval_inputs_easy.csv}"
-OUTPUT_CSV="${2:-}"
+OUTPUT_CSV="${2:-examples/eval_results_always8b_easy_final.csv}"
 MAX_RETRY="${3:-3}"
 MAX_TASKS="${4:-}"
 MODE="${5:-orchestrator}"  # orchestrator or baseline

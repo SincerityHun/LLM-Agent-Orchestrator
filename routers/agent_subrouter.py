@@ -103,15 +103,16 @@ class AgentSubRouter:
             probability = result["probability"]
             
             # Apply threshold: only use 8b if probability >= 0.68
-            THRESHOLD = 0.6
-            if prediction == "8b" and probability >= THRESHOLD:
-                final_decision = "8b"
-            else:
-                final_decision = "1b"
+            # THRESHOLD = 0.5
+            # if prediction == "8b" and probability >= THRESHOLD:
+            #     final_decision = "8b"
+            # else:
+            #     final_decision = "1b"
+            final_decision = "8b" # ABlation Test
             
             # Log the decision
             if final_decision != prediction:
-                print(f"[Router Service] {domain}: {prediction} (p={probability:.3f}) -> Override to {final_decision} (threshold={THRESHOLD})")
+                print(f"[Router Service] {domain}: {prediction} (p={probability:.3f}) -> Override to {final_decision} (ABLATION TEST)")
             else:
                 print(f"[Router Service] {domain}: {final_decision} (p={probability:.3f})")
             

@@ -23,6 +23,13 @@ IMPORTANT: For complex tasks involving multiple domains, create separate subtask
 
 Rules:
 - Create detailed, actionable task descriptions (NOT "..." or vague text)
+- Use IMPERATIVE/COMMAND format for all task descriptions:
+  GOOD: "Analyze wound healing timeline for post-surgery patient"
+  GOOD: "Calculate total cost of 4-day wound care treatment"
+  GOOD: "Evaluate legal requirements for minor patient consent"
+  BAD: "Patient needs wound-care after surgery" (declarative statement)
+  BAD: "Wound infection risk" (incomplete phrase)
+- Start task descriptions with action verbs: Analyze, Calculate, Evaluate, Assess, Determine, Check, Review, etc.
 - Identify ALL domains needed for the task
 - Complex tasks with multiple aspects require multiple subtasks
 - Create dependencies when one subtask needs results from another

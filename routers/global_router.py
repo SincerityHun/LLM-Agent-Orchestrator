@@ -18,13 +18,23 @@ from utils.llm_loader import VLLMLoader
 class SubTask(BaseModel):
     """Single unit of work produced by the global router"""
 
-    id: str
+    id: str = Field(
+        ...,
+        description="Unique task identifier (e.g., 'task1', 'task2')"
+    )
     domain: Literal["commonsense", "medical", "law", "math"] = Field(
         ...,
-        description="Task domain - must be exactly one of: commonsense, medical, law, math"
+        description="Task domain classification. Must be exactly one of: commonsense, medical, law, math. For multi-domain tasks, create separate tasks for each domain."
     )
-    content: str
-    dependencies: List[str] = Field(default_factory=list)
+    content: str = Field(
+        ...,
+        min_length=10,
+        description="Detailed task description in IMPERATIVE/COMMAND format (e.g., 'Analyze...', 'Calculate...', 'Evaluate...', 'Assess...', 'Determine...'). Must be at least 10 words with specific requirements and context. Do NOT use declarative statements (e.g., 'Patient needs...') or placeholders like '...'.",
+    )
+    dependencies: List[str] = Field(
+        default_factory=list,
+        description="List of task IDs that must be completed before this task. Use empty array [] for tasks with no dependencies. All referenced task IDs must exist in the tasks list."
+    )
 
     @model_validator(mode="after")
     def validate_dependencies(self) -> "SubTask":
@@ -36,7 +46,10 @@ class SubTask(BaseModel):
 class TaskDAG(BaseModel):
     """Schema representing the full DAG returned by the router"""
 
-    tasks: List[SubTask]
+    tasks: List[SubTask] = Field(
+        ...,
+        description="List of all subtasks that compose the task decomposition. Each subtask must have a unique ID."
+    )
 
     @model_validator(mode="after")
     def validate_graph(cls, values: "TaskDAG") -> "TaskDAG":
@@ -122,7 +135,7 @@ class GlobalRouter:
                 model_type="global-router",
                 prompt=prompt,
                 max_tokens=1024,
-                temperature=0.2,
+                temperature=0.7,
                 guided_json=json_schema,
             )
 
@@ -162,34 +175,17 @@ class GlobalRouter:
         else:
             user_prompt = GLOBAL_ROUTER_USER_TEMPLATE.format(task=task)
 
-        # Clear instruction for TaskDAG schema format
-        schema_instruction = (
-            "\nIMPORTANT OUTPUT REQUIREMENTS:\n"
-            "1. Return ONLY valid JSON - no markdown, no explanations\n"
-            "2. Use 'tasks' as the top-level array key\n"
-            "3. Each task MUST have:\n"
-            "   - id: unique string (e.g., 'task1', 'task2')\n"
-            "   - domain: one of [commonsense, medical, law, math]\n"
-            "   - content: DETAILED description (minimum 10 words, NOT '...')\n"
-            "   - dependencies: array of task IDs (can be empty [])\n"
-            "4. For multi-domain tasks, create SEPARATE tasks for each domain\n"
-            "5. Ensure all dependency IDs exist in the task list"
-        )
-
+        # Add validation error feedback if previous attempts failed
         error_block = ""
         if errors:
-            formatted_errors = "\n".join(f"- {msg}" for msg in errors[-2:])  # Show fewer errors
+            formatted_errors = "\n".join(f"- {msg}" for msg in errors[-2:])
             error_block = (
-                "\nPrevious attempts had validation issues:\n"
+                "\n\nPrevious attempts had validation issues:\n"
                 f"{formatted_errors}\n"
-                "Please ensure task dependencies reference valid task IDs."
+                "Please correct these issues in your response."
             )
 
-        return (
-            f"{GLOBAL_ROUTER_SYSTEM_PROMPT}\n\n"
-            f"{user_prompt}\n\n"
-            f"{schema_instruction}{error_block}"
-        )
+        return f"{GLOBAL_ROUTER_SYSTEM_PROMPT}\n\n{user_prompt}{error_block}"
     
     def _build_prompt(
         self,
